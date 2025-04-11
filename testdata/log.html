@@ -1,0 +1,203 @@
+<!DOCTYPE html><html><head><title>Fooocus Log 2025-01-20</title><style>body { background-color: #121212; color: #E0E0E0; } a { color: #BB86FC; } .metadata { border-collapse: collapse; width: 100%; } .metadata .label { width: 15%; } .metadata .value { width: 85%; font-weight: bold; } .metadata th, .metadata td { border: 1px solid #4d4d4d; padding: 4px; } .image-container img { height: auto; max-width: 512px; display: block; padding-right:10px; } .image-container div { text-align: center; padding: 4px; } hr { border-color: gray; } button { background-color: black; color: white; border: 1px solid grey; border-radius: 5px; padding: 5px 10px; text-align: center; display: inline-block; font-size: 16px; cursor: pointer; }button:hover {background-color: grey; color: black;}</style></head><body><script>
+    function to_clipboard(txt) { 
+    txt = decodeURIComponent(txt);
+    if (navigator.clipboard && navigator.permissions) {
+        navigator.clipboard.writeText(txt)
+    } else {
+        const textArea = document.createElement('textArea')
+        textArea.value = txt
+        textArea.style.width = 0
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999px'
+        textArea.style.top = '10px'
+        textArea.setAttribute('readonly', 'readonly')
+        document.body.appendChild(textArea)
+
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+    }
+    alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt);
+    }
+    </script><p>Fooocus Log 2025-01-20 (private)</p>
+<p>Metadata is embedded if enabled in the config or developer debug mode. You can find the information for each image in line Metadata Scheme.</p><!--fooocus-log-split-->
+
+<div id="fooocus-meta_png" class="image-container"><hr><table><tr>
+<td><a href="fooocus-meta.png" target="_blank"><img src='fooocus-meta.png' onerror="this.closest('.image-container').style.display='none';" loading='lazy'/></a><div>fooocus-meta.png</div></td><td><table class='metadata'><tr><td class='label'>Prompt</td><td class='value'>A sunflower field</td></tr>
+<tr><td class='label'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='label'>Fooocus V2 Expansion</td><td class='value'>A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</td></tr>
+<tr><td class='label'>Styles</td><td class='value'>['Fooocus V2', 'Fooocus Enhance', 'Fooocus Sharp']</td></tr>
+<tr><td class='label'>Performance</td><td class='value'>Speed</td></tr>
+<tr><td class='label'>Steps</td><td class='value'>30</td></tr>
+<tr><td class='label'>Resolution</td><td class='value'>(512, 512)</td></tr>
+<tr><td class='label'>Guidance Scale</td><td class='value'>4</td></tr>
+<tr><td class='label'>Sharpness</td><td class='value'>2</td></tr>
+<tr><td class='label'>ADM Guidance</td><td class='value'>(1.5, 0.8, 0.3)</td></tr>
+<tr><td class='label'>Base Model</td><td class='value'>juggernautXL_v8Rundiffusion.safetensors</td></tr>
+<tr><td class='label'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='label'>Refiner Switch</td><td class='value'>0.5</td></tr>
+<tr><td class='label'>CLIP Skip</td><td class='value'>2</td></tr>
+<tr><td class='label'>Sampler</td><td class='value'>dpmpp_2m_sde_gpu</td></tr>
+<tr><td class='label'>Scheduler</td><td class='value'>karras</td></tr>
+<tr><td class='label'>VAE</td><td class='value'>Default (model)</td></tr>
+<tr><td class='label'>Seed</td><td class='value'>127589946317439009</td></tr>
+<tr><td class='label'>LoRA 1</td><td class='value'>sd_xl_offset_example-lora_1.0.safetensors : 0.1</td></tr>
+<tr><td class='label'>Metadata Scheme</td><td class='value'>a1111</td></tr>
+<tr><td class='label'>Version</td><td class='value'>Fooocus v2.5.5</td></tr>
+<tr><td class='label'>Full raw prompt</td><td class='value'><details><summary>Positive</summary>cinematic still A sunflower field . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</details>
+    <details><summary>Negative</summary>(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured</details></td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22prompt%22%3A%20%22A%20sunflower%20field%22%2C%0A%22negative_prompt%22%3A%20%22%22%2C%0A%22prompt_expansion%22%3A%20%22A%20sunflower%20field%2C%20highly%20detailed%2C%20magic%2C%20peaceful%2C%20flowing%2C%20beautiful%2C%20atmosphere%2C%20radiant%2C%20magical%2C%20sharp%20focus%2C%20very%20coherent%2C%20intricate%2C%20elegant%2C%20epic%2C%20colorful%2C%20amazing%20composition%2C%20cinematic%2C%20artistic%2C%20fine%20detail%2C%20professional%2C%20clear%2C%20joyful%2C%20unique%2C%20expressive%2C%20cute%2C%20iconic%2C%20best%2C%20vivid%2C%20awesome%2C%20perfect%2C%20ambient%20background%2C%20pristine%2C%20creative%22%2C%0A%22styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Fooocus%20Enhance%27%2C%20%27Fooocus%20Sharp%27%5D%22%2C%0A%22performance%22%3A%20%22Speed%22%2C%0A%22steps%22%3A%2030%2C%0A%22resolution%22%3A%20%22%28512%2C%20512%29%22%2C%0A%22guidance_scale%22%3A%204%2C%0A%22sharpness%22%3A%202%2C%0A%22adm_guidance%22%3A%20%22%281.5%2C%200.8%2C%200.3%29%22%2C%0A%22base_model%22%3A%20%22juggernautXL_v8Rundiffusion.safetensors%22%2C%0A%22refiner_model%22%3A%20%22None%22%2C%0A%22refiner_switch%22%3A%200.5%2C%0A%22clip_skip%22%3A%202%2C%0A%22sampler%22%3A%20%22dpmpp_2m_sde_gpu%22%2C%0A%22scheduler%22%3A%20%22karras%22%2C%0A%22vae%22%3A%20%22Default%20%28model%29%22%2C%0A%22seed%22%3A%20%22127589946317439009%22%2C%0A%22lora_combined_1%22%3A%20%22sd_xl_offset_example-lora_1.0.safetensors%20%3A%200.1%22%2C%0A%22metadata_scheme%22%3A%20%22a1111%22%2C%0A%22version%22%3A%20%22Fooocus%20v2.5.5%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<div id="fooocus-meta_jpeg" class="image-container"><hr><table><tr>
+<td><a href="fooocus-meta.jpeg" target="_blank"><img src='fooocus-meta.jpeg' onerror="this.closest('.image-container').style.display='none';" loading='lazy'/></a><div>fooocus-meta.jpeg</div></td><td><table class='metadata'><tr><td class='label'>Prompt</td><td class='value'>A sunflower field</td></tr>
+<tr><td class='label'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='label'>Fooocus V2 Expansion</td><td class='value'>A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</td></tr>
+<tr><td class='label'>Styles</td><td class='value'>['Fooocus V2', 'Fooocus Enhance', 'Fooocus Sharp']</td></tr>
+<tr><td class='label'>Performance</td><td class='value'>Speed</td></tr>
+<tr><td class='label'>Steps</td><td class='value'>30</td></tr>
+<tr><td class='label'>Resolution</td><td class='value'>(512, 512)</td></tr>
+<tr><td class='label'>Guidance Scale</td><td class='value'>4</td></tr>
+<tr><td class='label'>Sharpness</td><td class='value'>2</td></tr>
+<tr><td class='label'>ADM Guidance</td><td class='value'>(1.5, 0.8, 0.3)</td></tr>
+<tr><td class='label'>Base Model</td><td class='value'>juggernautXL_v8Rundiffusion.safetensors</td></tr>
+<tr><td class='label'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='label'>Refiner Switch</td><td class='value'>0.5</td></tr>
+<tr><td class='label'>CLIP Skip</td><td class='value'>2</td></tr>
+<tr><td class='label'>Sampler</td><td class='value'>dpmpp_2m_sde_gpu</td></tr>
+<tr><td class='label'>Scheduler</td><td class='value'>karras</td></tr>
+<tr><td class='label'>VAE</td><td class='value'>Default (model)</td></tr>
+<tr><td class='label'>Seed</td><td class='value'>127589946317439009</td></tr>
+<tr><td class='label'>LoRA 1</td><td class='value'>sd_xl_offset_example-lora_1.0.safetensors : 0.1</td></tr>
+<tr><td class='label'>Metadata Scheme</td><td class='value'>a1111</td></tr>
+<tr><td class='label'>Version</td><td class='value'>Fooocus v2.5.5</td></tr>
+<tr><td class='label'>Full raw prompt</td><td class='value'><details><summary>Positive</summary>cinematic still A sunflower field . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</details>
+    <details><summary>Negative</summary>(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured</details></td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22prompt%22%3A%20%22A%20sunflower%20field%22%2C%0A%22negative_prompt%22%3A%20%22%22%2C%0A%22prompt_expansion%22%3A%20%22A%20sunflower%20field%2C%20highly%20detailed%2C%20magic%2C%20peaceful%2C%20flowing%2C%20beautiful%2C%20atmosphere%2C%20radiant%2C%20magical%2C%20sharp%20focus%2C%20very%20coherent%2C%20intricate%2C%20elegant%2C%20epic%2C%20colorful%2C%20amazing%20composition%2C%20cinematic%2C%20artistic%2C%20fine%20detail%2C%20professional%2C%20clear%2C%20joyful%2C%20unique%2C%20expressive%2C%20cute%2C%20iconic%2C%20best%2C%20vivid%2C%20awesome%2C%20perfect%2C%20ambient%20background%2C%20pristine%2C%20creative%22%2C%0A%22styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Fooocus%20Enhance%27%2C%20%27Fooocus%20Sharp%27%5D%22%2C%0A%22performance%22%3A%20%22Speed%22%2C%0A%22steps%22%3A%2030%2C%0A%22resolution%22%3A%20%22%28512%2C%20512%29%22%2C%0A%22guidance_scale%22%3A%204%2C%0A%22sharpness%22%3A%202%2C%0A%22adm_guidance%22%3A%20%22%281.5%2C%200.8%2C%200.3%29%22%2C%0A%22base_model%22%3A%20%22juggernautXL_v8Rundiffusion.safetensors%22%2C%0A%22refiner_model%22%3A%20%22None%22%2C%0A%22refiner_switch%22%3A%200.5%2C%0A%22clip_skip%22%3A%202%2C%0A%22sampler%22%3A%20%22dpmpp_2m_sde_gpu%22%2C%0A%22scheduler%22%3A%20%22karras%22%2C%0A%22vae%22%3A%20%22Default%20%28model%29%22%2C%0A%22seed%22%3A%20%22127589946317439009%22%2C%0A%22lora_combined_1%22%3A%20%22sd_xl_offset_example-lora_1.0.safetensors%20%3A%200.1%22%2C%0A%22metadata_scheme%22%3A%20%22a1111%22%2C%0A%22version%22%3A%20%22Fooocus%20v2.5.5%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<div id="fooocus-meta_webp" class="image-container"><hr><table><tr>
+<td><a href="fooocus-meta.webp" target="_blank"><img src='fooocus-meta.webp' onerror="this.closest('.image-container').style.display='none';" loading='lazy'/></a><div>fooocus-meta.webp</div></td><td><table class='metadata'><tr><td class='label'>Prompt</td><td class='value'>A sunflower field</td></tr>
+<tr><td class='label'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='label'>Fooocus V2 Expansion</td><td class='value'>A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</td></tr>
+<tr><td class='label'>Styles</td><td class='value'>['Fooocus V2', 'Fooocus Enhance', 'Fooocus Sharp']</td></tr>
+<tr><td class='label'>Performance</td><td class='value'>Speed</td></tr>
+<tr><td class='label'>Steps</td><td class='value'>30</td></tr>
+<tr><td class='label'>Resolution</td><td class='value'>(512, 512)</td></tr>
+<tr><td class='label'>Guidance Scale</td><td class='value'>4</td></tr>
+<tr><td class='label'>Sharpness</td><td class='value'>2</td></tr>
+<tr><td class='label'>ADM Guidance</td><td class='value'>(1.5, 0.8, 0.3)</td></tr>
+<tr><td class='label'>Base Model</td><td class='value'>juggernautXL_v8Rundiffusion.safetensors</td></tr>
+<tr><td class='label'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='label'>Refiner Switch</td><td class='value'>0.5</td></tr>
+<tr><td class='label'>CLIP Skip</td><td class='value'>2</td></tr>
+<tr><td class='label'>Sampler</td><td class='value'>dpmpp_2m_sde_gpu</td></tr>
+<tr><td class='label'>Scheduler</td><td class='value'>karras</td></tr>
+<tr><td class='label'>VAE</td><td class='value'>Default (model)</td></tr>
+<tr><td class='label'>Seed</td><td class='value'>127589946317439009</td></tr>
+<tr><td class='label'>LoRA 1</td><td class='value'>sd_xl_offset_example-lora_1.0.safetensors : 0.1</td></tr>
+<tr><td class='label'>Metadata Scheme</td><td class='value'>a1111</td></tr>
+<tr><td class='label'>Version</td><td class='value'>Fooocus v2.5.5</td></tr>
+<tr><td class='label'>Full raw prompt</td><td class='value'><details><summary>Positive</summary>cinematic still A sunflower field . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</details>
+    <details><summary>Negative</summary>(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured</details></td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22prompt%22%3A%20%22A%20sunflower%20field%22%2C%0A%22negative_prompt%22%3A%20%22%22%2C%0A%22prompt_expansion%22%3A%20%22A%20sunflower%20field%2C%20highly%20detailed%2C%20magic%2C%20peaceful%2C%20flowing%2C%20beautiful%2C%20atmosphere%2C%20radiant%2C%20magical%2C%20sharp%20focus%2C%20very%20coherent%2C%20intricate%2C%20elegant%2C%20epic%2C%20colorful%2C%20amazing%20composition%2C%20cinematic%2C%20artistic%2C%20fine%20detail%2C%20professional%2C%20clear%2C%20joyful%2C%20unique%2C%20expressive%2C%20cute%2C%20iconic%2C%20best%2C%20vivid%2C%20awesome%2C%20perfect%2C%20ambient%20background%2C%20pristine%2C%20creative%22%2C%0A%22styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Fooocus%20Enhance%27%2C%20%27Fooocus%20Sharp%27%5D%22%2C%0A%22performance%22%3A%20%22Speed%22%2C%0A%22steps%22%3A%2030%2C%0A%22resolution%22%3A%20%22%28512%2C%20512%29%22%2C%0A%22guidance_scale%22%3A%204%2C%0A%22sharpness%22%3A%202%2C%0A%22adm_guidance%22%3A%20%22%281.5%2C%200.8%2C%200.3%29%22%2C%0A%22base_model%22%3A%20%22juggernautXL_v8Rundiffusion.safetensors%22%2C%0A%22refiner_model%22%3A%20%22None%22%2C%0A%22refiner_switch%22%3A%200.5%2C%0A%22clip_skip%22%3A%202%2C%0A%22sampler%22%3A%20%22dpmpp_2m_sde_gpu%22%2C%0A%22scheduler%22%3A%20%22karras%22%2C%0A%22vae%22%3A%20%22Default%20%28model%29%22%2C%0A%22seed%22%3A%20%22127589946317439009%22%2C%0A%22lora_combined_1%22%3A%20%22sd_xl_offset_example-lora_1.0.safetensors%20%3A%200.1%22%2C%0A%22metadata_scheme%22%3A%20%22a1111%22%2C%0A%22version%22%3A%20%22Fooocus%20v2.5.5%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<div id="a111-meta_webp" class="image-container"><hr><table><tr>
+<td><a href="a111-meta.webp" target="_blank"><img src='a111-meta.webp' onerror="this.closest('.image-container').style.display='none';" loading='lazy'/></a><div>a111-meta.webp</div></td><td><table class='metadata'><tr><td class='label'>Prompt</td><td class='value'>A sunflower field</td></tr>
+<tr><td class='label'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='label'>Fooocus V2 Expansion</td><td class='value'>A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</td></tr>
+<tr><td class='label'>Styles</td><td class='value'>['Fooocus V2', 'Fooocus Enhance', 'Fooocus Sharp']</td></tr>
+<tr><td class='label'>Performance</td><td class='value'>Speed</td></tr>
+<tr><td class='label'>Steps</td><td class='value'>30</td></tr>
+<tr><td class='label'>Resolution</td><td class='value'>(512, 512)</td></tr>
+<tr><td class='label'>Guidance Scale</td><td class='value'>4</td></tr>
+<tr><td class='label'>Sharpness</td><td class='value'>2</td></tr>
+<tr><td class='label'>ADM Guidance</td><td class='value'>(1.5, 0.8, 0.3)</td></tr>
+<tr><td class='label'>Base Model</td><td class='value'>juggernautXL_v8Rundiffusion.safetensors</td></tr>
+<tr><td class='label'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='label'>Refiner Switch</td><td class='value'>0.5</td></tr>
+<tr><td class='label'>CLIP Skip</td><td class='value'>2</td></tr>
+<tr><td class='label'>Sampler</td><td class='value'>dpmpp_2m_sde_gpu</td></tr>
+<tr><td class='label'>Scheduler</td><td class='value'>karras</td></tr>
+<tr><td class='label'>VAE</td><td class='value'>Default (model)</td></tr>
+<tr><td class='label'>Seed</td><td class='value'>127589946317439009</td></tr>
+<tr><td class='label'>LoRA 1</td><td class='value'>sd_xl_offset_example-lora_1.0.safetensors : 0.1</td></tr>
+<tr><td class='label'>Metadata Scheme</td><td class='value'>fooocus</td></tr>
+<tr><td class='label'>Version</td><td class='value'>Fooocus v2.5.5</td></tr>
+<tr><td class='label'>Full raw prompt</td><td class='value'><details><summary>Positive</summary>cinematic still A sunflower field . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</details>
+    <details><summary>Negative</summary>(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured</details></td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22prompt%22%3A%20%22A%20sunflower%20field%22%2C%0A%22negative_prompt%22%3A%20%22%22%2C%0A%22prompt_expansion%22%3A%20%22A%20sunflower%20field%2C%20highly%20detailed%2C%20magic%2C%20peaceful%2C%20flowing%2C%20beautiful%2C%20atmosphere%2C%20radiant%2C%20magical%2C%20sharp%20focus%2C%20very%20coherent%2C%20intricate%2C%20elegant%2C%20epic%2C%20colorful%2C%20amazing%20composition%2C%20cinematic%2C%20artistic%2C%20fine%20detail%2C%20professional%2C%20clear%2C%20joyful%2C%20unique%2C%20expressive%2C%20cute%2C%20iconic%2C%20best%2C%20vivid%2C%20awesome%2C%20perfect%2C%20ambient%20background%2C%20pristine%2C%20creative%22%2C%0A%22styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Fooocus%20Enhance%27%2C%20%27Fooocus%20Sharp%27%5D%22%2C%0A%22performance%22%3A%20%22Speed%22%2C%0A%22steps%22%3A%2030%2C%0A%22resolution%22%3A%20%22%28512%2C%20512%29%22%2C%0A%22guidance_scale%22%3A%204%2C%0A%22sharpness%22%3A%202%2C%0A%22adm_guidance%22%3A%20%22%281.5%2C%200.8%2C%200.3%29%22%2C%0A%22base_model%22%3A%20%22juggernautXL_v8Rundiffusion.safetensors%22%2C%0A%22refiner_model%22%3A%20%22None%22%2C%0A%22refiner_switch%22%3A%200.5%2C%0A%22clip_skip%22%3A%202%2C%0A%22sampler%22%3A%20%22dpmpp_2m_sde_gpu%22%2C%0A%22scheduler%22%3A%20%22karras%22%2C%0A%22vae%22%3A%20%22Default%20%28model%29%22%2C%0A%22seed%22%3A%20%22127589946317439009%22%2C%0A%22lora_combined_1%22%3A%20%22sd_xl_offset_example-lora_1.0.safetensors%20%3A%200.1%22%2C%0A%22metadata_scheme%22%3A%20%22fooocus%22%2C%0A%22version%22%3A%20%22Fooocus%20v2.5.5%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<div id="a111-meta_jpeg" class="image-container"><hr><table><tr>
+<td><a href="a111-meta.jpeg" target="_blank"><img src='a111-meta.jpeg' onerror="this.closest('.image-container').style.display='none';" loading='lazy'/></a><div>a111-meta.jpeg</div></td><td><table class='metadata'><tr><td class='label'>Prompt</td><td class='value'>A sunflower field</td></tr>
+<tr><td class='label'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='label'>Fooocus V2 Expansion</td><td class='value'>A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</td></tr>
+<tr><td class='label'>Styles</td><td class='value'>['Fooocus V2', 'Fooocus Enhance', 'Fooocus Sharp']</td></tr>
+<tr><td class='label'>Performance</td><td class='value'>Speed</td></tr>
+<tr><td class='label'>Steps</td><td class='value'>30</td></tr>
+<tr><td class='label'>Resolution</td><td class='value'>(512, 512)</td></tr>
+<tr><td class='label'>Guidance Scale</td><td class='value'>4</td></tr>
+<tr><td class='label'>Sharpness</td><td class='value'>2</td></tr>
+<tr><td class='label'>ADM Guidance</td><td class='value'>(1.5, 0.8, 0.3)</td></tr>
+<tr><td class='label'>Base Model</td><td class='value'>juggernautXL_v8Rundiffusion.safetensors</td></tr>
+<tr><td class='label'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='label'>Refiner Switch</td><td class='value'>0.5</td></tr>
+<tr><td class='label'>CLIP Skip</td><td class='value'>2</td></tr>
+<tr><td class='label'>Sampler</td><td class='value'>dpmpp_2m_sde_gpu</td></tr>
+<tr><td class='label'>Scheduler</td><td class='value'>karras</td></tr>
+<tr><td class='label'>VAE</td><td class='value'>Default (model)</td></tr>
+<tr><td class='label'>Seed</td><td class='value'>127589946317439009</td></tr>
+<tr><td class='label'>LoRA 1</td><td class='value'>sd_xl_offset_example-lora_1.0.safetensors : 0.1</td></tr>
+<tr><td class='label'>Metadata Scheme</td><td class='value'>fooocus</td></tr>
+<tr><td class='label'>Version</td><td class='value'>Fooocus v2.5.5</td></tr>
+<tr><td class='label'>Full raw prompt</td><td class='value'><details><summary>Positive</summary>cinematic still A sunflower field . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</details>
+    <details><summary>Negative</summary>(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured</details></td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22prompt%22%3A%20%22A%20sunflower%20field%22%2C%0A%22negative_prompt%22%3A%20%22%22%2C%0A%22prompt_expansion%22%3A%20%22A%20sunflower%20field%2C%20highly%20detailed%2C%20magic%2C%20peaceful%2C%20flowing%2C%20beautiful%2C%20atmosphere%2C%20radiant%2C%20magical%2C%20sharp%20focus%2C%20very%20coherent%2C%20intricate%2C%20elegant%2C%20epic%2C%20colorful%2C%20amazing%20composition%2C%20cinematic%2C%20artistic%2C%20fine%20detail%2C%20professional%2C%20clear%2C%20joyful%2C%20unique%2C%20expressive%2C%20cute%2C%20iconic%2C%20best%2C%20vivid%2C%20awesome%2C%20perfect%2C%20ambient%20background%2C%20pristine%2C%20creative%22%2C%0A%22styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Fooocus%20Enhance%27%2C%20%27Fooocus%20Sharp%27%5D%22%2C%0A%22performance%22%3A%20%22Speed%22%2C%0A%22steps%22%3A%2030%2C%0A%22resolution%22%3A%20%22%28512%2C%20512%29%22%2C%0A%22guidance_scale%22%3A%204%2C%0A%22sharpness%22%3A%202%2C%0A%22adm_guidance%22%3A%20%22%281.5%2C%200.8%2C%200.3%29%22%2C%0A%22base_model%22%3A%20%22juggernautXL_v8Rundiffusion.safetensors%22%2C%0A%22refiner_model%22%3A%20%22None%22%2C%0A%22refiner_switch%22%3A%200.5%2C%0A%22clip_skip%22%3A%202%2C%0A%22sampler%22%3A%20%22dpmpp_2m_sde_gpu%22%2C%0A%22scheduler%22%3A%20%22karras%22%2C%0A%22vae%22%3A%20%22Default%20%28model%29%22%2C%0A%22seed%22%3A%20%22127589946317439009%22%2C%0A%22lora_combined_1%22%3A%20%22sd_xl_offset_example-lora_1.0.safetensors%20%3A%200.1%22%2C%0A%22metadata_scheme%22%3A%20%22fooocus%22%2C%0A%22version%22%3A%20%22Fooocus%20v2.5.5%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<div id="a111-meta_png" class="image-container"><hr><table><tr>
+<td><a href="a111-meta.png" target="_blank"><img src='a111-meta.png' onerror="this.closest('.image-container').style.display='none';" loading='lazy'/></a><div>a111-meta.png</div></td><td><table class='metadata'><tr><td class='label'>Prompt</td><td class='value'>A sunflower field</td></tr>
+<tr><td class='label'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='label'>Fooocus V2 Expansion</td><td class='value'>A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</td></tr>
+<tr><td class='label'>Styles</td><td class='value'>['Fooocus V2', 'Fooocus Enhance', 'Fooocus Sharp']</td></tr>
+<tr><td class='label'>Performance</td><td class='value'>Speed</td></tr>
+<tr><td class='label'>Steps</td><td class='value'>30</td></tr>
+<tr><td class='label'>Resolution</td><td class='value'>(512, 512)</td></tr>
+<tr><td class='label'>Guidance Scale</td><td class='value'>4</td></tr>
+<tr><td class='label'>Sharpness</td><td class='value'>2</td></tr>
+<tr><td class='label'>ADM Guidance</td><td class='value'>(1.5, 0.8, 0.3)</td></tr>
+<tr><td class='label'>Base Model</td><td class='value'>juggernautXL_v8Rundiffusion.safetensors</td></tr>
+<tr><td class='label'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='label'>Refiner Switch</td><td class='value'>0.5</td></tr>
+<tr><td class='label'>CLIP Skip</td><td class='value'>2</td></tr>
+<tr><td class='label'>Sampler</td><td class='value'>dpmpp_2m_sde_gpu</td></tr>
+<tr><td class='label'>Scheduler</td><td class='value'>karras</td></tr>
+<tr><td class='label'>VAE</td><td class='value'>Default (model)</td></tr>
+<tr><td class='label'>Seed</td><td class='value'>127589946317439009</td></tr>
+<tr><td class='label'>LoRA 1</td><td class='value'>sd_xl_offset_example-lora_1.0.safetensors : 0.1</td></tr>
+<tr><td class='label'>Metadata Scheme</td><td class='value'>fooocus</td></tr>
+<tr><td class='label'>Version</td><td class='value'>Fooocus v2.5.5</td></tr>
+<tr><td class='label'>Full raw prompt</td><td class='value'><details><summary>Positive</summary>cinematic still A sunflower field . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative</details>
+    <details><summary>Negative</summary>(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured</details></td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22prompt%22%3A%20%22A%20sunflower%20field%22%2C%0A%22negative_prompt%22%3A%20%22%22%2C%0A%22prompt_expansion%22%3A%20%22A%20sunflower%20field%2C%20highly%20detailed%2C%20magic%2C%20peaceful%2C%20flowing%2C%20beautiful%2C%20atmosphere%2C%20radiant%2C%20magical%2C%20sharp%20focus%2C%20very%20coherent%2C%20intricate%2C%20elegant%2C%20epic%2C%20colorful%2C%20amazing%20composition%2C%20cinematic%2C%20artistic%2C%20fine%20detail%2C%20professional%2C%20clear%2C%20joyful%2C%20unique%2C%20expressive%2C%20cute%2C%20iconic%2C%20best%2C%20vivid%2C%20awesome%2C%20perfect%2C%20ambient%20background%2C%20pristine%2C%20creative%22%2C%0A%22styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Fooocus%20Enhance%27%2C%20%27Fooocus%20Sharp%27%5D%22%2C%0A%22performance%22%3A%20%22Speed%22%2C%0A%22steps%22%3A%2030%2C%0A%22resolution%22%3A%20%22%28512%2C%20512%29%22%2C%0A%22guidance_scale%22%3A%204%2C%0A%22sharpness%22%3A%202%2C%0A%22adm_guidance%22%3A%20%22%281.5%2C%200.8%2C%200.3%29%22%2C%0A%22base_model%22%3A%20%22juggernautXL_v8Rundiffusion.safetensors%22%2C%0A%22refiner_model%22%3A%20%22None%22%2C%0A%22refiner_switch%22%3A%200.5%2C%0A%22clip_skip%22%3A%202%2C%0A%22sampler%22%3A%20%22dpmpp_2m_sde_gpu%22%2C%0A%22scheduler%22%3A%20%22karras%22%2C%0A%22vae%22%3A%20%22Default%20%28model%29%22%2C%0A%22seed%22%3A%20%22127589946317439009%22%2C%0A%22lora_combined_1%22%3A%20%22sd_xl_offset_example-lora_1.0.safetensors%20%3A%200.1%22%2C%0A%22metadata_scheme%22%3A%20%22fooocus%22%2C%0A%22version%22%3A%20%22Fooocus%20v2.5.5%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<!-- Legacy format -->
+<div id="2024-01-05_23-11-48_9167_png" class="image-container"><hr><table><tr>
+<td><a href="2024-01-05_23-11-48_9167.png" target="_blank"><img src='2024-01-05_23-11-48_9167.png' onerror="this.closest('.image-container').style.display='none';" loading='lazy'></img></a><div>2024-01-05_23-11-48_9167.png</div></td><td><table class='metadata'><tr><td class='key'>Prompt</td><td class='value'>dinosaur leashed</td></tr>
+<tr><td class='key'>Negative Prompt</td><td class='value'></td></tr>
+<tr><td class='key'>Fooocus V2 Expansion</td><td class='value'>dinosaur leashed, full color, cinematic, stunning, highly detailed, true colors, complex, elegant, symmetry, light, epic, great composition, creative, perfect, thought, best, real, novel, romantic, new, tender, cute, fancy, burning, nice, lovely, hopeful, pretty, artistic, surreal, inspiring, beautiful, dramatic, illuminated, amazing</td></tr>
+<tr><td class='key'>Styles</td><td class='value'>['Fooocus V2', 'Dark Moody Atmosphere', 'Misc Horror']</td></tr>
+<tr><td class='key'>Performance</td><td class='value'>Extreme Speed</td></tr>
+<tr><td class='key'>Resolution</td><td class='value'>(1024, 1024)</td></tr>
+<tr><td class='key'>Sharpness</td><td class='value'>0.0</td></tr>
+<tr><td class='key'>Guidance Scale</td><td class='value'>1.0</td></tr>
+<tr><td class='key'>ADM Guidance</td><td class='value'>(1.0, 1.0, 0.0)</td></tr>
+<tr><td class='key'>Base Model</td><td class='value'>sd_xl_base_1.0_0.9vae.safetensors</td></tr>
+<tr><td class='key'>Refiner Model</td><td class='value'>None</td></tr>
+<tr><td class='key'>Refiner Switch</td><td class='value'>1.0</td></tr>
+<tr><td class='key'>Sampler</td><td class='value'>lcm</td></tr>
+<tr><td class='key'>Scheduler</td><td class='value'>lcm</td></tr>
+<tr><td class='key'>Seed</td><td class='value'>6515525224486854496</td></tr>
+<tr><td class='key'>LoRA 1</td><td class='value'>PetDinosaur-v2.safetensors : 1.65</td></tr>
+<tr><td class='key'>LoRA 6</td><td class='value'>sdxl_lcm_lora.safetensors : 1.0</td></tr>
+<tr><td class='key'>Version</td><td class='value'>v2.1.860</td></tr>
+</table></br><button onclick="to_clipboard('%7B%0A%22Prompt%22%3A%20%22dinosaur%20leashed%22%2C%0A%22Negative%20Prompt%22%3A%20%22%22%2C%0A%22Fooocus%20V2%20Expansion%22%3A%20%22dinosaur%20leashed%2C%20full%20color%2C%20cinematic%2C%20stunning%2C%20highly%20detailed%2C%20true%20colors%2C%20complex%2C%20elegant%2C%20symmetry%2C%20light%2C%20epic%2C%20great%20composition%2C%20creative%2C%20perfect%2C%20thought%2C%20best%2C%20real%2C%20novel%2C%20romantic%2C%20new%2C%20tender%2C%20cute%2C%20fancy%2C%20burning%2C%20nice%2C%20lovely%2C%20hopeful%2C%20pretty%2C%20artistic%2C%20surreal%2C%20inspiring%2C%20beautiful%2C%20dramatic%2C%20illuminated%2C%20amazing%22%2C%0A%22Styles%22%3A%20%22%5B%27Fooocus%20V2%27%2C%20%27Dark%20Moody%20Atmosphere%27%2C%20%27Misc%20Horror%27%5D%22%2C%0A%22Performance%22%3A%20%22Extreme%20Speed%22%2C%0A%22Resolution%22%3A%20%22%281024%2C%201024%29%22%2C%0A%22Sharpness%22%3A%200.0%2C%0A%22Guidance%20Scale%22%3A%201.0%2C%0A%22ADM%20Guidance%22%3A%20%22%281.0%2C%201.0%2C%200.0%29%22%2C%0A%22Base%20Model%22%3A%20%22sd_xl_base_1.0_0.9vae.safetensors%22%2C%0A%22Refiner%20Model%22%3A%20%22None%22%2C%0A%22Refiner%20Switch%22%3A%201.0%2C%0A%22Sampler%22%3A%20%22lcm%22%2C%0A%22Scheduler%22%3A%20%22lcm%22%2C%0A%22Seed%22%3A%206515525224486854496%2C%0A%22LoRA%201%22%3A%20%22PetDinosaur-v2.safetensors%20%3A%201.65%22%2C%0A%22LoRA%206%22%3A%20%22sdxl_lcm_lora.safetensors%20%3A%201.0%22%2C%0A%22Version%22%3A%20%22v2.1.860%22%0A%7D')">Copy to Clipboard</button></td></tr></table></div>
+
+<!--fooocus-log-split--></body></html>
