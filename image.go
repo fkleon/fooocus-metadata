@@ -47,7 +47,7 @@ func (file *File) Parse(fin *os.File) (err error) {
 
 type ImageFile struct {
 	File
-	FooocusMetadata *FooocusMeta
+	FooocusMetadata *Metadata
 	exif            *exif.Exif
 	pngText         map[string]string
 }
@@ -205,7 +205,7 @@ func extractPngTextChunks(fin *os.File) (map[string]string, error) {
 	return textDataDecoded, nil
 }
 
-func EmbedMetadataAsPngText(source *os.File, target *os.File, meta *FooocusMeta) (err error) {
+func EmbedMetadataAsPngText(source *os.File, target *os.File, meta *Metadata) (err error) {
 
 	slog.Debug("Embedding Fooocus metadata into PNG",
 		"target", target.Name())

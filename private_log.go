@@ -9,7 +9,7 @@ import (
 	"github.com/antchfx/htmlquery"
 )
 
-func ParsePrivateLog(filePath string) (map[string]*FooocusMeta, error) {
+func ParsePrivateLog(filePath string) (map[string]*Metadata, error) {
 	doc, err := htmlquery.LoadDoc(filePath)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func ParsePrivateLog(filePath string) (map[string]*FooocusMeta, error) {
 		return nil, err
 	}
 
-	var images map[string]*FooocusMeta = make(map[string]*FooocusMeta, len(nodes))
+	var images map[string]*Metadata = make(map[string]*Metadata, len(nodes))
 
 	for _, n := range nodes {
 		img := htmlquery.FindOne(n, "//img")
@@ -40,8 +40,8 @@ func ParsePrivateLog(filePath string) (map[string]*FooocusMeta, error) {
 		}
 
 		// Parse metadata
-		var metadata *FooocusMeta
-		var legacyMetadata *FooocusMetaLegacy
+		var metadata *Metadata
+		var legacyMetadata *MetadataLegacy
 
 		// Prefer modern format
 		if err := json.Unmarshal([]byte(cleanU), &metadata); err == nil {
@@ -55,7 +55,7 @@ func ParsePrivateLog(filePath string) (map[string]*FooocusMeta, error) {
 			} else {
 				slog.Debug("Found legacy metadata format",
 					"file", imgSrc, "data", cleanU)
-				images[imgSrc] = legacyMetadata.toFooocusMeta()
+				images[imgSrc] = legacyMetadata.toCurrent()
 			}
 		}
 	}

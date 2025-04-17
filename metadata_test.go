@@ -39,7 +39,7 @@ const metaJson = `{
 	"version": "Fooocus v2.5.5"
 }`
 
-var meta = &FooocusMeta{
+var meta = &Metadata{
 	AdmGuidance:        [3]float32{1.5, 0.8, 0.3},
 	BaseModel:          "juggernautXL_v8Rundiffusion",
 	BaseModelHash:      "aeb7e9e689",
@@ -93,7 +93,7 @@ const metaLegacyJson = `{
 	"Version": "v2.1.860"
 }`
 
-var metaLegacy = &FooocusMetaLegacy{
+var metaLegacy = &MetadataLegacy{
 	AdmGuidance:        [3]float32{1.0, 1.0, 0.0},
 	BaseModel:          "sd_xl_base_1.0_0.9vae.safetensors",
 	FooocusV2Expansion: "dinosaur leashed, full color, cinematic, stunning, highly detailed, true colors, complex, elegant, symmetry, light, epic, great composition, creative, perfect, thought, best, real, novel, romantic, new, tender, cute, fancy, burning, nice, lovely, hopeful, pretty, artistic, surreal, inspiring, beautiful, dramatic, illuminated, amazing",
@@ -115,7 +115,7 @@ var metaLegacy = &FooocusMetaLegacy{
 	// TODO: Steps derived from Performance mode
 }
 
-var metaLegacyConverted = &FooocusMeta{
+var metaLegacyConverted = &Metadata{
 	AdmGuidance:   [3]float32{1.0, 1.0, 0.0},
 	BaseModel:     "sd_xl_base_1.0_0.9vae.safetensors",
 	GuidanceScale: 1.0,
@@ -144,7 +144,7 @@ var metaLegacyConverted = &FooocusMeta{
 }
 
 func TestDecodeLegacyMetadata(t *testing.T) {
-	var out *FooocusMetaLegacy
+	var out *MetadataLegacy
 	err := json.Unmarshal([]byte(metaLegacyJson), &out)
 	require.NoError(t, err)
 	assert.Equal(t, metaLegacy, out)
@@ -159,12 +159,12 @@ func TestEncodeLegacyMetadata(t *testing.T) {
 }
 
 func TestConvertLegacyMetadata(t *testing.T) {
-	meta := metaLegacy.toFooocusMeta()
+	meta := metaLegacy.toCurrent()
 	assert.Equal(t, metaLegacyConverted, meta)
 }
 
 func TestDecodeMetadata(t *testing.T) {
-	var decoded *FooocusMeta
+	var decoded *Metadata
 	err := json.Unmarshal([]byte(metaJson), &decoded)
 	require.NoError(t, err)
 	assert.Equal(t, meta, decoded)

@@ -30,7 +30,7 @@ const HYPER_SD = 4
 // Reference implementation:
 // - Serialisation: https://github.com/lllyasviel/Fooocus/blob/v2.5.5/modules/async_worker.py#L337
 // - Deserialisation: https://github.com/lllyasviel/Fooocus/blob/v2.5.5/modules/meta_parser.py#L22
-type FooocusMeta struct {
+type Metadata struct {
 	AdaptiveCfg          float32       `json:"adaptive_cfg,omitempty"`
 	AdmGuidance          AdmGuidance   `json:"adm_guidance"`
 	BaseModel            string        `json:"base_model"`
@@ -76,7 +76,7 @@ type FooocusMeta struct {
 // Reference implementation:
 // - Serialisation: https://github.com/lllyasviel/Fooocus/blob/v2.5.5/modules/async_worker.py#L337
 // - Deserialisation: https://github.com/lllyasviel/Fooocus/blob/v2.5.5/modules/meta_parser.py#L22
-type FooocusMetaLegacy struct {
+type MetadataLegacy struct {
 	AdmGuidance          AdmGuidance   `json:"ADM Guidance"`
 	BaseModel            string        `json:"Base Model"`
 	CFGMimicking         float32       `json:"CFG Mimicking from TSNR,omitempty"`
@@ -112,7 +112,7 @@ type FooocusMetaLegacy struct {
 }
 
 // Convert legacy metadata to current version
-func (legacy *FooocusMetaLegacy) toFooocusMeta() (meta *FooocusMeta) {
+func (legacy *MetadataLegacy) toCurrent() (meta *Metadata) {
 	var loras []Lora = make([]Lora, 0, 6)
 
 	var addLora = func(lora *LoraCombined) {
@@ -137,7 +137,7 @@ func (legacy *FooocusMetaLegacy) toFooocusMeta() (meta *FooocusMeta) {
 	// - FullNegativePrompt
 	// - FullPrompt
 	// - RefinerModelHash
-	meta = &FooocusMeta{
+	meta = &Metadata{
 		AdaptiveCfg:          legacy.CFGMimicking,
 		AdmGuidance:          legacy.AdmGuidance,
 		BaseModel:            legacy.BaseModel,
@@ -309,7 +309,7 @@ func (l *LoraCombined) MarshalJSON() ([]byte, error) {
 	return json.Marshal(fmt.Sprintf("%v : %g", l.Name, l.Weight))
 }
 
-func ExtractMetadataFromPngData(pngData map[string]string) (*FooocusMeta, error) {
+func ExtractMetadataFromPngData(pngData map[string]string) (*Metadata, error) {
 
 	slog.Debug("Extracting Fooocus metadata from PNG tEXt")
 
@@ -321,7 +321,7 @@ func ExtractMetadataFromPngData(pngData map[string]string) (*FooocusMeta, error)
 	}
 }
 
-func ExtractMetadataFromExifData(exifData *exif.Exif) (*FooocusMeta, error) {
+func ExtractMetadataFromExifData(exifData *exif.Exif) (*Metadata, error) {
 
 	slog.Debug("Extracting Fooocus metadata from EXIF data")
 
@@ -340,7 +340,7 @@ func ExtractMetadataFromExifData(exifData *exif.Exif) (*FooocusMeta, error) {
 	return ParseMetadata(scheme, parameters)
 }
 
-func ParseMetadata(scheme string, parameters string) (*FooocusMeta, error) {
+func ParseMetadata(scheme string, parameters string) (*Metadata, error) {
 
 	// Scheme is one of 'fooocus' or 'a1111'
 	if scheme != fooocus {
@@ -348,7 +348,7 @@ func ParseMetadata(scheme string, parameters string) (*FooocusMeta, error) {
 	}
 
 	// Parse metadata
-	metadata := &FooocusMeta{}
+	metadata := &Metadata{}
 	err := json.Unmarshal([]byte(parameters), metadata)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read Fooocus parameters: %w", err)
