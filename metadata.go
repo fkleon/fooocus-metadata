@@ -11,20 +11,20 @@ import (
 	"github.com/cozy/goexif2/exif"
 )
 
-// Fooocus suports encoding metadata with one of two schemes:
-// - the native JSON scheme
-// - the AUTOMATIC1111 plaintext format for compatibility with Stable Diffusion web UI
 const (
+	// Fooocus suports encoding metadata with one of two schemes:
+	// - the native JSON scheme
+	// - the AUTOMATIC1111 plaintext format for compatibility with Stable Diffusion web UI
 	fooocus = "fooocus"
 	a1111   = "a1111"
-)
 
-// Default step configuration for performance presets
-const QUALITY = 60
-const SPEED = 30
-const EXTREME_SPEED = 8
-const LIGHTNING = 4
-const HYPER_SD = 4
+	// Default step configuration for performance presets
+	quality      = 60
+	speed        = 30
+	extremeSpeed = 8
+	lightning    = 4
+	hyperSD      = 4
+)
 
 // Fooocus metadata scheme (json). Implemented from v2.2.0 as per https://github.com/lllyasviel/Fooocus/pull/1940
 // Reference implementation:
