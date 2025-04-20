@@ -12,7 +12,7 @@ import (
 
 	_ "embed"
 
-	"github.com/cozy/goexif2/exif"
+	"github.com/bep/imagemeta"
 	pngembed "github.com/sabhiram/png-embed"
 	"golang.org/x/text/encoding/charmap"
 )
@@ -48,7 +48,7 @@ func (file *File) Parse(fin *os.File) (err error) {
 type ImageFile struct {
 	File
 	FooocusMetadata *Metadata
-	exif            *exif.Exif
+	exif            *imagemeta.Tags
 	pngText         map[string]string
 }
 
@@ -88,13 +88,13 @@ func NewImageInfo(filePath string) (imageInfo *ImageFile, err error) {
 		fallthrough
 	case "image/tiff":
 		slog.Info("Extracting embedded metadata from EXIF..")
-		if imageInfo.exif, metadataErr = ExtractExif(fin); metadataErr == nil {
-			imageInfo.FooocusMetadata, metadataErr = ExtractMetadataFromExifData(imageInfo.exif)
+		if imageInfo.exif, metadataErr = extractExif(fin, imageInfo.MIME); metadataErr == nil {
+			imageInfo.FooocusMetadata, metadataErr = extractMetadataFromExifData(imageInfo.exif)
 		}
 	case "image/png":
 		slog.Info("Extracting embedded metadata from PNG tEXt..")
-		if imageInfo.pngText, metadataErr = ExtractPngText(fin); metadataErr == nil {
-			imageInfo.FooocusMetadata, metadataErr = ExtractMetadataFromPngData(imageInfo.pngText)
+		if imageInfo.pngText, metadataErr = extractPngText(fin); metadataErr == nil {
+			imageInfo.FooocusMetadata, metadataErr = extractMetadataFromPngData(imageInfo.pngText)
 		}
 	default:
 		slog.Warn("Unsupported MIME type",
@@ -138,21 +138,49 @@ func DetectMimeType(file *File, fin *os.File) (mimeType string, err error) {
 	return
 }
 
-func ExtractExif(fin *os.File) (exifData *exif.Exif, exifErr error) {
+func extractExif(fin *os.File, mimeType string) (exifData *imagemeta.Tags, exifErr error) {
 	// Rewind to the start
 	fin.Seek(0, io.SeekStart)
 
 	// Extract EXIF data
-	exifData, exifErr = exif.Decode(fin)
+	var format imagemeta.ImageFormat
+	switch mimeType {
+	default:
+		fallthrough
+	case "image/jpeg":
+		format = imagemeta.JPEG
+	case "image/webp":
+		format = imagemeta.WebP
+	case "image/tiff":
+		format = imagemeta.TIFF
+	}
+
+	exifErr = imagemeta.Decode(imagemeta.Options{
+		R:           fin,
+		ImageFormat: format,
+		Sources:     imagemeta.EXIF,
+		HandleTag: func(info imagemeta.TagInfo) error {
+			if exifData == nil {
+				exifData = &imagemeta.Tags{}
+			}
+			exifData.Add(info)
+			return nil
+		},
+		Warnf: slog.Warn,
+	})
+
 	if exifErr != nil {
 		slog.Debug("Failed to extract EXIF data",
 			"error", exifErr)
+	} else if exifData == nil {
+		slog.Debug("No EXIF data in file")
+		exifErr = fmt.Errorf("No EXIF data in file")
 	}
 
 	return
 }
 
-func ExtractPngText(fin *os.File) (pngText map[string]string, pngErr error) {
+func extractPngText(fin *os.File) (pngText map[string]string, pngErr error) {
 	// Rewind to the start
 	fin.Seek(0, io.SeekStart)
 

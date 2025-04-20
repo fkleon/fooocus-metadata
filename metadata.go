@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cozy/goexif2/exif"
+	"github.com/bep/imagemeta"
 )
 
 const (
@@ -309,7 +309,7 @@ func (l *LoraCombined) MarshalJSON() ([]byte, error) {
 	return json.Marshal(fmt.Sprintf("%v : %g", l.Name, l.Weight))
 }
 
-func ExtractMetadataFromPngData(pngData map[string]string) (*Metadata, error) {
+func extractMetadataFromPngData(pngData map[string]string) (*Metadata, error) {
 
 	slog.Debug("Extracting Fooocus metadata from PNG tEXt")
 
@@ -321,21 +321,26 @@ func ExtractMetadataFromPngData(pngData map[string]string) (*Metadata, error) {
 	}
 }
 
-func ExtractMetadataFromExifData(exifData *exif.Exif) (*Metadata, error) {
+func extractMetadataFromExifData(tags *imagemeta.Tags) (*Metadata, error) {
 
 	slog.Debug("Extracting Fooocus metadata from EXIF data")
 
-	makerNote, exifErr := exifData.Get(exif.MakerNote)
-	if exifErr != nil {
-		return nil, exifErr
-	}
-	scheme, _ := makerNote.StringVal()
+	var scheme, parameters string
 
-	userComment, exifErr := exifData.Get(exif.UserComment)
-	if exifErr != nil {
-		return nil, exifErr
+	exifData := tags.EXIF()
+
+	// imagemeta uses label "MakerNoteApple" for any "MakerNote" type.
+	if makerNote, ok := exifData["MakerNoteApple"]; !ok {
+		return nil, fmt.Errorf("EXIF: MakerNote not found")
+	} else {
+		scheme = makerNote.Value.(string)
 	}
-	parameters, _ := userComment.StringVal()
+
+	if userComment, ok := exifData["UserComment"]; !ok {
+		return nil, fmt.Errorf("EXIF: UserComment not found")
+	} else {
+		parameters = userComment.Value.(string)
+	}
 
 	return ParseMetadata(scheme, parameters)
 }

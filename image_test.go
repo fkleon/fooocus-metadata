@@ -24,12 +24,12 @@ func TestExtractExif(t *testing.T) {
 	file, err := os.Open("testdata/sample.jpg")
 	require.NoError(t, err)
 
-	exifData, err := ExtractExif(file)
+	exifData, err := extractExif(file, "image/jpeg")
 	require.NoError(t, err)
 	assert.NotNil(t, exifData)
 
-	exifVersion, _ := exifData.Get("ExifVersion")
-	exifVersionStr := string(exifVersion.Val)
+	exifVersion, _ := exifData.EXIF()["ExifVersion"]
+	exifVersionStr := exifVersion.Value.(string)
 	assert.Equal(t, "0220", exifVersionStr)
 }
 
@@ -76,8 +76,7 @@ func TestExtractImageInfo_WEBP(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/webp", image.MIME)
-	// WEBP not supported by goexif2
-	//assert.Nil(t, image.exif)
+	assert.NotNil(t, image.exif)
 	assert.Nil(t, image.pngText)
 	assert.Nil(t, image.FooocusMetadata)
 }
@@ -97,10 +96,6 @@ func TestExtractFooocusMetadata(t *testing.T) {
 			path := filepath.Join("testdata", tc.file)
 			image, err := NewImageInfo(path)
 			require.NoError(t, err)
-
-			if image.MIME == "image/webp" {
-				t.Skip("WEBP not supported by goexif2")
-			}
 
 			if tc.hasExif {
 				assert.NotNil(t, image.exif)

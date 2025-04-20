@@ -1,5 +1,8 @@
 module github.com/fkleon/fooocus-metadata
 
+// Use fork with support for invalid encoding in UserComment field
+replace github.com/bep/imagemeta => github.com/fkleon/imagemeta v0.0.0-20250420101314-3ea2b566235b
+
 go 1.24.2
 
 require (
@@ -16,7 +19,7 @@ require (
 
 require (
 	github.com/antchfx/xpath v1.3.3 // indirect
-	github.com/cozy/goexif2 v1.3.1
+	github.com/bep/imagemeta v0.11.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/sabhiram/png-embed v0.0.0-20180421025336-149afe9a3ccb
 	golang.org/x/net v0.33.0 // indirect

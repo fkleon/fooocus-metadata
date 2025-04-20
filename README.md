@@ -18,7 +18,7 @@ This package is intended to be used programmatically. It includes a [command lin
 | JPG  | Private Log | ☑️ | N/A |
 | PNG  | Embedded (PNG tEXt) | ☑️ | ☑️ |
 | PNG  | Private Log | ☑️ | N/A |
-| WEBP | Embedded (EXIF) | ❌ | ❌ |
+| WEBP | Embedded (EXIF) | ☑️ | ❌ |
 | WEBP | Private Log | ☑️ | N/A |
 
 ### Metadata scheme

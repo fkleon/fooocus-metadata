@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/cozy/goexif2/exif"
-	"github.com/cozy/goexif2/tiff"
+	"github.com/bep/imagemeta"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -181,33 +180,27 @@ func TestExtractMetadataFromPNG(t *testing.T) {
 		"fooocus_scheme": fooocus,
 		"parameters":     metaJson,
 	}
-	fooocusData, err := ExtractMetadataFromPngData(pngData)
+	fooocusData, err := extractMetadataFromPngData(pngData)
 	require.NoError(t, err)
 	assert.Equal(t, meta, fooocusData)
 }
 
 func TestExtractMetadataFromExif(t *testing.T) {
-	t.Skip("Construct EXIF is a bit tricky")
 
-	var exifData *exif.Exif = &exif.Exif{}
-	var fieldMap = map[uint16]exif.FieldName{
-		0x927c: exif.MakerNote,
-		0x9286: exif.UserComment,
-	}
-	exifData.LoadTags(&tiff.Dir{
-		Tags: []*tiff.Tag{
-			{
-				Id:  0x927c,
-				Val: []byte(fooocus),
-			},
-			{
-				Id:  0x9286,
-				Val: []byte(metaJson),
-			},
-		},
-	}, fieldMap, false)
+	var exifData imagemeta.Tags
 
-	fooocusData, err := ExtractMetadataFromExifData(exifData)
+	exifData.Add(imagemeta.TagInfo{
+		Source: imagemeta.EXIF,
+		Tag:    "MakerNoteApple",
+		Value:  fooocus,
+	})
+	exifData.Add(imagemeta.TagInfo{
+		Source: imagemeta.EXIF,
+		Tag:    "UserComment",
+		Value:  metaJson,
+	})
+
+	fooocusData, err := extractMetadataFromExifData(&exifData)
 	require.NoError(t, err)
 	assert.Equal(t, meta, fooocusData)
 }
