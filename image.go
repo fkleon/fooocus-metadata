@@ -37,7 +37,7 @@ func (file *File) IsImage() bool {
 	return strings.HasPrefix(file.MIME, "image/")
 }
 func (file *File) Parse(fin *os.File) (err error) {
-	file.MIME, err = DetectMimeType(file, fin)
+	file.MIME, err = detectMimeType(file, fin)
 	stat, err := os.Stat(file.Path)
 	if err != nil {
 		file.FileInfo = &stat
@@ -111,7 +111,7 @@ func NewImageInfo(filePath string) (imageInfo *ImageFile, err error) {
 	return
 }
 
-func DetectMimeType(file *File, fin *os.File) (mimeType string, err error) {
+func detectMimeType(file *File, fin *os.File) (mimeType string, err error) {
 	// Rewind to the start
 	fin.Seek(0, io.SeekStart)
 
