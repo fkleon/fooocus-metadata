@@ -39,7 +39,8 @@ const metaJson = `{
 }`
 
 var meta = &Metadata{
-	AdmGuidance:        [3]float32{1.5, 0.8, 0.3},
+	//AdmGuidance:        [3]float32{1.5, 0.8, 0.3},
+	AdmGuidance:        AdmGuidanceOf(1.5, 0.8, 0.3),
 	BaseModel:          "juggernautXL_v8Rundiffusion",
 	BaseModelHash:      "aeb7e9e689",
 	ClipSkip:           2,
@@ -59,15 +60,16 @@ var meta = &Metadata{
 	PromptExpansion: "A sunflower field, highly detailed, magic, peaceful, flowing, beautiful, atmosphere, radiant, magical, sharp focus, very coherent, intricate, elegant, epic, colorful, amazing composition, cinematic, artistic, fine detail, professional, clear, joyful, unique, expressive, cute, iconic, best, vivid, awesome, perfect, ambient background, pristine, creative",
 	RefinerModel:    "None",
 	RefinerSwitch:   0.5,
-	Resolution:      [2]uint16{512, 512},
-	Sampler:         "dpmpp_2m_sde_gpu",
-	Scheduler:       "karras",
-	Seed:            "127589946317439009",
-	Sharpness:       2,
-	Steps:           30,
-	Styles:          []string{"Fooocus V2", "Fooocus Enhance", "Fooocus Sharp"},
-	Vae:             "Default (model)",
-	Version:         "Fooocus v2.5.5",
+	//Resolution:      [2]uint16{512, 512},
+	Resolution: ResolutionOf(512, 512),
+	Sampler:    "dpmpp_2m_sde_gpu",
+	Scheduler:  "karras",
+	Seed:       "127589946317439009",
+	Sharpness:  2,
+	Steps:      30,
+	Styles:     []string{"Fooocus V2", "Fooocus Enhance", "Fooocus Sharp"},
+	Vae:        "Default (model)",
+	Version:    "Fooocus v2.5.5",
 }
 
 // Metadata in legacy format (Fooocus v2.1 and older)
@@ -93,7 +95,8 @@ const metaLegacyJson = `{
 }`
 
 var metaLegacy = &MetadataLegacy{
-	AdmGuidance:        [3]float32{1.0, 1.0, 0.0},
+	//AdmGuidance:        [3]float32{1.0, 1.0, 0.0},
+	AdmGuidance:        AdmGuidanceOf(1.0, 1.0, 0.0),
 	BaseModel:          "sd_xl_base_1.0_0.9vae.safetensors",
 	FooocusV2Expansion: "dinosaur leashed, full color, cinematic, stunning, highly detailed, true colors, complex, elegant, symmetry, light, epic, great composition, creative, perfect, thought, best, real, novel, romantic, new, tender, cute, fancy, burning, nice, lovely, hopeful, pretty, artistic, surreal, inspiring, beautiful, dramatic, illuminated, amazing",
 	GuidanceScale:      1.0,
@@ -104,18 +107,20 @@ var metaLegacy = &MetadataLegacy{
 	Prompt:             "dinosaur leashed",
 	RefinerModel:       "None",
 	RefinerSwitch:      1.0,
-	Resolution:         [2]uint16{1024, 1024},
-	Sampler:            "lcm",
-	Scheduler:          "lcm",
-	Seed:               6515525224486854496,
-	Sharpness:          0.0,
-	Styles:             []string{"Fooocus V2", "Dark Moody Atmosphere", "Misc Horror"},
-	Version:            "v2.1.860",
+	// [2]uint16{1024, 1024}
+	Resolution: ResolutionOf(1024, 1024),
+	Sampler:    "lcm",
+	Scheduler:  "lcm",
+	Seed:       6515525224486854496,
+	Sharpness:  0.0,
+	Styles:     []string{"Fooocus V2", "Dark Moody Atmosphere", "Misc Horror"},
+	Version:    "v2.1.860",
 	// TODO: Steps derived from Performance mode
 }
 
-var metaLegacyConverted = &Metadata{
-	AdmGuidance:   [3]float32{1.0, 1.0, 0.0},
+var metaLegacyConverted = Metadata{
+	//AdmGuidance:   [3]float32{1.0, 1.0, 0.0},
+	AdmGuidance:   AdmGuidanceOf(1.0, 1.0, 0.0),
 	BaseModel:     "sd_xl_base_1.0_0.9vae.safetensors",
 	GuidanceScale: 1.0,
 	LoraCombined1: &LoraCombined{Name: "PetDinosaur-v2.safetensors", Weight: 1.65},
@@ -133,13 +138,14 @@ var metaLegacyConverted = &Metadata{
 	PromptExpansion: "dinosaur leashed, full color, cinematic, stunning, highly detailed, true colors, complex, elegant, symmetry, light, epic, great composition, creative, perfect, thought, best, real, novel, romantic, new, tender, cute, fancy, burning, nice, lovely, hopeful, pretty, artistic, surreal, inspiring, beautiful, dramatic, illuminated, amazing",
 	RefinerModel:    "None",
 	RefinerSwitch:   1.0,
-	Resolution:      [2]uint16{1024, 1024},
-	Sampler:         "lcm",
-	Scheduler:       "lcm",
-	Seed:            "6515525224486854496",
-	Sharpness:       0.0,
-	Styles:          []string{"Fooocus V2", "Dark Moody Atmosphere", "Misc Horror"},
-	Version:         "v2.1.860",
+	//Resolution:      [2]uint16{1024, 1024},
+	Resolution: ResolutionOf(1024, 1024),
+	Sampler:    "lcm",
+	Scheduler:  "lcm",
+	Seed:       "6515525224486854496",
+	Sharpness:  0.0,
+	Styles:     []string{"Fooocus V2", "Dark Moody Atmosphere", "Misc Horror"},
+	Version:    "v2.1.860",
 }
 
 func TestDecodeLegacyMetadata(t *testing.T) {
@@ -177,12 +183,12 @@ func TestEncodeMetadata(t *testing.T) {
 
 func TestExtractMetadataFromPNG(t *testing.T) {
 	pngData := map[string]string{
-		"fooocus_scheme": fooocus,
+		"fooocus_scheme": Fooocus.String(),
 		"parameters":     metaJson,
 	}
-	fooocusData, err := extractMetadataFromPngData(pngData)
+	fooocusData, err := ExtractMetadataFromPngData(pngData)
 	require.NoError(t, err)
-	assert.Equal(t, meta, fooocusData)
+	assert.Equal(t, *meta, fooocusData)
 }
 
 func TestExtractMetadataFromExif(t *testing.T) {
@@ -191,8 +197,13 @@ func TestExtractMetadataFromExif(t *testing.T) {
 
 	exifData.Add(imagemeta.TagInfo{
 		Source: imagemeta.EXIF,
+		Tag:    "Software",
+		Value:  "Fooocus v2.5.5",
+	})
+	exifData.Add(imagemeta.TagInfo{
+		Source: imagemeta.EXIF,
 		Tag:    "MakerNoteApple",
-		Value:  fooocus,
+		Value:  Fooocus.String(),
 	})
 	exifData.Add(imagemeta.TagInfo{
 		Source: imagemeta.EXIF,
@@ -200,7 +211,7 @@ func TestExtractMetadataFromExif(t *testing.T) {
 		Value:  metaJson,
 	})
 
-	fooocusData, err := extractMetadataFromExifData(&exifData)
+	fooocusData, err := ExtractMetadataFromExifData(&exifData)
 	require.NoError(t, err)
-	assert.Equal(t, meta, fooocusData)
+	assert.Equal(t, *meta, fooocusData)
 }

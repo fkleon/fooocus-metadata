@@ -5,22 +5,34 @@ import (
 	"fmt"
 	"log/slog"
 	"net/url"
+	"strings"
 
 	"github.com/antchfx/htmlquery"
 )
 
-func ParsePrivateLog(filePath string) (map[string]*Metadata, error) {
+func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 	doc, err := htmlquery.LoadDoc(filePath)
 	if err != nil {
 		return nil, err
 	}
 
+	// Check that Log file is compatible with this parser
+	title, err := htmlquery.Query(doc, "//title")
+	if err != nil {
+		return nil, err
+	}
+
+	if !strings.HasPrefix(htmlquery.InnerText(title), "Fooocus Log") {
+		return nil, fmt.Errorf("file is not a Fooocus private log: %s", filePath)
+	}
+
+	// Find all images in the log file
 	nodes, err := htmlquery.QueryAll(doc, "//div[@class='image-container']")
 	if err != nil {
 		return nil, err
 	}
 
-	var images map[string]*Metadata = make(map[string]*Metadata, len(nodes))
+	var images map[string]Metadata = make(map[string]Metadata, len(nodes))
 
 	for _, n := range nodes {
 		img := htmlquery.FindOne(n, "//img")
@@ -40,21 +52,22 @@ func ParsePrivateLog(filePath string) (map[string]*Metadata, error) {
 		}
 
 		// Parse metadata
-		var metadata *Metadata
-		var legacyMetadata *MetadataLegacy
+		var metadata Metadata
+		var legacyMetadata MetadataLegacy
 
 		// Prefer modern format
 		if err := json.Unmarshal([]byte(cleanU), &metadata); err == nil {
-			slog.Debug("Found modern metadata format",
-				"file", imgSrc, "data", cleanU)
+			if !strings.HasPrefix(metadata.Version, "Fooocus ") {
+				continue
+			}
+			slog.Debug("Metadata in private log (current format)", "file", imgSrc)
 			images[imgSrc] = metadata
 		} else {
 			// Fallback to legacy format
 			if err := json.Unmarshal([]byte(cleanU), &legacyMetadata); err != nil {
 				return images, fmt.Errorf("failed to read Fooocus parameters: %w", err)
 			} else {
-				slog.Debug("Found legacy metadata format",
-					"file", imgSrc, "data", cleanU)
+				slog.Debug("Metadata in private log (legacy format)", "file", imgSrc)
 				images[imgSrc] = legacyMetadata.toCurrent()
 			}
 		}

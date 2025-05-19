@@ -1,0 +1,20 @@
+{
+    "Prompt": "dinosaur leashed",
+    "Negative Prompt": "",
+    "Fooocus V2 Expansion": "dinosaur leashed, full color, cinematic, stunning, highly detailed, true colors, complex, elegant, symmetry, light, epic, great composition, creative, perfect, thought, best, real, novel, romantic, new, tender, cute, fancy, burning, nice, lovely, hopeful, pretty, artistic, surreal, inspiring, beautiful, dramatic, illuminated, amazing",
+    "Styles": "['Fooocus V2', 'Dark Moody Atmosphere', 'Misc Horror']",
+    "Performance": "Extreme Speed",
+    "Resolution": "(1024, 1024)",
+    "Sharpness": 0.0,
+    "Guidance Scale": 1.0,
+    "ADM Guidance": "(1.0, 1.0, 0.0)",
+    "Base Model": "sd_xl_base_1.0_0.9vae.safetensors",
+    "Refiner Model": "None",
+    "Refiner Switch": 1.0,
+    "Sampler": "lcm",
+    "Scheduler": "lcm",
+    "Seed": 6515525224486854496,
+    "LoRA 1": "PetDinosaur-v2.safetensors : 1.65",
+    "LoRA 6": "sdxl_lcm_lora.safetensors : 1.0",
+    "Version": "v2.1.860"
+}

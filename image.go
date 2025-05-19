@@ -1,4 +1,4 @@
-package fooocus
+package metadata
 
 import (
 	"fmt"
@@ -10,135 +10,133 @@ import (
 	"path"
 	"strings"
 
-	_ "embed"
-
 	"github.com/bep/imagemeta"
 	pngembed "github.com/sabhiram/png-embed"
 	"golang.org/x/text/encoding/charmap"
 )
 
-//go:embed template.png
-var pngTemplate []byte
-
+// Wrapper around an os.File, adding MIME type detection
 type File struct {
-	Path     string
-	MIME     string
-	FileInfo *os.FileInfo
-	fin      *os.File
+	*os.File
+	MIME string
 }
 
+func (file *File) Path() string {
+	return file.File.Name()
+}
 func (file *File) Name() string {
-	return path.Base(file.Path)
+	return path.Base(file.Path())
 }
 func (file *File) Ext() string {
-	return strings.ToLower(path.Ext(file.Path))
+	return strings.ToLower(path.Ext(file.Path()))
 }
 func (file *File) IsImage() bool {
 	return strings.HasPrefix(file.MIME, "image/")
 }
-func (file *File) Parse(fin *os.File) (err error) {
-	file.MIME, err = detectMimeType(file, fin)
-	stat, err := os.Stat(file.Path)
-	if err != nil {
-		file.FileInfo = &stat
+func (file *File) detectMimeType() (err error) {
+	// Rewind to the start
+	file.Seek(0, io.SeekStart)
+
+	// Sniff content type via http.DetectContentType
+	// Only the first 512 bytes are relevant.
+	buffer := make([]byte, 512)
+	_, err = file.Read(buffer)
+	if err != nil && err != io.EOF {
+		return
 	}
+
+	file.MIME = http.DetectContentType(buffer)
+
+	// Fallback to file extension if MIME type could not be sniffed
+	if file.MIME == "application/octet-stream" {
+		mimeTypeByExt := mime.TypeByExtension(file.Ext())
+		if mimeTypeByExt != "" {
+			file.MIME = mimeTypeByExt
+		}
+	}
+
+	slog.Debug("MIME type",
+		"file", file.Name(),
+		"mime", file.MIME,
+	)
+
 	return
 }
 
-type ImageFile struct {
-	File
-	FooocusMetadata *Metadata
-	exif            *imagemeta.Tags
-	pngText         map[string]string
+func OpenFile(path string) (*File, error) {
+	fin, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewFile(fin), nil
 }
 
-func NewImageInfo(filePath string) (imageInfo *ImageFile, err error) {
-
-	// Open and parse file metadata
-	fin, err := os.Open(filePath)
-	if err != nil {
-		return
-	}
-	defer fin.Close()
-
+func NewFile(fin *os.File) *File {
 	file := &File{
-		Path: filePath,
+		File: fin,
 	}
-	err = file.Parse(fin)
+	_ = file.detectMimeType()
+	return file
+}
+
+// Wrapper around a File, adding image metadata extraction
+type ImageFile struct {
+	*File
+	exif    *imagemeta.Tags
+	pngText map[string]string
+}
+
+func OpenImageFile(path string) (image *ImageFile, err error) {
+
+	slog.Debug("Opening image file..", "filepath", path)
+
+	file, err := OpenFile(path)
 	if err != nil {
 		return
 	}
 
 	if !file.IsImage() {
-		err = fmt.Errorf("File is not an image: %s", filePath)
-		return
+		return nil, fmt.Errorf("file is not an image: %s", path)
 	}
 
 	// Build image metadata and parse additional metadata sources
-	imageInfo = &ImageFile{
-		File: *file,
+	image = &ImageFile{
+		File: file,
 	}
 
 	var metadataErr error
 
-	switch imageInfo.MIME {
+	switch image.MIME {
 	case "image/jpeg":
 		fallthrough
 	case "image/webp":
 		fallthrough
 	case "image/tiff":
-		slog.Info("Extracting embedded metadata from EXIF..")
-		if imageInfo.exif, metadataErr = extractExif(fin, imageInfo.MIME); metadataErr == nil {
-			imageInfo.FooocusMetadata, metadataErr = extractMetadataFromExifData(imageInfo.exif)
-		}
+		slog.Debug("Metadata source", "mime", image.MIME, "source", "EXIF")
+		image.exif, metadataErr = extractExif(image, image.MIME)
 	case "image/png":
-		slog.Info("Extracting embedded metadata from PNG tEXt..")
-		if imageInfo.pngText, metadataErr = extractPngText(fin); metadataErr == nil {
-			imageInfo.FooocusMetadata, metadataErr = extractMetadataFromPngData(imageInfo.pngText)
-		}
+		slog.Debug("Metadata source", "mime", image.MIME, "source", "PNG tEXt")
+		image.pngText, metadataErr = extractPngText(image)
 	default:
 		slog.Warn("Unsupported MIME type",
-			"filepath", file.Path, "mime", imageInfo.MIME)
+			"filepath", file.Path(), "mime", image.MIME)
 		return
 	}
 
 	if metadataErr != nil {
 		slog.Warn("Failed to extract embedded metadata",
-			"filepath", file.Path,
+			"filepath", file.Path(),
 			"error", metadataErr)
 	}
 
 	return
 }
 
-func detectMimeType(file *File, fin *os.File) (mimeType string, err error) {
-	// Rewind to the start
-	fin.Seek(0, io.SeekStart)
+func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err error) {
 
-	// Sniff content type via http.DetectContentType
-	// Only the first 512 bytes are relevant.
-	buffer := make([]byte, 512)
-	_, err = fin.Read(buffer)
-	if err != nil && err != io.EOF {
-		return
-	}
+	data = &imagemeta.Tags{}
 
-	mimeType = http.DetectContentType(buffer)
-
-	// Fallback to file extension if MIME type could not be sniffed
-	if mimeType == "application/octet-stream" {
-		mimeType = mime.TypeByExtension(file.Ext())
-	}
-
-	slog.Debug("Detected MIME type",
-		"file", file.Name(),
-		"mime", mimeType,
-	)
-
-	return
-}
-
-func extractExif(fin *os.File, mimeType string) (exifData *imagemeta.Tags, exifErr error) {
 	// Rewind to the start
 	fin.Seek(0, io.SeekStart)
 
@@ -155,48 +153,44 @@ func extractExif(fin *os.File, mimeType string) (exifData *imagemeta.Tags, exifE
 		format = imagemeta.TIFF
 	}
 
-	exifErr = imagemeta.Decode(imagemeta.Options{
+	err = imagemeta.Decode(imagemeta.Options{
 		R:           fin,
 		ImageFormat: format,
 		Sources:     imagemeta.EXIF,
 		HandleTag: func(info imagemeta.TagInfo) error {
-			if exifData == nil {
-				exifData = &imagemeta.Tags{}
-			}
-			exifData.Add(info)
+			data.Add(info)
 			return nil
 		},
-		Warnf: slog.Warn,
+		Warnf: func(msg string, args ...any) {
+			slog.Debug(fmt.Sprintf("EXIF warning: %s", fmt.Sprintf(msg, args)))
+		},
 	})
 
-	if exifErr != nil {
-		slog.Debug("Failed to extract EXIF data",
-			"error", exifErr)
-	} else if exifData == nil {
-		slog.Debug("No EXIF data in file")
-		exifErr = fmt.Errorf("No EXIF data in file")
+	if err != nil {
+		slog.Warn("Failed to extract EXIF data",
+			"error", err)
 	}
 
 	return
 }
 
-func extractPngText(fin *os.File) (pngText map[string]string, pngErr error) {
+func extractPngText(fin io.ReadSeeker) (pngText map[string]string, pngErr error) {
 	// Rewind to the start
 	fin.Seek(0, io.SeekStart)
 
 	// Extract PNG tEXt data
 	pngText, pngErr = extractPngTextChunks(fin)
 	if pngErr != nil {
-		slog.Debug("Failed to extract PNG tEXT chunks",
+		slog.Debug("Failed to extract PNG tEXt chunks",
 			"error", pngErr)
 	}
 
 	return
 }
 
-func extractPngTextChunks(fin *os.File) (map[string]string, error) {
+func extractPngTextChunks(fin io.ReadSeeker) (map[string]string, error) {
 
-	data, err := os.ReadFile(fin.Name())
+	data, err := io.ReadAll(fin)
 	if err != nil {
 		return nil, err
 	}
@@ -231,36 +225,4 @@ func extractPngTextChunks(fin *os.File) (map[string]string, error) {
 	}
 
 	return textDataDecoded, nil
-}
-
-func EmbedMetadataAsPngText(source *os.File, target *os.File, meta *Metadata) (err error) {
-
-	slog.Debug("Embedding Fooocus metadata into PNG",
-		"target", target.Name())
-
-	var data []byte
-
-	if source != nil {
-		data, err = os.ReadFile(source.Name())
-		if err != nil {
-			return err
-		}
-	} else {
-		data = pngTemplate
-	}
-
-	kvs := map[string]interface{}{
-		"fooocus_scheme": fooocus,
-		"parameters":     meta,
-	}
-
-	for k, v := range kvs {
-		data, err = pngembed.Embed(data, k, v)
-		if err != nil {
-			return err
-		}
-	}
-
-	_, err = target.Write(data)
-	return err
 }
