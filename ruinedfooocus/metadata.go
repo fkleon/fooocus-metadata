@@ -72,21 +72,12 @@ func (l *Lora) MarshalJSON() ([]byte, error) {
 	return json.Marshal([]interface{}{l.Hash, details})
 }
 
-func ExtractMetadataFromPngData(pngData map[string]string) (meta Metadata, err error) {
-
-	if parameters, ok := pngData["parameters"]; ok {
-		return parseMetadata(parameters)
-	} else {
-		return meta, fmt.Errorf("RuinedFooocus: PNG: Metadata not found")
-	}
-}
-
 func parseMetadata(parameters string) (meta Metadata, err error) {
 
 	// Parse metadata
 	err = json.Unmarshal([]byte(parameters), &meta)
 	if err != nil {
-		return meta, fmt.Errorf("RuinedFooocus: failed to read parameters: %w", err)
+		return meta, fmt.Errorf("%s: failed to read parameters: %w", Software, err)
 	}
 
 	return

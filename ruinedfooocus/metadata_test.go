@@ -68,12 +68,3 @@ func TestEncodeMetadata(t *testing.T) {
 	require.NoError(t, err)
 	assert.JSONEq(t, metaJson, string(encoded))
 }
-
-func TestExtractMetadataFromPNG(t *testing.T) {
-	pngData := map[string]string{
-		"parameters": metaJson,
-	}
-	fooocusData, err := ExtractMetadataFromPngData(pngData)
-	require.NoError(t, err)
-	assert.Equal(t, *meta, fooocusData)
-}

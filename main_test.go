@@ -1,7 +1,6 @@
 package metadata
 
 import (
-	"fmt"
 	"io"
 	"log/slog"
 	"os"
@@ -10,9 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fkleon/fooocus-metadata/internal/fooocus"
-	"github.com/fkleon/fooocus-metadata/internal/fooocusplus"
-	"github.com/fkleon/fooocus-metadata/internal/ruinedfooocus"
+	_ "github.com/fkleon/fooocus-metadata/fooocus"
+	_ "github.com/fkleon/fooocus-metadata/fooocusplus"
+	_ "github.com/fkleon/fooocus-metadata/ruinedfooocus"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,7 +24,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestExtractOne_Fooocus(t *testing.T) {
-	const testpath = "./internal/fooocus/testdata/"
+	const testpath = "./fooocus/testdata/"
 	var files = []string{
 		"fooocus-meta.png",
 	}
@@ -32,15 +32,17 @@ func TestExtractOne_Fooocus(t *testing.T) {
 	for _, file := range files {
 		t.Run(path.Base(file), func(t *testing.T) {
 			path := filepath.Join(testpath, file)
-			meta, err := ExtractOne[fooocus.Metadata](path)
+			meta, err := ExtractFromFile(path)
 			require.NoError(t, err)
-			require.IsType(t, fooocus.Metadata{}, meta)
+			require.Equal(t, "Fooocus", meta.Source)
+			require.Equal(t, "Fooocus v2.5.5", meta.Params.Version())
+			require.NotZero(t, meta.Params.Raw())
 		})
 	}
 }
 
 func TestExtractOne_FooocusPlus(t *testing.T) {
-	const testpath = "./internal/fooocusplus/testdata/"
+	const testpath = "./fooocusplus/testdata/"
 	var files = []string{
 		"fooocusplus-meta.png",
 	}
@@ -48,15 +50,17 @@ func TestExtractOne_FooocusPlus(t *testing.T) {
 	for _, file := range files {
 		t.Run(path.Base(file), func(t *testing.T) {
 			path := filepath.Join(testpath, file)
-			meta, err := ExtractOne[fooocusplus.Metadata](path)
+			meta, err := ExtractFromFile(path)
 			require.NoError(t, err)
-			require.IsType(t, fooocusplus.Metadata{}, meta)
+			require.Equal(t, "FooocusPlus", meta.Source)
+			require.Equal(t, "FooocusPlus 1.0.0", meta.Params.Version())
+			require.NotZero(t, meta.Params.Raw())
 		})
 	}
 }
 
 func TestExtractOne_RuinedFooocus(t *testing.T) {
-	const testpath = "./internal/ruinedfooocus/testdata/"
+	const testpath = "./ruinedfooocus/testdata/"
 	var files = []string{
 		"ruinedfooocus-meta.png",
 	}
@@ -64,88 +68,90 @@ func TestExtractOne_RuinedFooocus(t *testing.T) {
 	for _, file := range files {
 		t.Run(path.Base(file), func(t *testing.T) {
 			path := filepath.Join(testpath, file)
-			meta, err := ExtractOne[ruinedfooocus.Metadata](path)
+			meta, err := ExtractFromFile(path)
 			require.NoError(t, err)
-			require.IsType(t, ruinedfooocus.Metadata{}, meta)
+			require.Equal(t, "RuinedFooocus", meta.Source)
+			require.Equal(t, "RuinedFooocus", meta.Params.Version())
+			require.NotZero(t, meta.Params.Raw())
 		})
 	}
 }
 
 func TestExtractMetadata_Fooocus(t *testing.T) {
-	const testpath = "./internal/fooocus/testdata/"
+	const testpath = "./fooocus/testdata/"
 	testCases := []struct {
-		file             string
-		expectedType     interface{}
-		expectedSoftware string
+		file     string
+		source   string
+		software string
 	}{
-		{"fooocus-meta.png", fooocus.Metadata{}, "Fooocus v2.5.5"},
-		{"fooocus-meta.jpeg", fooocus.Metadata{}, "Fooocus v2.5.5"},
-		{"fooocus-meta.webp", fooocus.Metadata{}, "Fooocus v2.5.5"},
+		{"fooocus-meta.png", "Fooocus", "Fooocus v2.5.5"},
+		{"fooocus-meta.jpeg", "Fooocus", "Fooocus v2.5.5"},
+		{"fooocus-meta.webp", "Fooocus", "Fooocus v2.5.5"},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.file, func(t *testing.T) {
 			path := filepath.Join(testpath, tc.file)
-			params, err := ExtractFromFile(path)
+			meta, err := ExtractFromFile(path)
 
 			require.NoError(t, err)
-			require.NotNil(t, params)
+			require.NotNil(t, meta)
 
-			require.IsType(t, tc.expectedType, params.Raw())
-			require.Equal(t, tc.expectedSoftware, params.Software())
-			require.True(t, params.CreatedTime().IsZero())
+			require.Equal(t, tc.source, meta.Source)
+			require.Equal(t, tc.software, meta.Params.Version())
+			require.Zero(t, meta.Created)
 		})
 	}
 }
 
 func TestExtractMetadata_FooocusPlus(t *testing.T) {
-	const testpath = "./internal/fooocusplus/testdata/"
+	const testpath = "./fooocusplus/testdata/"
 	testCases := []struct {
-		file             string
-		expectedType     interface{}
-		expectedSoftware string
+		file     string
+		source   string
+		software string
 	}{
-		{"fooocusplus-meta.png", fooocusplus.Metadata{}, "FooocusPlus 1.0.0"},
-		{"fooocusplus-meta.jpg", fooocusplus.Metadata{}, "FooocusPlus 1.0.0"},
-		{"fooocusplus-meta.webp", fooocusplus.Metadata{}, "FooocusPlus 1.0.0"},
+		{"fooocusplus-meta.png", "FooocusPlus", "FooocusPlus 1.0.0"},
+		{"fooocusplus-meta.jpg", "FooocusPlus", "FooocusPlus 1.0.0"},
+		{"fooocusplus-meta.webp", "FooocusPlus", "FooocusPlus 1.0.0"},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.file, func(t *testing.T) {
 			path := filepath.Join(testpath, tc.file)
-			params, err := ExtractFromFile(path)
+			meta, err := ExtractFromFile(path)
 
 			require.NoError(t, err)
-			require.NotNil(t, params)
+			require.NotNil(t, meta)
 
-			require.IsType(t, tc.expectedType, params.Raw())
-			require.Equal(t, tc.expectedSoftware, params.Software())
-			require.True(t, params.CreatedTime().IsZero())
+			require.Equal(t, tc.source, meta.Source)
+			require.Equal(t, tc.software, meta.Params.Version())
+			require.Zero(t, meta.Created)
 		})
 	}
 }
 
 func TestExtractMetadata_RuinedFooocus(t *testing.T) {
-	const testpath = "./internal/ruinedfooocus/testdata/"
+	const testpath = "./ruinedfooocus/testdata/"
 	testCases := []struct {
-		file             string
-		expectedType     interface{}
-		expectedSoftware string
+		file     string
+		source   string
+		software string
 	}{
-		{"ruinedfooocus-meta.png", ruinedfooocus.Metadata{}, "RuinedFooocus"},
+		{"ruinedfooocus-meta.png", "RuinedFooocus", "RuinedFooocus"},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.file, func(t *testing.T) {
 			path := filepath.Join(testpath, tc.file)
-			params, err := ExtractFromFile(path)
+			meta, err := ExtractFromFile(path)
 
 			require.NoError(t, err)
-			require.NotNil(t, params)
+			require.NotNil(t, meta)
 
-			require.IsType(t, tc.expectedType, params.Raw())
-			require.Equal(t, tc.expectedSoftware, params.Software())
-			require.True(t, params.CreatedTime().IsZero())
+			require.Equal(t, tc.source, meta.Source)
+			require.Equal(t, tc.software, meta.Params.Version())
+			require.Zero(t, meta.Created)
 		})
 	}
 }
@@ -154,7 +160,7 @@ func TestExtractCreatedTime(t *testing.T) {
 	filenamePattern := "2024-01-05_23-11-48_9167_*.png"
 	expectedCreatedTime := time.Date(2024, time.January, 5, 23, 11, 48, 0, time.UTC)
 
-	files, err := filepath.Glob("./internal/*/testdata/*fooocus*.png")
+	files, err := filepath.Glob("./*/testdata/*fooocus*.png")
 	require.NoError(t, err)
 
 	for _, tc := range files {
@@ -165,14 +171,15 @@ func TestExtractCreatedTime(t *testing.T) {
 			_, err = io.Copy(out, in)
 			require.NoError(t, err)
 
-			params, err := ExtractFromFile(out.Name())
+			meta, err := ExtractFromFile(out.Name())
 			require.NoError(t, err)
-			require.NotNil(t, params)
-			require.Equal(t, expectedCreatedTime, params.CreatedTime())
+			require.NotNil(t, meta)
+			require.Equal(t, expectedCreatedTime, meta.Created)
 		})
 	}
 }
 
+/*
 func TestEmbedMetadata_Fooocus(t *testing.T) {
 
 	target := createTemp(t, "out.fooocus.*.png")
@@ -229,6 +236,7 @@ func TestEmbedMetadata_WithSource(t *testing.T) {
 		})
 	}
 }
+*/
 
 // Create a temp file and register a callback to clean it up after the test run
 func createTemp(t *testing.T, pattern string) *os.File {

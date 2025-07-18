@@ -8,7 +8,9 @@ import (
 	"os"
 
 	fooocusmeta "github.com/fkleon/fooocus-metadata"
-	"github.com/fkleon/fooocus-metadata/internal/fooocus"
+	"github.com/fkleon/fooocus-metadata/fooocus"
+	_ "github.com/fkleon/fooocus-metadata/fooocusplus"
+	_ "github.com/fkleon/fooocus-metadata/ruinedfooocus"
 )
 
 func main() {
@@ -61,7 +63,7 @@ func main() {
 			fmt.Printf("Error: %s\n", err)
 			os.Exit(2)
 		} else {
-			out, err := json.MarshalIndent(metadata.Raw(), "", "  ")
+			out, err := json.MarshalIndent(metadata.Params.Raw(), "", "  ")
 			if err == nil {
 				fmt.Print(string(out))
 			}
@@ -95,10 +97,21 @@ func main() {
 		var metadata fooocus.Metadata
 		json.Unmarshal([]byte(meta), &metadata)
 
-		if err := fooocusmeta.EmbedIntoFile(out, metadata); err != nil {
-			fmt.Printf("Error: %s\n", err)
-			os.Exit(2)
-		}
+		writer := fooocus.NewFooocusMetadataWriter()
+		print(writer)
+		// TODO
+		/*
+			if in != "" {
+				writer.CopyWrite(in, out, metadata)
+			} else {
+				writer.Write(out, metadata)
+			}
+
+			if err := fooocus.EmbedIntoFile(out, metadata); err != nil {
+				fmt.Printf("Error: %s\n", err)
+				os.Exit(2)
+			}
+		*/
 	default:
 		flag.Usage()
 	}

@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/bep/imagemeta"
-	"github.com/fkleon/fooocus-metadata/internal/fooocus"
+	"github.com/fkleon/fooocus-metadata/fooocus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -95,33 +94,4 @@ func TestEncodeMetadata(t *testing.T) {
 	encoded, err := json.Marshal(meta)
 	require.NoError(t, err)
 	assert.JSONEq(t, metaJson, string(encoded))
-}
-
-func TestExtractMetadataFromPNG(t *testing.T) {
-	pngData := map[string]string{
-		"Comment": metaJson,
-	}
-	fooocusData, err := ExtractMetadataFromPngData(pngData)
-	require.NoError(t, err)
-	assert.Equal(t, *meta, fooocusData)
-}
-
-func TestExtractMetadataFromExif(t *testing.T) {
-
-	var exifData imagemeta.Tags
-
-	exifData.Add(imagemeta.TagInfo{
-		Source: imagemeta.EXIF,
-		Tag:    "Software",
-		Value:  "FooocusPlus 1.0.0",
-	})
-	exifData.Add(imagemeta.TagInfo{
-		Source: imagemeta.EXIF,
-		Tag:    "UserComment",
-		Value:  metaJson,
-	})
-
-	fooocusData, err := ExtractMetadataFromExifData(&exifData)
-	require.NoError(t, err)
-	assert.Equal(t, *meta, fooocusData)
 }

@@ -3,10 +3,8 @@ package fooocusplus
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
-	"github.com/bep/imagemeta"
-	"github.com/fkleon/fooocus-metadata/internal/fooocus"
+	"github.com/fkleon/fooocus-metadata/fooocus"
 )
 
 const (
@@ -119,48 +117,12 @@ func (legacy *MetadataPrivateLog) toMetadata() (meta Metadata) {
 	return meta
 }
 
-// TODO: scheme 'simple' if 'Comment' field exists
-
-func ExtractMetadataFromPngData(pngData map[string]string) (meta Metadata, err error) {
-
-	if parameters, ok := pngData["Comment"]; ok {
-		return parseMetadata(parameters)
-	} else {
-		return meta, fmt.Errorf("FooocusPlus: PNG: Metadata not found")
-	}
-}
-
-func ExtractMetadataFromExifData(tags *imagemeta.Tags) (meta Metadata, err error) {
-
-	var softwareVersion, parameters string
-
-	exifData := tags.EXIF()
-
-	if software, ok := exifData["Software"]; !ok {
-		return meta, fmt.Errorf("FooocusPlus: EXIF: Software not found")
-	} else {
-		softwareVersion = software.Value.(string)
-	}
-
-	if !strings.HasPrefix(softwareVersion, "FooocusPlus 1.0") {
-		return meta, fmt.Errorf("FooocusPlus: EXIF: Unsupported software: %s", softwareVersion)
-	}
-
-	if userComment, ok := exifData["UserComment"]; !ok {
-		return meta, fmt.Errorf("FooocusPlus: EXIF: UserComment not found")
-	} else {
-		parameters = userComment.Value.(string)
-	}
-
-	return parseMetadata(parameters)
-}
-
 func parseMetadata(parameters string) (meta Metadata, err error) {
 
 	// Parse metadata
 	err = json.Unmarshal([]byte(parameters), &meta)
 	if err != nil {
-		return meta, fmt.Errorf("FooocusPlus: failed to read parameters: %w", err)
+		return meta, fmt.Errorf("%s: failed to read parameters: %w", Software, err)
 	}
 
 	return

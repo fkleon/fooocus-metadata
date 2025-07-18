@@ -29,8 +29,6 @@ import (
 	"slices"
 	"strconv"
 	"strings"
-
-	"github.com/bep/imagemeta"
 )
 
 const (
@@ -403,59 +401,17 @@ func (l *LoraCombined) MarshalJSON() ([]byte, error) {
 	return json.Marshal(fmt.Sprintf("%v : %g", l.Name, l.Weight))
 }
 
-func ExtractMetadataFromPngData(pngData map[string]string) (meta Metadata, err error) {
-
-	if scheme, ok := pngData["fooocus_scheme"]; ok {
-		parameters := pngData["parameters"]
-		return parseMetadata(scheme, parameters)
-	} else {
-		return meta, fmt.Errorf("Fooocus: PNG: Metadata not found")
-	}
-}
-
-func ExtractMetadataFromExifData(tags *imagemeta.Tags) (meta Metadata, err error) {
-
-	var softwareVersion, scheme, parameters string
-
-	exifData := tags.EXIF()
-
-	if software, ok := exifData["Software"]; !ok {
-		return meta, fmt.Errorf("Fooocus: EXIF: Software not found")
-	} else {
-		softwareVersion = software.Value.(string)
-	}
-
-	if !strings.HasPrefix(softwareVersion, "Fooocus ") {
-		return meta, fmt.Errorf("Fooocus: EXIF: Unsupported software: %s", softwareVersion)
-	}
-
-	// imagemeta uses label "MakerNoteApple" for any "MakerNote" type.
-	if makerNote, ok := exifData["MakerNoteApple"]; !ok {
-		return meta, fmt.Errorf("Fooocus: EXIF: MakerNote not found")
-	} else {
-		scheme = makerNote.Value.(string)
-	}
-
-	if userComment, ok := exifData["UserComment"]; !ok {
-		return meta, fmt.Errorf("Fooocus: EXIF: UserComment not found")
-	} else {
-		parameters = userComment.Value.(string)
-	}
-
-	return parseMetadata(scheme, parameters)
-}
-
 func parseMetadata(scheme string, parameters string) (meta Metadata, err error) {
 
 	// Scheme is one of 'fooocus' or 'a1111'
 	if scheme != Fooocus.String() {
-		return meta, fmt.Errorf("Fooocus: unsupported metadata scheme: %s", scheme)
+		return meta, fmt.Errorf("%s: unsupported metadata scheme: %s", Software, scheme)
 	}
 
 	// Parse metadata
 	err = json.Unmarshal([]byte(parameters), &meta)
 	if err != nil {
-		return meta, fmt.Errorf("Fooocus: failed to read parameters: %w", err)
+		return meta, fmt.Errorf("%s: failed to read parameters: %w", Software, err)
 	}
 
 	return

@@ -1,4 +1,4 @@
-package metadata
+package image
 
 import (
 	"os"
@@ -6,6 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/bep/imagemeta"
 )
 
 func TestExtractExif(t *testing.T) {
@@ -39,30 +41,36 @@ func TestExtractPNGTextChunks(t *testing.T) {
 
 func TestExtractImageInfo_JPEG(t *testing.T) {
 	path := "testdata/sample.jpg"
-	image, err := OpenImageFile(path)
+	image, err := NewContextFromFile(path)
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/jpeg", image.MIME)
-	assert.NotNil(t, image.exif)
-	assert.Nil(t, image.pngText)
+	for _, v := range image.EmbeddedMetadata {
+		assert.Equal(t, imagemeta.EXIF, v.Source)
+		assert.Contains(t, v.Namespace, "IFD0")
+	}
 }
 
 func TestExtractImageInfo_PNG(t *testing.T) {
 	path := "testdata/sample.png"
-	image, err := OpenImageFile(path)
+	image, err := NewContextFromFile(path)
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/png", image.MIME)
-	assert.Nil(t, image.exif)
-	assert.NotNil(t, image.pngText)
+	for _, v := range image.EmbeddedMetadata {
+		assert.Equal(t, imagemeta.Source(0x0), v.Source)
+		assert.Equal(t, "PNG/tEXt", v.Namespace)
+	}
 }
 
 func TestExtractImageInfo_WEBP(t *testing.T) {
 	path := "testdata/sample.webp"
-	image, err := OpenImageFile(path)
+	image, err := NewContextFromFile(path)
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/webp", image.MIME)
-	assert.NotNil(t, image.exif)
-	assert.Nil(t, image.pngText)
+	for _, v := range image.EmbeddedMetadata {
+		assert.Equal(t, imagemeta.EXIF, v.Source)
+		assert.Contains(t, v.Namespace, "IFD0")
+	}
 }
