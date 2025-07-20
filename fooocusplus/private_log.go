@@ -23,7 +23,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 	}
 
 	if !strings.HasPrefix(htmlquery.InnerText(title), "Fooocus Log") {
-		return nil, fmt.Errorf("file is not a Fooocus Plus private log: %s", filePath)
+		return nil, fmt.Errorf("%s: file is not a Fooocus Plus private log: %s", Software, filePath)
 	}
 
 	// Find all images in the log file

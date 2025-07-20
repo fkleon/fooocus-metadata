@@ -26,7 +26,6 @@ package fooocus
 import (
 	"encoding/json"
 	"fmt"
-	"log/slog"
 	"slices"
 	"strconv"
 	"strings"
@@ -114,8 +113,7 @@ func (m *metadataAny) UnmarshalJSON(data []byte) error {
 
 	switch v := m.MetadataVersion(); v {
 	case unknown:
-		slog.Warn("Unknown Fooocus metadata version", "version", v)
-		return fmt.Errorf("Unknown Foooocus metadata version: %s", v)
+		return fmt.Errorf("%s: Unknown metadata version", Software)
 	case v21:
 		m.MetadataV21 = &MetadataV21{}
 		return json.Unmarshal(data, m.MetadataV21)

@@ -23,7 +23,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 	}
 
 	if !strings.HasPrefix(htmlquery.InnerText(title), "Fooocus Log") {
-		return nil, fmt.Errorf("file is not a Fooocus private log: %s", filePath)
+		return nil, fmt.Errorf("%s: file is not a Fooocus private log: %s", Software, filePath)
 	}
 
 	// Find all images in the log file
@@ -58,7 +58,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 			slog.Debug("Metadata in private log", "file", imgSrc, "version", metadata.MetadataVersion())
 			images[imgSrc] = *metadata.asMetadataV23()
 		} else {
-			return images, fmt.Errorf("failed to read Fooocus parameters: %w", err)
+			slog.Warn("Skipping item in private log", "file", imgSrc, "err", err)
 		}
 	}
 
