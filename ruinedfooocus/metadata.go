@@ -12,22 +12,22 @@ const (
 )
 
 type Metadata struct {
-	BaseModel      string `json:"base_model_name"`
-	BaseModelHash  string `json:"base_model_hash"`
-	CfgScale       uint8  `json:"cfg"`
-	ClipSkip       uint8  `json:"clip_skip"`
-	Denoise        any    `json:"denoise"`
-	Height         uint16 `json:"height"`
-	Loras          []Lora `json:"loras"`
-	NegativePrompt string `json:"Negative"`
-	Prompt         string `json:"Prompt"`
-	Sampler        string `json:"sampler_name"`
-	Scheduler      string `json:"scheduler"`
-	Seed           int    `json:"seed"`
-	StartStep      uint8  `json:"start_step"`
-	Steps          uint8  `json:"steps"`
-	Version        string `json:"software"`
-	Width          uint16 `json:"width"`
+	BaseModel      string  `json:"base_model_name"`
+	BaseModelHash  string  `json:"base_model_hash"`
+	CfgScale       float32 `json:"cfg"`
+	ClipSkip       uint8   `json:"clip_skip"`
+	Denoise        any     `json:"denoise"`
+	Height         uint16  `json:"height"`
+	Loras          []Lora  `json:"loras"`
+	NegativePrompt string  `json:"Negative"`
+	Prompt         string  `json:"Prompt"`
+	Sampler        string  `json:"sampler_name"`
+	Scheduler      string  `json:"scheduler"`
+	Seed           int     `json:"seed"`
+	StartStep      uint8   `json:"start_step"`
+	Steps          uint8   `json:"steps"`
+	Version        string  `json:"software"`
+	Width          uint16  `json:"width"`
 }
 
 // Encoded as nested list of format:

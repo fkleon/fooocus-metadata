@@ -13,7 +13,7 @@ const metaJson = `{
   "Prompt": "cinematic film still A sunflower field, shallow depth of field, vignette, highly detailed, high budget Hollywood film, cinemascope, moody, epic, gorgeous, ",
   "Negative": "anime, cartoon, graphic, text, painting, crayon, graphite, abstract, glitch, blur, bokeh , , ",
   "steps": 30,
-  "cfg": 8,
+  "cfg": 8.5,
   "width": 1152,
   "height": 896,
   "seed": 3864674281,
@@ -36,7 +36,7 @@ const metaJson = `{
 var meta = &Metadata{
 	BaseModel:     "sd_xl_base_1.0_0.9vae.safetensors",
 	BaseModelHash: "be9edd61",
-	CfgScale:      8,
+	CfgScale:      8.5,
 	ClipSkip:      1,
 	Denoise:       nil,
 	Height:        896,
