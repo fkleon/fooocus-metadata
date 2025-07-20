@@ -1,6 +1,10 @@
 package ruinedfooocus
 
-import "time"
+import (
+	"path"
+	"strings"
+	"time"
+)
 
 // Adapter that implements the types.GenerationParameters
 // interface on top of RuinedFooocus Metadata.
@@ -14,7 +18,8 @@ func (m Parameters) Version() string {
 }
 
 func (m Parameters) Model() string {
-	return m.Metadata.BaseModel
+	// Normalise model name by removing path and file extension
+	return strings.TrimSuffix(path.Base(m.BaseModel), path.Ext(m.BaseModel))
 }
 
 func (m Parameters) PositivePrompt() string {

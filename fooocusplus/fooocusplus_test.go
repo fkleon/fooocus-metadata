@@ -5,6 +5,7 @@ import (
 
 	"github.com/bep/imagemeta"
 	"github.com/fkleon/fooocus-metadata/types"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -58,6 +59,12 @@ func TestExtractMetadataFromSidecar(t *testing.T) {
 	structMeta, err := extractor.Extract(ctx)
 	require.NoError(t, err)
 	require.NotZero(t, structMeta.Params.Raw())
-	// TODO: strip extension?
-	require.Equal(t, "elsewhereXL_v10.safetensors", structMeta.Params.Model())
+	require.Equal(t, "elsewhereXL_v10", structMeta.Params.Model())
+}
+
+func TestAdapter(t *testing.T) {
+	param := Parameters{
+		Metadata: *meta,
+	}
+	assert.Equal(t, "elsewhereXL_v10", param.Model())
 }

@@ -37,6 +37,7 @@ func TestExtractOne_Fooocus(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, "Fooocus", meta.Source)
 			assert.Equal(t, "Fooocus v2.5.5", meta.Params.Version())
+			assert.Equal(t, "juggernautXL_v8Rundiffusion", meta.Params.Model())
 			assert.NotZero(t, meta.Params.Raw())
 		})
 	}
@@ -55,6 +56,7 @@ func TestExtractOne_FooocusPlus(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, "FooocusPlus", meta.Source)
 			assert.Equal(t, "FooocusPlus 1.0.0", meta.Params.Version())
+			assert.Equal(t, "elsewhereXL_v10", meta.Params.Model())
 			assert.NotZero(t, meta.Params.Raw())
 		})
 	}
@@ -73,6 +75,7 @@ func TestExtractOne_RuinedFooocus(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, "RuinedFooocus", meta.Source)
 			assert.Equal(t, "RuinedFooocus", meta.Params.Version())
+			assert.Equal(t, "sd_xl_base_1.0_0.9vae", meta.Params.Model())
 			assert.NotZero(t, meta.Params.Raw())
 		})
 	}

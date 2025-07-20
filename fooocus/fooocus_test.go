@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"image"
 	"image/png"
+	"strconv"
 	"testing"
 
 	"github.com/bep/imagemeta"
 	"github.com/fkleon/fooocus-metadata/types"
 	pngembed "github.com/sabhiram/png-embed"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -75,8 +77,7 @@ func TestExtractMetadataFromSidecar(t *testing.T) {
 	structMeta, err := extractor.Extract(ctx)
 	require.NoError(t, err)
 	require.NotZero(t, structMeta.Params.Raw())
-	// TODO: strip extension?
-	require.Equal(t, "juggernautXL_v8Rundiffusion.safetensors", structMeta.Params.Model())
+	require.Equal(t, "juggernautXL_v8Rundiffusion", structMeta.Params.Model())
 }
 
 func TestEmbedMetadataIntoPNG_CopyWrite(t *testing.T) {
@@ -125,4 +126,23 @@ func TestEmbedMetadataIntoPNG_Write(t *testing.T) {
 	info, _, err := image.Decode(target)
 	require.NoError(t, err)
 	require.Equal(t, image.Pt(240, 85), info.Bounds().Max)
+}
+
+func TestAdapter(t *testing.T) {
+	testCases := []struct {
+		meta  Metadata
+		model string
+	}{
+		{*metaV23, "juggernautXL_v8Rundiffusion"},
+		{*metaV23Alt, "ponyDiffusionV6XL_v6TurboDPOMerge"},
+	}
+
+	for i, tc := range testCases {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			param := Parameters{
+				Metadata: tc.meta,
+			}
+			assert.Equal(t, tc.model, param.Model())
+		})
+	}
 }
