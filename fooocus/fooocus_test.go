@@ -27,7 +27,7 @@ func TestExtractMetadataFromPNG(t *testing.T) {
 		Source:    0,
 		Namespace: "PNG/tEXt",
 		Tag:       "parameters",
-		Value:     metaJson,
+		Value:     metaV23Json,
 	}
 
 	extractor := NewFooocusMetadataExtractor()
@@ -35,7 +35,7 @@ func TestExtractMetadataFromPNG(t *testing.T) {
 		EmbeddedMetadata: pngData,
 	})
 	require.NoError(t, err)
-	require.Equal(t, *meta, fooocusData)
+	require.Equal(t, *metaV23, fooocusData)
 }
 
 func TestExtractMetadataFromExif(t *testing.T) {
@@ -55,7 +55,7 @@ func TestExtractMetadataFromExif(t *testing.T) {
 	exifData.Add(imagemeta.TagInfo{
 		Source: imagemeta.EXIF,
 		Tag:    "UserComment",
-		Value:  metaJson,
+		Value:  metaV23Json,
 	})
 
 	extractor := NewFooocusMetadataExtractor()
@@ -63,7 +63,7 @@ func TestExtractMetadataFromExif(t *testing.T) {
 		EmbeddedMetadata: exifData.EXIF(),
 	})
 	require.NoError(t, err)
-	require.Equal(t, *meta, fooocusData)
+	require.Equal(t, *metaV23, fooocusData)
 }
 
 func TestExtractMetadataFromSidecar(t *testing.T) {
@@ -89,7 +89,7 @@ func TestEmbedMetadataIntoPNG_CopyWrite(t *testing.T) {
 
 	target := &bytes.Buffer{}
 
-	err = writer.CopyWrite(source, target, *meta)
+	err = writer.CopyWrite(source, target, *metaV23)
 	require.NoError(t, err)
 
 	// Expect resulting PNG to have 2 embedded chunks
@@ -110,7 +110,7 @@ func TestEmbedMetadataIntoPNG_Write(t *testing.T) {
 	target := &bytes.Buffer{}
 
 	// Source image is the default template
-	err := writer.Write(target, *meta)
+	err := writer.Write(target, *metaV23)
 	require.NoError(t, err)
 
 	// Expect resulting PNG to have 5 embedded chunks:

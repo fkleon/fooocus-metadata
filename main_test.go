@@ -13,6 +13,7 @@ import (
 	_ "github.com/fkleon/fooocus-metadata/fooocusplus"
 	_ "github.com/fkleon/fooocus-metadata/ruinedfooocus"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -34,9 +35,9 @@ func TestExtractOne_Fooocus(t *testing.T) {
 			path := filepath.Join(testpath, file)
 			meta, err := ExtractFromFile(path)
 			require.NoError(t, err)
-			require.Equal(t, "Fooocus", meta.Source)
-			require.Equal(t, "Fooocus v2.5.5", meta.Params.Version())
-			require.NotZero(t, meta.Params.Raw())
+			assert.Equal(t, "Fooocus", meta.Source)
+			assert.Equal(t, "Fooocus v2.5.5", meta.Params.Version())
+			assert.NotZero(t, meta.Params.Raw())
 		})
 	}
 }
@@ -52,9 +53,9 @@ func TestExtractOne_FooocusPlus(t *testing.T) {
 			path := filepath.Join(testpath, file)
 			meta, err := ExtractFromFile(path)
 			require.NoError(t, err)
-			require.Equal(t, "FooocusPlus", meta.Source)
-			require.Equal(t, "FooocusPlus 1.0.0", meta.Params.Version())
-			require.NotZero(t, meta.Params.Raw())
+			assert.Equal(t, "FooocusPlus", meta.Source)
+			assert.Equal(t, "FooocusPlus 1.0.0", meta.Params.Version())
+			assert.NotZero(t, meta.Params.Raw())
 		})
 	}
 }
@@ -70,9 +71,9 @@ func TestExtractOne_RuinedFooocus(t *testing.T) {
 			path := filepath.Join(testpath, file)
 			meta, err := ExtractFromFile(path)
 			require.NoError(t, err)
-			require.Equal(t, "RuinedFooocus", meta.Source)
-			require.Equal(t, "RuinedFooocus", meta.Params.Version())
-			require.NotZero(t, meta.Params.Raw())
+			assert.Equal(t, "RuinedFooocus", meta.Source)
+			assert.Equal(t, "RuinedFooocus", meta.Params.Version())
+			assert.NotZero(t, meta.Params.Raw())
 		})
 	}
 }
@@ -97,9 +98,9 @@ func TestExtractMetadata_Fooocus(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, meta)
 
-			require.Equal(t, tc.source, meta.Source)
-			require.Equal(t, tc.software, meta.Params.Version())
-			require.Zero(t, meta.Created)
+			assert.Equal(t, tc.source, meta.Source)
+			assert.Equal(t, tc.software, meta.Params.Version())
+			assert.Zero(t, meta.Created)
 		})
 	}
 }
@@ -124,9 +125,9 @@ func TestExtractMetadata_FooocusPlus(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, meta)
 
-			require.Equal(t, tc.source, meta.Source)
-			require.Equal(t, tc.software, meta.Params.Version())
-			require.Zero(t, meta.Created)
+			assert.Equal(t, tc.source, meta.Source)
+			assert.Equal(t, tc.software, meta.Params.Version())
+			assert.Zero(t, meta.Created)
 		})
 	}
 }
@@ -149,9 +150,9 @@ func TestExtractMetadata_RuinedFooocus(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, meta)
 
-			require.Equal(t, tc.source, meta.Source)
-			require.Equal(t, tc.software, meta.Params.Version())
-			require.Zero(t, meta.Created)
+			assert.Equal(t, tc.source, meta.Source)
+			assert.Equal(t, tc.software, meta.Params.Version())
+			assert.Zero(t, meta.Created)
 		})
 	}
 }
@@ -174,7 +175,7 @@ func TestExtractCreatedTime(t *testing.T) {
 			meta, err := ExtractFromFile(out.Name())
 			require.NoError(t, err)
 			require.NotNil(t, meta)
-			require.Equal(t, expectedCreatedTime, meta.Created)
+			assert.Equal(t, expectedCreatedTime, meta.Created)
 		})
 	}
 }

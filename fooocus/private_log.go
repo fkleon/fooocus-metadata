@@ -52,24 +52,13 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 		}
 
 		// Parse metadata
-		var metadata Metadata
-		var legacyMetadata MetadataLegacy
+		var metadata metadataAny
 
-		// Prefer modern format
 		if err := json.Unmarshal([]byte(cleanU), &metadata); err == nil {
-			if !strings.HasPrefix(metadata.Version, "Fooocus ") {
-				continue
-			}
-			slog.Debug("Metadata in private log (current format)", "file", imgSrc)
-			images[imgSrc] = metadata
+			slog.Debug("Metadata in private log", "file", imgSrc, "version", metadata.MetadataVersion())
+			images[imgSrc] = *metadata.asMetadataV23()
 		} else {
-			// Fallback to legacy format
-			if err := json.Unmarshal([]byte(cleanU), &legacyMetadata); err != nil {
-				return images, fmt.Errorf("failed to read Fooocus parameters: %w", err)
-			} else {
-				slog.Debug("Metadata in private log (legacy format)", "file", imgSrc)
-				images[imgSrc] = legacyMetadata.toCurrent()
-			}
+			return images, fmt.Errorf("failed to read Fooocus parameters: %w", err)
 		}
 	}
 
