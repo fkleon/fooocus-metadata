@@ -206,7 +206,43 @@ type MetadataV22 struct {
 	MetadataV23
 	Seed           int  `json:"seed"`
 	MetadataScheme bool `json:"metadata_scheme"`
-	//MetadataScheme bool `json:"-"`
+}
+
+func (m *MetadataV23) UnmarshalJSON(data []byte) error {
+	// A variant of the v23 metadata uses different datatypes
+	// for seed and metadata scheme.
+
+	// Temporary type without UnmarshalJSON to avoid infinite
+	// recursion.
+	type metadata MetadataV23
+
+	var dest = struct {
+		*metadata
+		// Exploits the fact that JSON unmarshalls into the
+		// field with the shallowest depth.
+		Seed           json.Number     `json:"seed"`
+		MetadataScheme json.RawMessage `json:"metadata_scheme"`
+	}{
+		metadata: (*metadata)(m),
+	}
+
+	if err := json.Unmarshal(data, &dest); err != nil {
+		return err
+	}
+
+	// Convert and populate values on the v23 struct.
+	m.Seed = dest.Seed.String()
+
+	// MetadataScheme either contains the name of the schema
+	// or a boolean indicating whether metadata was embedded.
+	if err := json.Unmarshal(dest.MetadataScheme, &m.MetadataScheme); err != nil {
+		// Default 'fooocus' schema if not embedded.
+		m.MetadataScheme = Fooocus.String()
+	}
+
+	m.fillLoras()
+	m.fillSteps()
+	return nil
 }
 
 func (meta *MetadataV23) fillLoras() {
@@ -359,10 +395,15 @@ func ConvertV21ToV23(v21 *MetadataV21) (v23 Metadata) {
 
 func ConvertV22ToV23(v22 *MetadataV22) (v23 MetadataV23) {
 	v23 = v22.MetadataV23
-	v23.Seed = strconv.Itoa(v22.Seed)
+	if v23.Seed == "" {
+		v23.Seed = strconv.Itoa(v22.Seed)
+	}
 	v23.MetadataScheme = Fooocus.String()
+
+	// Populate missing steps and LoRAs
 	v23.fillSteps()
 	v23.fillLoras()
+
 	return v23
 }
 

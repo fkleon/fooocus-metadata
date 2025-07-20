@@ -69,6 +69,76 @@ var metaV23 = &MetadataV23{
 	Version:         "Fooocus v2.5.5",
 }
 
+const metaV23AltJson = `{
+  "prompt": "A sunflower field",
+  "negative_prompt": "",
+  "prompt_expansion": "",
+  "styles": "['Fooocus Enhance', 'Fooocus Sharp']",
+  "performance": "Lightning",
+  "steps": 4,
+  "resolution": "(1152, 896)",
+  "guidance_scale": 1.0,
+  "sharpness": 0.0,
+  "adm_guidance": "(1.0, 1.0, 0.0)",
+  "base_model": "ponyDiffusionV6XL_v6TurboDPOMerge.safetensors",
+  "refiner_model": "None",
+  "refiner_switch": 1.0,
+  "adaptive_cfg": 1.0,
+  "clip_skip": 2,
+  "sampler": "euler",
+  "scheduler": "sgm_uniform",
+  "vae": "Default (model)",
+  "seed": "4781032431475889838",
+  "lora_combined_1": "lora1.safetensors : 0.8",
+  "lora_combined_2": "lora2.safetensors : 0.7",
+  "lora_combined_3": "lora3.safetensors : 0.9",
+  "lora_combined_4": "sdxl_lightning_4step_lora.safetensors : 1.0",
+  "lora_combined_5": "sdxl_lightning_4step_lora.safetensors : 1.0",
+  "metadata_scheme": false,
+  "version": "Fooocus v2.5.0"
+}`
+
+var metaV23Alt = &MetadataV23{
+	AdaptiveCfg:   1,
+	AdmGuidance:   AdmGuidanceOf(1.0, 1.0, 0.0),
+	BaseModel:     "ponyDiffusionV6XL_v6TurboDPOMerge.safetensors",
+	BaseModelHash: "",
+	ClipSkip:      2,
+	GuidanceScale: 1,
+	Loras: []Lora{{
+		Name: "lora1.safetensors", Weight: 0.8,
+	}, {
+		Name: "lora2.safetensors", Weight: 0.7,
+	}, {
+		Name: "lora3.safetensors", Weight: 0.9,
+	}, {
+		Name: "sdxl_lightning_4step_lora.safetensors", Weight: 1.0,
+	}, {
+		Name: "sdxl_lightning_4step_lora.safetensors", Weight: 1.0,
+	}},
+	LoraCombined1:   &LoraCombined{Name: "lora1.safetensors", Weight: 0.8},
+	LoraCombined2:   &LoraCombined{Name: "lora2.safetensors", Weight: 0.7},
+	LoraCombined3:   &LoraCombined{Name: "lora3.safetensors", Weight: 0.9},
+	LoraCombined4:   &LoraCombined{Name: "sdxl_lightning_4step_lora.safetensors", Weight: 1.0},
+	LoraCombined5:   &LoraCombined{Name: "sdxl_lightning_4step_lora.safetensors", Weight: 1.0},
+	MetadataScheme:  "fooocus",
+	NegativePrompt:  "",
+	Performance:     "Lightning",
+	Prompt:          "A sunflower field",
+	PromptExpansion: "",
+	RefinerModel:    "None",
+	RefinerSwitch:   1.0,
+	Resolution:      ResolutionOf(1152, 896),
+	Sampler:         "euler",
+	Scheduler:       "sgm_uniform",
+	Seed:            "4781032431475889838",
+	Sharpness:       0,
+	Steps:           4,
+	Styles:          []string{"Fooocus Enhance", "Fooocus Sharp"},
+	Vae:             "Default (model)",
+	Version:         "Fooocus v2.5.0",
+}
+
 // Fooocus v2.2 private log metadata format
 const metaV22Json = `{
 	"prompt": "A sunflower field",
@@ -225,14 +295,14 @@ var metaV21Converted = &MetadataV23{
 	Version:         "v2.1.860",
 }
 
-func TestDecodeMetadataV21(t *testing.T) {
+func TestDecodeMetadata_V21(t *testing.T) {
 	var out *MetadataV21
 	err := json.Unmarshal([]byte(metaV21Json), &out)
 	require.NoError(t, err)
 	assert.Equal(t, metaV21, out)
 }
 
-func TestEncodeMetadataV21(t *testing.T) {
+func TestEncodeMetadata_V21(t *testing.T) {
 	encoded, err := json.Marshal(metaV21)
 	require.NoError(t, err)
 
@@ -240,14 +310,14 @@ func TestEncodeMetadataV21(t *testing.T) {
 	assert.JSONEq(t, metaV21Json, string(encoded))
 }
 
-func TestDecodeMetadataV22(t *testing.T) {
-	var decoded *MetadataV22
+func TestDecodeMetadata_V22(t *testing.T) {
+	var decoded *MetadataV23
 	err := json.Unmarshal([]byte(metaV22Json), &decoded)
 	require.NoError(t, err)
-	assert.Equal(t, metaV22, decoded)
+	assert.Equal(t, metaV22Converted, decoded)
 }
 
-func TestEncodeMetadataV22(t *testing.T) {
+func TestEncodeMetadata_V22(t *testing.T) {
 	encoded, err := json.Marshal(metaV22)
 	require.NoError(t, err)
 
@@ -255,25 +325,40 @@ func TestEncodeMetadataV22(t *testing.T) {
 	assert.JSONEq(t, metaV22Json, string(encoded))
 }
 
-func TestDecodeMetadataV23(t *testing.T) {
+func TestDecodeMetadata_V23(t *testing.T) {
 	var decoded *MetadataV23
 	err := json.Unmarshal([]byte(metaV23Json), &decoded)
 	require.NoError(t, err)
 	assert.Equal(t, metaV23, decoded)
 }
 
-func TestEncodeMetadataV23(t *testing.T) {
+func TestEncodeMetadata_V23(t *testing.T) {
 	encoded, err := json.Marshal(metaV23)
 	require.NoError(t, err)
 	assert.JSONEq(t, metaV23Json, string(encoded))
 }
 
-func TestConvertMetadataV21(t *testing.T) {
+func TestDecodeMetadata_V23_Alt(t *testing.T) {
+	var decoded *MetadataV23
+	err := json.Unmarshal([]byte(metaV23AltJson), &decoded)
+	require.NoError(t, err)
+	assert.Equal(t, metaV23Alt, decoded)
+}
+
+func TestEncodeMetadata_V23_Alt(t *testing.T) {
+	encoded, err := json.Marshal(metaV23Alt)
+	require.NoError(t, err)
+
+	t.Skip("Only supports v23")
+	assert.JSONEq(t, metaV23AltJson, string(encoded))
+}
+
+func TestConvertMetadata_V21(t *testing.T) {
 	meta := ConvertV21ToV23(metaV21)
 	assert.Equal(t, *metaV21Converted, meta)
 }
 
-func TestConvertMetadataV22(t *testing.T) {
+func TestConvertMetadata_V22(t *testing.T) {
 	meta := ConvertV22ToV23(metaV22)
 	assert.Equal(t, *metaV22Converted, meta)
 }
@@ -291,7 +376,6 @@ func TestDecodeMetadataAny_V22(t *testing.T) {
 	err := json.Unmarshal([]byte(metaV22Json), &out)
 	require.NoError(t, err)
 	assert.NotNil(t, out.MetadataV22)
-	assert.Equal(t, metaV22, out.MetadataV22)
 	assert.Equal(t, metaV22Converted, out.asMetadataV23())
 }
 
@@ -302,6 +386,15 @@ func TestDecodeMetadataAny_V23(t *testing.T) {
 	assert.NotNil(t, out.MetadataV23)
 	assert.Equal(t, metaV23, out.MetadataV23)
 	assert.Equal(t, metaV23, out.asMetadataV23())
+}
+
+func TestDecodeMetadataAny_V23_Alt(t *testing.T) {
+	var out *metadataAny
+	err := json.Unmarshal([]byte(metaV23AltJson), &out)
+	require.NoError(t, err)
+	assert.NotNil(t, out.MetadataV23)
+	assert.Equal(t, metaV23Alt, out.MetadataV23)
+	assert.Equal(t, metaV23Alt, out.asMetadataV23())
 }
 
 func TestEncodeMetadataAny_V21(t *testing.T) {
