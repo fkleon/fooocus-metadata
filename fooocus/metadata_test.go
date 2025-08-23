@@ -417,3 +417,26 @@ func TestEncodeMetadataAny_V23(t *testing.T) {
 	t.Skip("Marshalling via metadataAny is not implemented")
 	assert.JSONEq(t, metaV23Json, string(encoded))
 }
+
+func TestDecodeStyles(t *testing.T) {
+	data := `"['Fooocus V2', 'Fooocus Enhance']"`
+
+	var styles Styles
+	err := json.Unmarshal([]byte(data), &styles)
+	require.NoError(t, err)
+	assert.Equal(t, Styles{
+		"Fooocus V2",
+		"Fooocus Enhance",
+	}, styles)
+}
+
+func TestEncodeStyles(t *testing.T) {
+	styles := Styles{
+		"Fooocus V2",
+		"Fooocus Enhance",
+	}
+
+	encoded, err := json.Marshal(styles)
+	require.NoError(t, err)
+	assert.Equal(t, `"['Fooocus V2', 'Fooocus Enhance']"`, string(encoded))
+}

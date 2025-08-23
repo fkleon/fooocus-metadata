@@ -425,7 +425,7 @@ func (r *Tuple[T]) UnmarshalJSON(p []byte) error {
 	return json.Unmarshal(pc, &r.data)
 }
 
-func (r *Tuple[T]) MarshalJSON() ([]byte, error) {
+func (r Tuple[T]) MarshalJSON() ([]byte, error) {
 	var values []string = make([]string, len(r.data))
 
 	for i, item := range r.data {
@@ -494,15 +494,15 @@ func (s *Styles) UnmarshalJSON(p []byte) error {
 	return nil
 }
 
-func (s *Styles) MarshalJSON() ([]byte, error) {
+func (s Styles) MarshalJSON() ([]byte, error) {
 	var sb strings.Builder
 
 	sb.WriteString("[")
-	for idx, style := range *s {
+	for idx, style := range s {
 		sb.WriteString("'")
 		sb.WriteString(style)
 		sb.WriteString("'")
-		if idx < len(*s)-1 {
+		if idx < len(s)-1 {
 			sb.WriteString(", ")
 		}
 	}
@@ -536,7 +536,7 @@ func (l *Lora) UnmarshalJSON(p []byte) error {
 	return nil
 }
 
-func (l *Lora) MarshalJSON() ([]byte, error) {
+func (l Lora) MarshalJSON() ([]byte, error) {
 	return json.Marshal([]interface{}{l.Name, l.Weight, l.Hash})
 }
 
@@ -562,7 +562,7 @@ func (l *LoraCombined) UnmarshalJSON(p []byte) error {
 	return nil
 }
 
-func (l *LoraCombined) MarshalJSON() ([]byte, error) {
+func (l LoraCombined) MarshalJSON() ([]byte, error) {
 	return json.Marshal(fmt.Sprintf("%v : %g", l.Name, l.Weight))
 }
 
