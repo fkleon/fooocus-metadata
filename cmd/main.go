@@ -9,8 +9,8 @@ import (
 
 	fooocusmeta "github.com/fkleon/fooocus-metadata"
 	"github.com/fkleon/fooocus-metadata/fooocus"
-	_ "github.com/fkleon/fooocus-metadata/fooocusplus"
-	_ "github.com/fkleon/fooocus-metadata/ruinedfooocus"
+	"github.com/fkleon/fooocus-metadata/fooocusplus"
+	"github.com/fkleon/fooocus-metadata/ruinedfooocus"
 )
 
 func main() {
@@ -31,15 +31,17 @@ func main() {
 		fmt.Fprintf(os.Stderr, "path: The file to read metadata from (required)\n")
 	}
 
+	var embedType, embedIn, embedOut string
 	embedCmd := flag.NewFlagSet("embed", flag.ExitOnError)
 	embedCmd.BoolVar(&verbose, "verbose", false, "enable verbose logging")
 	embedCmd.BoolVar(&debug, "debug", false, "enable debug logging")
+	embedCmd.StringVar(&embedType, "type", "fooocus", "the type of metadata to embed (fooocus, fooocusplus, ruinedfooocus)")
+	embedCmd.StringVar(&embedIn, "in", "", "the file to read imagedata from (optional)")
+	embedCmd.StringVar(&embedOut, "out", "", "the file to write metadata to (required)")
 	embedCmd.Usage = func() {
-		fmt.Fprintln(os.Stderr, "usage: embed [flags] <in> <out> <meta>")
+		fmt.Fprintln(os.Stderr, "usage: embed [flags] | echo '<meta>'")
 		embedCmd.PrintDefaults()
-		fmt.Fprintf(os.Stderr, "in: The file to read imagedata from (optional)\n")
-		fmt.Fprintf(os.Stderr, "out: The file to write metadata to (required)\n")
-		fmt.Fprintf(os.Stderr, "meta: The metadata to write in JSON format\n")
+		fmt.Fprintf(os.Stderr, "meta: The metadata to write in JSON format (stdin)\n")
 	}
 
 	if len(os.Args) < 2 {
@@ -59,62 +61,105 @@ func main() {
 			os.Exit(1)
 		}
 
-		if metadata, err := fooocusmeta.ExtractFromFile(path); err != nil {
-			fmt.Printf("Error: %s\n", err)
-			os.Exit(2)
-		} else {
-			out, err := json.MarshalIndent(metadata.Params.Raw(), "", "  ")
-			if err == nil {
-				fmt.Print(string(out))
-			}
-		}
+		extract(path)
 
 	case "embed":
 		embedCmd.Parse(os.Args[2:])
 		setLogLevel(debug, verbose)
 
-		var in, out, meta string
-
-		switch len(embedCmd.Args()) {
-		case 2:
-			out = embedCmd.Arg(0)
-			meta = embedCmd.Arg(1)
-		case 3:
-			in = embedCmd.Arg(0)
-			out = embedCmd.Arg(1)
-			meta = embedCmd.Arg(2)
-			fmt.Printf("niy %s", in)
-		default:
+		if embedOut == "" {
 			embedCmd.Usage()
 			os.Exit(1)
 		}
 
-		if out == "" || meta == "" {
-			embedCmd.Usage()
-			os.Exit(1)
+		err := embed(embedType, embedIn, embedOut)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+			os.Exit(2)
 		}
-
-		var metadata fooocus.Metadata
-		json.Unmarshal([]byte(meta), &metadata)
-
-		writer := fooocus.NewFooocusMetadataWriter()
-		print(writer)
-		// TODO
-		/*
-			if in != "" {
-				writer.CopyWrite(in, out, metadata)
-			} else {
-				writer.Write(out, metadata)
-			}
-
-			if err := fooocus.EmbedIntoFile(out, metadata); err != nil {
-				fmt.Printf("Error: %s\n", err)
-				os.Exit(2)
-			}
-		*/
+		fmt.Printf("Metadata successfully embedded into %s\n", embedOut)
 	default:
 		flag.Usage()
 	}
+}
+
+func extract(path string) {
+
+	if metadata, err := fooocusmeta.ExtractFromFile(path); err != nil {
+		fmt.Printf("Error: %s\n", err)
+		os.Exit(2)
+	} else {
+		out, err := json.MarshalIndent(metadata.Params.Raw(), "", "  ")
+		if err == nil {
+			fmt.Print(string(out))
+		}
+	}
+}
+
+func embed(t string, in string, out string) (err error) {
+
+	var source, target *os.File
+
+	if in != "" {
+		source, err = os.Open(in)
+		if err != nil {
+			return fmt.Errorf("failed to open source file for writing: %w", err)
+		}
+		defer source.Close()
+	}
+
+	target, err = os.OpenFile(out, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to open target file for writing: %w", err)
+	}
+	defer target.Close()
+
+	switch t {
+	case "fooocus":
+		var metadata fooocus.Metadata
+		err := json.NewDecoder(os.Stdin).Decode(&metadata)
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal metadata: %w", err)
+		}
+
+		writer := fooocus.NewFooocusMetadataWriter()
+		if in != "" {
+			return writer.CopyWrite(source, target, metadata)
+		} else {
+			return writer.Write(target, metadata)
+		}
+	case "fooocusplus":
+		var metadata fooocusplus.Metadata
+		err := json.NewDecoder(os.Stdin).Decode(&metadata)
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal metadata: %w", err)
+		}
+
+		writer := fooocusplus.NewFooocusPlusMetadataWriter()
+		if in != "" {
+			return writer.CopyWrite(source, target, metadata)
+		} else {
+			return writer.Write(target, metadata)
+		}
+	case "ruinedfooocus":
+		var metadata ruinedfooocus.Metadata
+		err := json.NewDecoder(os.Stdin).Decode(&metadata)
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal metadata: %w", err)
+		}
+
+		writer := ruinedfooocus.NewRuinedFooocusMetadataWriter()
+		if in != "" {
+			return writer.CopyWrite(source, target, metadata)
+		} else {
+			return writer.Write(target, metadata)
+		}
+	default:
+		fmt.Printf("Unknown type: %s\n", t)
+		os.Exit(1)
+	}
+
+	return nil
 }
 
 func setLogLevel(debug bool, verbose bool) {

@@ -5,6 +5,12 @@ import (
 	"io"
 	"log/slog"
 
+	// Required image decoders
+	_ "image/jpeg"
+	_ "image/png"
+
+	_ "golang.org/x/image/webp"
+
 	"github.com/fkleon/fooocus-metadata/internal/image"
 	"github.com/fkleon/fooocus-metadata/types"
 )

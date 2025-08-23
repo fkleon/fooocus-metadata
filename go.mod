@@ -19,6 +19,7 @@ require (
 	github.com/bep/imagemeta v0.12.0
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/sabhiram/png-embed v0.0.0-20180421025336-149afe9a3ccb
+	golang.org/x/image v0.30.0
 	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/text v0.25.0
+	golang.org/x/text v0.28.0
 )
