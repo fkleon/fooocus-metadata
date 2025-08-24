@@ -1,7 +1,7 @@
 package types
 
 import (
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -35,12 +35,16 @@ type GenerationParameters interface {
 }
 
 func NormaliseModelName(name string) string {
-	// TODO only strip known extensions:
-	// .safetensors
-	// .gguf
-	// .pt / .pth (pickle)
-	// .onnx
+	// Normalise model name by removing path
+	// and known file extension
+	base := filepath.Base(name)
+	ext := filepath.Ext(name)
 
-	// Normalise model name by removing path and file extension
-	return strings.TrimSuffix(path.Base(name), path.Ext(name))
+	switch strings.ToLower(ext) {
+	case ".safetensors", ".gguf", ".pt", ".pth", ".onnx":
+		return strings.TrimSuffix(base, ext)
+	default:
+		// Unknown extension, return as is
+		return base
+	}
 }
