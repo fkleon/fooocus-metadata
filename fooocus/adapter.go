@@ -1,9 +1,9 @@
 package fooocus
 
 import (
-	"path"
-	"strings"
 	"time"
+
+	"github.com/fkleon/fooocus-metadata/types"
 )
 
 // Adapter that implements the types.GenerationParameters
@@ -18,8 +18,15 @@ func (m Parameters) Version() string {
 }
 
 func (m Parameters) Model() string {
-	// Normalise model name by removing file extension
-	return strings.TrimSuffix(m.BaseModel, path.Ext(m.BaseModel))
+	return types.NormaliseModelName(m.BaseModel)
+}
+
+func (m Parameters) LoRAs() []string {
+	var loras []string = make([]string, len(m.Loras))
+	for i, lora := range m.Loras {
+		loras[i] = types.NormaliseModelName(lora.Name)
+	}
+	return loras
 }
 
 func (m Parameters) PositivePrompt() string {

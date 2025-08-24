@@ -1,6 +1,10 @@
 package types
 
-import "time"
+import (
+	"path"
+	"strings"
+	"time"
+)
 
 type StructuredMetadata struct {
 	// Source is the identifier for the tool that generated the metadata,
@@ -22,8 +26,21 @@ type GenerationParameters interface {
 	NegativePrompt() string
 	// The model used for the generation.
 	Model() string
+	// The LoRAs used for the generation.
+	LoRAs() []string
 
 	// Raw returns the underlying metadata struct (e.g. fooocus.Metadata).
 	// The caller can type-assert it if needed.
 	Raw() interface{}
+}
+
+func NormaliseModelName(name string) string {
+	// TODO only strip known extensions:
+	// .safetensors
+	// .gguf
+	// .pt / .pth (pickle)
+	// .onnx
+
+	// Normalise model name by removing path and file extension
+	return strings.TrimSuffix(path.Base(name), path.Ext(name))
 }
