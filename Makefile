@@ -17,5 +17,5 @@ $(OUTFOLDER)/write-metadata: ./cmd/embed/main.go $(GOFILES)
 test:
 	@go test ./...
 
-types/template.png: template.txt
+types/template.png: types/template.txt
 	@magick -size 240x85 -gravity center pango:@$< $@
