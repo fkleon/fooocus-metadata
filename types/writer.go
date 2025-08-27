@@ -33,27 +33,6 @@ func NewPngMetadataWriter() *PngMetadataWriter {
 	}
 }
 
-func (e *PngMetadataWriter) convertToPng(in io.Reader) (out io.ReadSeeker, err error) {
-	image, format, err := image.Decode(in)
-	if err != nil {
-		return
-	}
-
-	slog.Info("Decoded source image", "format", format)
-
-	// TOOD short-circuit if already PNG
-	/*
-		if format == "png" {
-			in.Seek(0, 0)
-			return in, nil
-		}
-	*/
-
-	buf := new(bytes.Buffer)
-	err = png.Encode(buf, image)
-	return bytes.NewReader(buf.Bytes()), err
-}
-
 func (e *PngMetadataWriter) Embed(source io.Reader, target io.Writer, values map[string]interface{}) (err error) {
 
 	slog.Debug("Embedding metadata", "count", len(values), "target", target)
@@ -69,7 +48,7 @@ func (e *PngMetadataWriter) Embed(source io.Reader, target io.Writer, values map
 	if source == nil {
 		source = e.Template
 	} else {
-		if source, err = e.convertToPng(source); err != nil {
+		if source, err = convertToPng(source); err != nil {
 			return fmt.Errorf("failed to convert source to PNG: %w", err)
 		}
 	}
@@ -88,4 +67,17 @@ func (e *PngMetadataWriter) Embed(source io.Reader, target io.Writer, values map
 
 	_, err = target.Write(data)
 	return err
+}
+
+func convertToPng(in io.Reader) (out io.ReadSeeker, err error) {
+	image, format, err := image.Decode(in)
+	if err != nil {
+		return
+	}
+
+	slog.Debug("Decoded source image", "format", format)
+
+	buf := new(bytes.Buffer)
+	err = png.Encode(buf, image)
+	return bytes.NewReader(buf.Bytes()), err
 }

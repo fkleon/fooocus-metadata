@@ -27,7 +27,7 @@ type Config struct {
 type Option func(*Config)
 
 // To enable path-based extraction features, e.g.
-// parsing creation date from file pattern or sidecase support
+// parsing creation date from file pattern or sidecar support
 func WithPath(path string) Option {
 	return func(cfg *Config) {
 		cfg.Path = path
