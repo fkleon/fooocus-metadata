@@ -19,3 +19,7 @@ test:
 
 types/template.png: types/template.txt
 	@magick -size 240x85 -gravity center pango:@$< $@
+
+PHONY: docs
+docs:
+	godoc -http=:6060

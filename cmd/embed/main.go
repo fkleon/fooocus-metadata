@@ -1,3 +1,5 @@
+// A command-line tool to embed image generation parameters
+// into an image file.
 package main
 
 import (

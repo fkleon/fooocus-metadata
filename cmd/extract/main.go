@@ -1,3 +1,5 @@
+// A command-line tool to extract image generation parameters
+// from an image file or sidecar file.
 package main
 
 import (

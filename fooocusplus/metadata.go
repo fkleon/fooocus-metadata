@@ -1,3 +1,7 @@
+// Package fooocusplus implements reading and writing [FooocusPlus] metadata
+// (image generation parameters).
+//
+// [FooocusPlus]: https://github.com/DavidDragonsage/FooocusPlus
 package fooocusplus
 
 import (

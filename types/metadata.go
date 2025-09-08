@@ -1,3 +1,5 @@
+// Package types contains common interface definitions and the type registry
+// for reading metadata.
 package types
 
 import (

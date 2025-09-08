@@ -1,3 +1,5 @@
+// Package image provides utilities to detect image MIME types
+// and read embedded image metadata (EXIF or PNG tEXt).
 package image
 
 import (

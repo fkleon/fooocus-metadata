@@ -1,24 +1,24 @@
-// TODO update docs
-// Package fooocus implements reading and writing [Fooocus] metadata (image generation parameters).
+// Package fooocus implements reading and writing [Fooocus] metadata
+// (image generation parameters).
 //
-// To read embedded metadata, use [NewImageInfo]:
+// To read metadata, use the Fooocus metadata extractor:
 //
 //	path := "testdata/sample.jpg"
-//	image, err := NewImageInfo(path)
-//	fmt.Println(image.FooocusMetadata.Version) // prints "Fooocus v2.5.5"
+//	image, err := image.NewContextFromFile(path)
+//	extractor := NewFooocusMetadataExtractor()
+//	meta, err := extractor.Decode(*image)
+//	fmt.Println(meta.Version) // prints "Fooocus v2.5.5"
 //
-// To read from the private log file, use [ParsePrivateLog]:
+// This supports reading from both the embedded metadata
+// or the private log file, if available as "log.html" in the
+// same folder as the image files.
 //
-//	path := "testdata/log.html"
-//	images, err := ParsePrivateLog(privateLogFile)
-//	meta := images["fooocus-meta.jpeg"]
-//	fmt.Println(image.FooocusMetadata.Version) // prints "Fooocus v2.5.5"
-//
-// To write metadata into a PNG, use [EmbedMetadataAsPngText]:
+// To write metadata into a PNG, use the Fooocus metadata writer:
 //
 //	meta := &Metadata{}
 //	target, err := os.OpenFile("out.png", os.O_CREATE|os.O_WRONLY, 0644)
-//	err = EmbedMetadataAsPngText(nil, target, meta)
+//	writer := NewFooocusMetadataWriter()
+//	writer.Write(target, meta)
 //
 // [Fooocus]: https://github.com/lllyasviel/Fooocus
 package fooocus

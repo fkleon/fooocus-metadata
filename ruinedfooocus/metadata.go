@@ -1,3 +1,7 @@
+// Package ruinedfooocus implements reading and writing [RuinedFooocus] metadata
+// (image generation parameters).
+//
+// [RuinedFooocus]: https://github.com/runew0lf/RuinedFooocus
 package ruinedfooocus
 
 import (
