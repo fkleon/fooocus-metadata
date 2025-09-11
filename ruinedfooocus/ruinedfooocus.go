@@ -32,7 +32,7 @@ func (e RuinedFooocusMetadataExtractor) Decode(file m.ImageMetadataContext) (met
 
 func (e RuinedFooocusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.StructuredMetadata, error) {
 
-	var meta m.StructuredMetadata = m.StructuredMetadata{
+	var meta = m.StructuredMetadata{
 		Source: Software,
 	}
 

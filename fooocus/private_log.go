@@ -32,7 +32,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 		return nil, err
 	}
 
-	var images map[string]Metadata = make(map[string]Metadata, len(nodes))
+	var images = make(map[string]Metadata, len(nodes))
 
 	for _, n := range nodes {
 		img := htmlquery.FindOne(n, "//img")

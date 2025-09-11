@@ -16,7 +16,7 @@ import (
 
 func TestExtractMetadataFromPNG(t *testing.T) {
 
-	var pngData map[string]imagemeta.TagInfo = make(map[string]imagemeta.TagInfo)
+	var pngData = make(map[string]imagemeta.TagInfo)
 
 	pngData["fooocus_scheme"] =
 		imagemeta.TagInfo{

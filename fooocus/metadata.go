@@ -249,7 +249,7 @@ func (meta *MetadataV23) fillLoras() {
 		return
 	}
 
-	var loras []Lora = make([]Lora, 0, 5)
+	var loras = make([]Lora, 0, 5)
 
 	var addLora = func(lora *LoraCombined) {
 		if lora != nil {
@@ -326,7 +326,7 @@ type MetadataV21 struct {
 
 func ConvertV21ToV23(v21 *MetadataV21) (v23 Metadata) {
 	legacy := v21
-	var loras []Lora = make([]Lora, 0, 6)
+	var loras = make([]Lora, 0, 6)
 
 	var addLora = func(lora *LoraCombined) {
 		if lora != nil {
@@ -426,7 +426,7 @@ func (r *Tuple[T]) UnmarshalJSON(p []byte) error {
 }
 
 func (r Tuple[T]) MarshalJSON() ([]byte, error) {
-	var values []string = make([]string, len(r.data))
+	var values = make([]string, len(r.data))
 
 	for i, item := range r.data {
 		switch it := any(item).(type) {

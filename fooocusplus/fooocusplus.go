@@ -46,7 +46,7 @@ func (e FooocusPlusMetadataExtractor) Decode(file m.ImageMetadataContext) (meta 
 
 func (e FooocusPlusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.StructuredMetadata, error) {
 
-	var meta m.StructuredMetadata = m.StructuredMetadata{
+	var meta = m.StructuredMetadata{
 		Source: Software,
 	}
 

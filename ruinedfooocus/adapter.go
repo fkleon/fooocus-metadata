@@ -22,7 +22,7 @@ func (m Parameters) Model() string {
 }
 
 func (m Parameters) LoRAs() []string {
-	var loras []string = make([]string, len(m.Loras))
+	var loras = make([]string, len(m.Loras))
 	for i, lora := range m.Loras {
 		loras[i] = types.NormaliseModelName(lora.Name)
 	}
