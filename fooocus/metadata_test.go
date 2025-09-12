@@ -303,7 +303,7 @@ func TestDecodeMetadata_V21(t *testing.T) {
 }
 
 func TestEncodeMetadata_V21(t *testing.T) {
-	encoded, err := json.Marshal(metaV21)
+	encoded, err := json.Marshal(metaV21) //nolint:staticcheck
 	require.NoError(t, err)
 
 	t.Skip("Differing precision for floating point string representation")
@@ -318,7 +318,7 @@ func TestDecodeMetadata_V22(t *testing.T) {
 }
 
 func TestEncodeMetadata_V22(t *testing.T) {
-	encoded, err := json.Marshal(metaV22)
+	encoded, err := json.Marshal(metaV22) //nolint:staticcheck
 	require.NoError(t, err)
 
 	t.Skip("v22 should omit some fields that are still included here")
@@ -346,7 +346,7 @@ func TestDecodeMetadata_V23_Alt(t *testing.T) {
 }
 
 func TestEncodeMetadata_V23_Alt(t *testing.T) {
-	encoded, err := json.Marshal(metaV23Alt)
+	encoded, err := json.Marshal(metaV23Alt) //nolint:staticcheck
 	require.NoError(t, err)
 
 	t.Skip("Only supports v23")
@@ -411,7 +411,7 @@ func TestEncodeMetadataAny_V23(t *testing.T) {
 	meta := &metadataAny{
 		MetadataV23: metaV23,
 	}
-	encoded, err := json.Marshal(meta)
+	encoded, err := json.Marshal(meta) //nolint:staticcheck
 	require.NoError(t, err)
 
 	t.Skip("Marshalling via metadataAny is not implemented")
