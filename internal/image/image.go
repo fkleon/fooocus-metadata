@@ -39,7 +39,10 @@ func (file *File) IsImage() bool {
 }
 func (file *File) detectMimeType() (err error) {
 	// Rewind to the start
-	file.Seek(0, io.SeekStart)
+	_, err = file.Seek(0, io.SeekStart)
+	if err != nil {
+		return err
+	}
 
 	// Sniff content type via http.DetectContentType
 	// Only the first 512 bytes are relevant.
@@ -168,7 +171,10 @@ func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err 
 	data = &imagemeta.Tags{}
 
 	// Rewind to the start
-	fin.Seek(0, io.SeekStart)
+	_, err = fin.Seek(0, io.SeekStart)
+	if err != nil {
+		return nil, err
+	}
 
 	// Extract EXIF data
 	var format imagemeta.ImageFormat
@@ -204,15 +210,18 @@ func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err 
 	return
 }
 
-func extractPngText(fin io.ReadSeeker) (pngText map[string]string, pngErr error) {
+func extractPngText(fin io.ReadSeeker) (pngText map[string]string, err error) {
 	// Rewind to the start
-	fin.Seek(0, io.SeekStart)
+	_, err = fin.Seek(0, io.SeekStart)
+	if err != nil {
+		return nil, err
+	}
 
 	// Extract PNG tEXt data
-	pngText, pngErr = extractPngTextChunks(fin)
-	if pngErr != nil {
+	pngText, err = extractPngTextChunks(fin)
+	if err != nil {
 		slog.Debug("Failed to extract PNG tEXt chunks",
-			"error", pngErr)
+			"error", err)
 	}
 
 	return

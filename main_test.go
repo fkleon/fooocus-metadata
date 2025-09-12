@@ -170,6 +170,7 @@ func TestExtractCreatedTime(t *testing.T) {
 	for _, tc := range files {
 		t.Run(path.Base(tc), func(t *testing.T) {
 			in, err := os.Open(tc)
+			require.NoError(t, err)
 			out := createTemp(t, filenamePattern)
 
 			_, err = io.Copy(out, in)
@@ -247,7 +248,7 @@ func createTemp(t *testing.T, pattern string) *os.File {
 	target, err := os.CreateTemp("", pattern)
 	require.NoError(t, err)
 	t.Cleanup(func() {
-		os.Remove(target.Name())
+		_ = os.Remove(target.Name())
 	})
 	return target
 }
