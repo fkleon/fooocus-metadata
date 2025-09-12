@@ -12,12 +12,6 @@ import (
 )
 
 const (
-	// FooocusPlus suports encoding metadata with one of two schemes:
-	//   - the native JSON scheme
-	//   - the AUTOMATIC1111 plaintext format for compatibility with Stable Diffusion web UI
-	simple = "simple" // same as 'fooocus'
-	a1111  = "a1111"
-
 	Software = "FooocusPlus"
 )
 
