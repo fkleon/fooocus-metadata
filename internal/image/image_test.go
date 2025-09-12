@@ -19,7 +19,7 @@ func TestExtractExif(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, exifData)
 
-	exifVersion, _ := exifData.EXIF()["ExifVersion"]
+	exifVersion := exifData.EXIF()["ExifVersion"]
 	exifVersionStr := exifVersion.Value.(string)
 	assert.Equal(t, "0220", exifVersionStr)
 }
