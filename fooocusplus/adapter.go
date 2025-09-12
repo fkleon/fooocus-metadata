@@ -30,7 +30,7 @@ func (m Parameters) LoRAs() []string {
 }
 
 func (m Parameters) PositivePrompt() string {
-	return m.Metadata.Prompt
+	return m.Prompt
 }
 
 func (m Parameters) NegativePrompt() string {
