@@ -17,6 +17,10 @@ $(OUTFOLDER)/write-metadata: ./cmd/embed/main.go $(GOFILES)
 test:
 	@go test ./...
 
+.PHONY: lint
+lint:
+	@golangci-lint run
+
 types/template.png: types/template.txt
 	@magick -size 240x85 -gravity center pango:@$< $@
 
