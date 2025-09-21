@@ -23,13 +23,15 @@ Fooocus supports two metadata schemes:
 - `fooocus` (json) - the native scheme.
 - `a1111` (plain text) - for compatibility with Civitai.
 
-This library supports only the native `fooocus` scheme.
+This library fully supports the native `fooocus` scheme.
+
+Partial support for reading the `a1111` scheme is provided by the generic A1111-style metadata parser, but it does not support any Fooocus-specific keys.
 
 | Image Format   | Metadata Location      | Metadata Scheme | Read | Write |
 |----------------|------------------------|-----------------|------|-------|
 | PNG            | Embedded               | `fooocus`       | ✅   | ✅    |
 | JPG, WEBP      | Embedded               | `fooocus`       | ✅   | ❌    |
-| *              | Embedded               | `a1111`         | ❌   | ❌    |
+| *              | Embedded               | `a1111`         | ⚠️    | ❌    |
 | PNG, JPG, WEBP | External (Private Log) | `fooocus`       | ✅   | ❌    |
 
 ### [FooocusPlus]
@@ -50,6 +52,22 @@ Tested with RuinedFooocus version 2.0.0 and newer.
 |--------------|-------------------|-----------------|------|-------|
 | PNG          | Embedded          | JSON            | ✅   | ✅    |
 
+### AUTOMATIC1111-style metadata
+
+Basic read-only support for metadata encoded in `a1111` (plain text) format. Unsupported keys are ignored.
+
+Tested with:
+
+* [stable-diffusion-webui]
+* [stable-diffusion.cpp]
+
+| Image Format    | Metadata Location | Metadata Scheme | Read | Write |
+|-----------------|-------------------|-----------------|------|-------|
+| PNG, JPEG, WEBP | Embedded          | `a1111`         | ✅   | ❌    |
+
+
 [Fooocus]: https://github.com/lllyasviel/Fooocus
 [FooocusPlus]: https://github.com/DavidDragonsage/FooocusPlus
 [RuinedFooocus]: https://github.com/runew0lf/RuinedFooocus
+[stable-diffusion.cpp]: https://github.com/leejet/stable-diffusion.cpp
+[stable-diffusion-webui]: https://github.com/AUTOMATIC1111/stable-diffusion-webui
