@@ -23,11 +23,15 @@ func (e StableDiffusionMetadataExtractor) Decode(file m.ImageMetadataContext) (m
 	var data = file.EmbeddedMetadata
 	var parameters string
 
-	// Parameters from PNG "parameters"
-	if paramTag, ok := data["parameters"]; ok {
+	// Parameters from EXIF "UserComment" or PNG "parameters"
+	if paramTag, ok := data["UserComment"]; ok {
 		parameters = paramTag.Value.(string)
 	} else {
-		return meta, fmt.Errorf("%s: Parameters not found", Software)
+		if paramTag, ok := data["parameters"]; ok {
+			parameters = paramTag.Value.(string)
+		} else {
+			return meta, fmt.Errorf("%s: Parameters not found", Software)
+		}
 	}
 
 	return ParseParameters(parameters)

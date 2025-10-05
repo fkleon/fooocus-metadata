@@ -123,7 +123,11 @@ func (s Size) MarshalJSON() ([]byte, error) {
 	return json.Marshal(val)
 }
 
-func ParseParameters(in string) (Metadata, error) {
+func ParseParameters(in string) (meta Metadata, err error) {
+
+	if json.Valid([]byte(in)) {
+		return meta, fmt.Errorf("input is JSON, not plaintext")
+	}
 
 	// Parse a1111 parameters string; here be dragons
 	kv := make(map[string]string)
@@ -146,7 +150,7 @@ func ParseParameters(in string) (Metadata, error) {
 		m2 := in2[match[4]:match[5]]
 
 		// The first match is special: everything unmatched prior is the prompt
-		if i == 0 {
+		if i == 0 && match[0] > 0 {
 			prompt := in2[:match[0]-1]
 			kv["prompt"] = strings.TrimSpace(prompt)
 		}
@@ -181,8 +185,7 @@ func ParseParameters(in string) (Metadata, error) {
 		kv["loras"] = strings.Join(loraMatches, ", ")
 	}
 
-	var metadata Metadata
 	kvByte, _ := json.Marshal(kv)
-	err := json.Unmarshal(kvByte, &metadata)
-	return metadata, err
+	err = json.Unmarshal(kvByte, &meta)
+	return meta, err
 }

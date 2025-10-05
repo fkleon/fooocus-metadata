@@ -240,3 +240,16 @@ func TestDecodeMetadata_Fooocus(t *testing.T) {
 		})
 	}
 }
+
+func TestDecodeMetadata_Fooocus_JSON_Error(t *testing.T) {
+	tc := []string{
+		`{"adm_guidance": "(1.5, 0.8, 0.3)", "base_model": "juggernautXL_v8Rundiffusion", "base_model_hash": "aeb7e9e689", "clip_skip": 2}`,
+	}
+
+	for i, c := range tc {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			_, err := ParseParameters(c)
+			assert.Error(t, err)
+		})
+	}
+}
