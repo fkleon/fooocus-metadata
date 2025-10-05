@@ -17,6 +17,13 @@ type StructuredMetadata struct {
 	Params  GenerationParameters
 }
 
+type Lora struct {
+	Name   string
+	Weight float32
+}
+
+// GenerationParameters defines a common interface for accessing
+// image generation parameters from different tools.
 type GenerationParameters interface {
 
 	// The version of the software that generated the metadata.
@@ -29,7 +36,9 @@ type GenerationParameters interface {
 	// The model used for the generation.
 	Model() string
 	// The LoRAs used for the generation.
-	LoRAs() []string
+	LoRAs() []Lora
+	// The seed used for the generation.
+	Seed() string
 
 	// Raw returns the underlying metadata struct (e.g. fooocus.Metadata).
 	// The caller can type-assert it if needed.
