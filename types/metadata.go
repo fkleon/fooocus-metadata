@@ -46,6 +46,9 @@ type GenerationParameters interface {
 }
 
 func NormaliseModelName(name string) string {
+	if name == "" {
+		return name
+	}
 	// Normalise model name by removing path
 	// and known file extension
 	base := filepath.Base(name)

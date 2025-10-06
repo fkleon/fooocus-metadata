@@ -34,6 +34,9 @@ type Metadata struct {
 	Seed                 int     `json:"seed,string"`
 	Size                 *Size   `json:"size,omitempty"`
 	Steps                int     `json:"steps,string"`
+	TextEncoder          string  `json:"TE,omitempty"`
+	Unet                 string  `json:"unet,omitempty"`
+	Vae                  string  `json:"vae,omitempty"`
 	VaeHash              string  `json:"vae_hash,omitempty"`
 	Version              string  `json:"version,omitempty"`
 }
@@ -169,8 +172,10 @@ func ParseParameters(in string) (meta Metadata, err error) {
 		// Normalize value: Trim spaces
 		v := strings.TrimSpace(m2)
 
-		if _, ok := kv[k]; !ok {
+		if val, ok := kv[k]; !ok {
 			kv[k] = v
+		} else {
+			kv[k] = strings.Join([]string{val, v}, ", ")
 		}
 
 		// Remember previous key and m[2] index (value)

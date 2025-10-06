@@ -19,7 +19,11 @@ func (m Parameters) Version() string {
 }
 
 func (m Parameters) Model() string {
-	return types.NormaliseModelName(m.Metadata.Model)
+	var model = m.Metadata.Model
+	if model == "" {
+		model = m.Metadata.Unet
+	}
+	return types.NormaliseModelName(model)
 }
 
 func (m Parameters) LoRAs() []types.Lora {

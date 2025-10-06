@@ -21,6 +21,7 @@ func TestNormaliseModelName(t *testing.T) {
 		{"relative/path/model.onnx", "model"},
 		{"simplemodel", "simplemodel"},
 		{"model.txt", "model.txt"},
+		{"", ""},
 	}
 
 	for i, tc := range testCases {
