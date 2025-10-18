@@ -209,6 +209,22 @@ func TestDecodeMetadata_SD_CPP(t *testing.T) {
 				Version:     "stable-diffusion.cpp",
 			},
 		},
+		// stand-alone upscale mode: https://github.com/leejet/stable-diffusion.cpp/pull/865
+		{
+			in: "\nSteps: 20, CFG scale: 7.000000, Guidance: 3.500000, Eta: 0.000000, Seed: 42, Size: 338x338, Model: , RNG: cuda, Sampler: default, Version: stable-diffusion.cpp",
+			out: Metadata{
+				CfgScale: 7,
+				Guidance: 3.5,
+				Model:    "",
+				Prompt:   "",
+				Rng:      "cuda",
+				Sampler:  "default",
+				Seed:     42,
+				Size:     &Size{Width: 338, Height: 338},
+				Steps:    20,
+				Version:  "stable-diffusion.cpp",
+			},
+		},
 	}
 
 	for i, c := range tc {
