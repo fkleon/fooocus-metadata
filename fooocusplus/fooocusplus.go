@@ -82,7 +82,7 @@ func (e FooocusPlusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.St
 func NewFooocusPlusMetadataExtractor() m.Reader[Metadata] {
 	return FooocusPlusMetadataExtractor{
 		FileMetadataExtractor: &m.FileMetadataExtractor{
-			DateLayout:  "2006-01-02_15-04-05",
+			DateLayouts: []string{"2006-01-02_15-04-05"},
 			LogfileName: "log.html",
 		},
 	}

@@ -61,7 +61,10 @@ func (e StableDiffusionMetadataExtractor) Extract(file m.ImageMetadataContext) (
 func NewStableDiffusionMetadataExtractor() m.Reader[Metadata] {
 	return StableDiffusionMetadataExtractor{
 		FileMetadataExtractor: &m.FileMetadataExtractor{
-			DateLayout: "2006-01-02_15-04-05",
+			DateLayouts: []string{
+				"2006-01-02_15-04-05",
+				"20060102_150405",
+			},
 		},
 	}
 }

@@ -54,7 +54,7 @@ func (e RuinedFooocusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.
 func NewRuinedFooocusMetadataExtractor() m.Reader[Metadata] {
 	return RuinedFooocusMetadataExtractor{
 		FileMetadataExtractor: &m.FileMetadataExtractor{
-			DateLayout: "2006-01-02_15-04-05",
+			DateLayouts: []string{"2006-01-02_15-04-05"},
 		},
 	}
 }

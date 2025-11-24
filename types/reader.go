@@ -17,18 +17,23 @@ type Reader[T any] interface {
 
 // FileMetadataExtractor is a common base for file-based metadata extractors.
 type FileMetadataExtractor struct {
-	DateLayout  string
+	DateLayouts []string
 	LogfileName string
 }
 
 func (e *FileMetadataExtractor) ParseDateFromFilename(filename string) (time.Time, error) {
 
-	layoutIn := e.DateLayout
+	for _, layoutIn := range e.DateLayouts {
+		if len(filename) < len(layoutIn) {
+			continue
+		}
 
-	if len(filename) < len(layoutIn) {
-		return time.Time{}, fmt.Errorf("failed to parse date from filename: too short")
+		datepart := filename[:len(layoutIn)]
+		t, err := time.Parse(layoutIn, datepart)
+		if err == nil {
+			return t, nil
+		}
 	}
 
-	datepart := filename[:len(layoutIn)]
-	return time.Parse(layoutIn, datepart)
+	return time.Time{}, fmt.Errorf("failed to parse date from filename: %s", filename)
 }
