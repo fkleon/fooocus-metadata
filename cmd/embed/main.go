@@ -53,7 +53,7 @@ func embed(t string, in string, out string) (err error) {
 	if in != "" {
 		source, err = os.Open(in)
 		if err != nil {
-			return fmt.Errorf("failed to open source file for writing: %w", err)
+			return fmt.Errorf("failed to open source file for reading: %w", err)
 		}
 		defer source.Close()
 	}
