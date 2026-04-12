@@ -14,7 +14,7 @@ type format struct {
 
 var (
 	formatsMu sync.Mutex
-	formats   []format = make([]format, 0, 3)
+	formats   = make([]format, 0, 3)
 )
 
 func RegisterReader(name string, decode func(ImageMetadataContext) (StructuredMetadata, error)) {
