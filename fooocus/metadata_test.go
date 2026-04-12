@@ -346,8 +346,9 @@ func TestDecodeMetadata_V23_Alt(t *testing.T) {
 }
 
 func TestEncodeMetadata_V23_Alt(t *testing.T) {
-	encoded, err := json.Marshal(metaV23Alt) //nolint:staticcheck
+	encoded, err := json.Marshal(metaV23Alt)
 	require.NoError(t, err)
+	assert.NotEmpty(t, encoded)
 
 	t.Skip("Only supports v23")
 	assert.JSONEq(t, metaV23AltJSON, string(encoded))
@@ -398,23 +399,35 @@ func TestDecodeMetadataAny_V23_Alt(t *testing.T) {
 }
 
 func TestEncodeMetadataAny_V21(t *testing.T) {
+	meta := &metadataAny{
+		MetadataV21: metaV21,
+	}
+	encoded, err := json.Marshal(meta)
+	require.NoError(t, err)
+	assert.NotEmpty(t, encoded)
+
 	t.Skip("Marshalling via metadataAny is not implemented")
-	assert.Fail(t, "TODO")
+	assert.JSONEq(t, metaV21Json, string(encoded))
 }
 
 func TestEncodeMetadataAny_V22(t *testing.T) {
+	meta := &metadataAny{
+		MetadataV22: metaV22,
+	}
+	encoded, err := json.Marshal(meta)
+	require.NoError(t, err)
+	assert.NotEmpty(t, encoded)
+
 	t.Skip("Marshalling via metadataAny is not implemented")
-	assert.Fail(t, "TODO")
+	assert.JSONEq(t, metaV22Json, string(encoded))
 }
 
 func TestEncodeMetadataAny_V23(t *testing.T) {
 	meta := &metadataAny{
 		MetadataV23: metaV23,
 	}
-	encoded, err := json.Marshal(meta) //nolint:staticcheck
+	encoded, err := json.Marshal(meta)
 	require.NoError(t, err)
-
-	t.Skip("Marshalling via metadataAny is not implemented")
 	assert.JSONEq(t, metaV23Json, string(encoded))
 }
 

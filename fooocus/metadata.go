@@ -116,7 +116,7 @@ func (m *metadataAny) UnmarshalJSON(data []byte) error {
 	}
 }
 
-func (m *metadataAny) MarshallJSON() ([]byte, error) {
+func (m *metadataAny) MarshalJSON() ([]byte, error) {
 	switch {
 	case m.MetadataV21 != nil:
 		return json.Marshal(m.MetadataV21)
