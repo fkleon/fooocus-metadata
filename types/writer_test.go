@@ -25,15 +25,15 @@ func TestEmbedWithoutSource(t *testing.T) {
 	var buf bytes.Buffer
 
 	err := writer.Embed(nil, &buf, values)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.NotEmpty(t, buf)
 
 	image, format, err := image.Decode(&buf)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "png", format, "Expected PNG format after embedding metadata")
 	// Expect dimensions of template PNG
-	assert.Equal(t, image.Bounds().Dx(), 240)
-	assert.Equal(t, image.Bounds().Dy(), 85)
+	assert.Equal(t, 240, image.Bounds().Dx())
+	assert.Equal(t, 85, image.Bounds().Dy())
 }
 
 func TestEmbedWithSource(t *testing.T) {
@@ -54,13 +54,13 @@ func TestEmbedWithSource(t *testing.T) {
 	var buf bytes.Buffer
 
 	err = writer.Embed(source, &buf, values)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.NotEmpty(t, buf)
 
 	image, format, err := image.Decode(&buf)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "png", format, "Expected PNG format after embedding metadata")
 	// Expect dimensions of source image
-	assert.Equal(t, image.Bounds().Dx(), 512)
-	assert.Equal(t, image.Bounds().Dy(), 512)
+	assert.Equal(t, 512, image.Bounds().Dx())
+	assert.Equal(t, 512, image.Bounds().Dy())
 }

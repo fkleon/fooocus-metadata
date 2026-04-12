@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseDateNoLayout(t *testing.T) {
@@ -34,7 +35,7 @@ func TestParseDate(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc, func(t *testing.T) {
 			actual, err := reader.ParseDateFromFilename(tc)
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.Equal(t, expected, actual)
 		})
 	}

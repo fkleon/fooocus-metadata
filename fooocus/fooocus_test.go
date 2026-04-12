@@ -94,7 +94,7 @@ func TestEmbedMetadataIntoPNG_CopyWrite(t *testing.T) {
 	// Expect resulting PNG to have 2 embedded chunks
 	data, err := pngembed.Extract(target.Bytes())
 	require.NoError(t, err)
-	require.Equal(t, 2, len(data))
+	require.Len(t, data, 2)
 	require.Equal(t, []byte(Fooocus.String()), data["fooocus_scheme"])
 	require.Contains(t, data, "parameters")
 
@@ -116,7 +116,7 @@ func TestEmbedMetadataIntoPNG_Write(t *testing.T) {
 	// 3 from template, 2 from metadata
 	data, err := pngembed.Extract(target.Bytes())
 	require.NoError(t, err)
-	require.Equal(t, 5, len(data))
+	require.Len(t, data, 5)
 	require.Equal(t, []byte(Fooocus.String()), data["fooocus_scheme"])
 	require.Contains(t, data, "parameters")
 
