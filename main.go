@@ -39,10 +39,10 @@ import (
 	"log/slog"
 
 	// Required image decoders
-	_ "image/jpeg"
-	_ "image/png"
+	_ "image/jpeg" // JPEG support
+	_ "image/png"  // PNG support
 
-	_ "golang.org/x/image/webp"
+	_ "golang.org/x/image/webp" // WebP support
 
 	"github.com/fkleon/fooocus-metadata/internal/image"
 	"github.com/fkleon/fooocus-metadata/types"
