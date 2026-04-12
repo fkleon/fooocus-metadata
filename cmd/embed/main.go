@@ -66,38 +66,41 @@ func embed(t string, in string, out string) (err error) {
 
 	switch t {
 	case "fooocus":
-		if metadata, err := readMetadataFromStdin[fooocus.Metadata](); err != nil {
+		metadata, err := readMetadataFromStdin[fooocus.Metadata]()
+		if err != nil {
 			return fmt.Errorf("failed to unmarshal metadata: %w", err)
-		} else {
-			writer := fooocus.NewFooocusMetadataWriter()
-			if in != "" {
-				return writer.CopyWrite(source, target, metadata)
-			} else {
-				return writer.Write(target, metadata)
-			}
 		}
+
+		writer := fooocus.NewFooocusMetadataWriter()
+		if in != "" {
+			return writer.CopyWrite(source, target, metadata)
+		}
+
+		return writer.Write(target, metadata)
 	case "fooocusplus":
-		if metadata, err := readMetadataFromStdin[fooocusplus.Metadata](); err != nil {
+		metadata, err := readMetadataFromStdin[fooocusplus.Metadata]()
+		if err != nil {
 			return fmt.Errorf("failed to unmarshal metadata: %w", err)
-		} else {
-			writer := fooocusplus.NewFooocusPlusMetadataWriter()
-			if in != "" {
-				return writer.CopyWrite(source, target, metadata)
-			} else {
-				return writer.Write(target, metadata)
-			}
 		}
+
+		writer := fooocusplus.NewFooocusPlusMetadataWriter()
+		if in != "" {
+			return writer.CopyWrite(source, target, metadata)
+		}
+
+		return writer.Write(target, metadata)
 	case "ruinedfooocus":
-		if metadata, err := readMetadataFromStdin[ruinedfooocus.Metadata](); err != nil {
+		metadata, err := readMetadataFromStdin[ruinedfooocus.Metadata]()
+		if err != nil {
 			return fmt.Errorf("failed to unmarshal metadata: %w", err)
-		} else {
-			writer := ruinedfooocus.NewRuinedFooocusMetadataWriter()
-			if in != "" {
-				return writer.CopyWrite(source, target, metadata)
-			} else {
-				return writer.Write(target, metadata)
-			}
 		}
+
+		writer := ruinedfooocus.NewRuinedFooocusMetadataWriter()
+		if in != "" {
+			return writer.CopyWrite(source, target, metadata)
+		}
+
+		return writer.Write(target, metadata)
 	default:
 		fmt.Printf("Unknown type: %s\n", t)
 		os.Exit(1)

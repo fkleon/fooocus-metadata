@@ -114,12 +114,14 @@ func NewContextFromFile(path string) (*types.ImageMetadataContext, error) {
 	}
 	defer file.Close()
 
-	if ctx, err := newContext(file, file.MIME); err == nil {
-		ctx.Filepath = file.Path()
-		return ctx, nil
-	} else {
+	ctx, err := newContext(file, file.MIME)
+	if err != nil {
 		return ctx, err
 	}
+
+	ctx.Filepath = file.Path()
+
+	return ctx, nil
 }
 
 func newContext(in io.ReadSeeker, mime string) (*types.ImageMetadataContext, error) {

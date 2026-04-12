@@ -81,9 +81,9 @@ func (v *Version) MetadataVersion() MetadataVersion {
 		strings.HasPrefix(v.Version, "Fooocus v2.4") ||
 		strings.HasPrefix(v.Version, "Fooocus v2.5") {
 		return v23
-	} else {
-		return unknown
 	}
+
+	return unknown
 }
 
 type metadataAny struct {

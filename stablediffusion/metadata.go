@@ -87,11 +87,12 @@ func (s *Lora) UnmarshalJSON(p []byte) (err error) {
 
 	s.Name = parts[0]
 	if len(parts) > 1 {
-		if weight, err := strconv.ParseFloat(parts[1], 32); err != nil {
+		weight, err := strconv.ParseFloat(parts[1], 32)
+		if err != nil {
 			return err
-		} else {
-			s.Weight = float32(weight)
 		}
+
+		s.Weight = float32(weight)
 	} else {
 		s.Weight = 1.0
 	}
