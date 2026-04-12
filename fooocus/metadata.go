@@ -93,20 +93,6 @@ type metadataAny struct {
 	*MetadataV23 // Fooocus v2.3+ metadata structure ("current")
 }
 
-func (m *metadataAny) asMetadataV23() *MetadataV23 {
-	if m.MetadataV23 != nil {
-		return m.MetadataV23
-	} else if m.MetadataV22 != nil {
-		current := ConvertV22ToV23(m.MetadataV22)
-		return &current
-	} else if m.MetadataV21 != nil {
-		current := ConvertV21ToV23(m.MetadataV21)
-		return &current
-	}
-
-	return nil
-}
-
 func (m *metadataAny) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &m.Version); err != nil {
 		return err
@@ -140,6 +126,20 @@ func (m *metadataAny) MarshallJSON() ([]byte, error) {
 	default:
 		return json.Marshal(nil)
 	}
+}
+
+func (m *metadataAny) asMetadataV23() *MetadataV23 {
+	if m.MetadataV23 != nil {
+		return m.MetadataV23
+	} else if m.MetadataV22 != nil {
+		current := ConvertV22ToV23(m.MetadataV22)
+		return &current
+	} else if m.MetadataV21 != nil {
+		current := ConvertV21ToV23(m.MetadataV21)
+		return &current
+	}
+
+	return nil
 }
 
 type Metadata = MetadataV23

@@ -25,6 +25,15 @@ type File struct {
 	MIME string
 }
 
+func NewFile(fin *os.File) *File {
+	file := &File{
+		File: fin,
+	}
+	_ = file.detectMimeType()
+
+	return file
+}
+
 func (file *File) Path() string {
 	return file.File.Name()
 }
@@ -78,15 +87,6 @@ func OpenFile(path string) (*File, error) {
 	}
 
 	return NewFile(fin), nil
-}
-
-func NewFile(fin *os.File) *File {
-	file := &File{
-		File: fin,
-	}
-	_ = file.detectMimeType()
-
-	return file
 }
 
 func NewContextFromReader(in io.ReadSeeker) (*types.ImageMetadataContext, error) {
