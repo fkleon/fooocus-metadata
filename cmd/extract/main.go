@@ -43,14 +43,15 @@ func main() {
 }
 
 func extract(path string) {
-	if metadata, err := fooocusmeta.ExtractFromFile(path); err != nil {
+	metadata, err := fooocusmeta.ExtractFromFile(path)
+	if err != nil {
 		fmt.Printf("Error: %s\n", err)
 		os.Exit(2)
-	} else {
-		out, err := json.MarshalIndent(metadata.Params.Raw(), "", "  ")
-		if err == nil {
-			fmt.Print(string(out))
-		}
+	}
+
+	out, err := json.MarshalIndent(metadata.Params.Raw(), "", "  ")
+	if err == nil {
+		fmt.Print(string(out))
 	}
 }
 
