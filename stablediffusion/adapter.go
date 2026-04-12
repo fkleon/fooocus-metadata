@@ -21,7 +21,7 @@ func (m Parameters) Version() string {
 func (m Parameters) Model() string {
 	var model = m.Metadata.Model
 	if model == "" {
-		model = m.Metadata.Unet
+		model = m.Unet
 	}
 
 	return types.NormaliseModelName(model)
