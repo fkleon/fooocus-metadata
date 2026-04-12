@@ -32,7 +32,7 @@ func TestParsePrivateLog(t *testing.T) {
 			assert.Equal(t, "FooocusPlus 1.0.0", metadata.Version)
 			assert.Equal(t, "Fooocus", metadata.MetadataScheme)
 			// TODO reference data to compare to
-			//assert.Equal(t, meta, images[image])
+			// assert.Equal(t, meta, images[image])
 		})
 	}
 }

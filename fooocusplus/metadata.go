@@ -73,7 +73,7 @@ type MetadataPrivateLog struct {
 	Sharpness          float32              `json:"sharpness"`
 	Steps              uint8                `json:"steps"`
 	Styles             fooocus.Styles       `json:"styles"`
-	StylesDefinition   string               `json:"styles_definition"` //TODO
+	StylesDefinition   string               `json:"styles_definition"` // TODO
 	User               string               `json:"user,omitempty"`    // TODO
 	Vae                string               `json:"vae"`
 	Version            string               `json:"version"`

@@ -9,7 +9,7 @@ import (
 type format struct {
 	name   string
 	decode func(ImageMetadataContext) (StructuredMetadata, error)
-	//encode func(GenerationParameters) (error)
+	// encode func(GenerationParameters) (error)
 }
 
 var (
