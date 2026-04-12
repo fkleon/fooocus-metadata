@@ -58,7 +58,7 @@ func embed(t string, in string, out string) (err error) {
 		defer source.Close()
 	}
 
-	target, err = os.OpenFile(out, os.O_CREATE|os.O_WRONLY, 0644)
+	target, err = os.OpenFile(out, os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		return fmt.Errorf("failed to open target file for writing: %w", err)
 	}
