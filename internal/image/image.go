@@ -247,7 +247,7 @@ func extractPngTextChunks(fin io.ReadSeeker) (map[string]string, error) {
 	// Decode text with ISO-8859-1 as per PNG spec
 	decoder := charmap.ISO8859_1.NewDecoder()
 	for k, v := range textData {
-		kd, err := decoder.String(string(k))
+		kd, err := decoder.String(k)
 		if err != nil {
 			slog.Warn("failed to decode key",
 				"key", k,
