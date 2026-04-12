@@ -16,7 +16,7 @@ func TestExtractMetadataFromPNG(t *testing.T) {
 		Source:    0,
 		Namespace: "PNG/tEXt",
 		Tag:       "parameters",
-		Value:     metaJson,
+		Value:     metaJSON,
 	}
 
 	extractor := NewRuinedFooocusMetadataExtractor()

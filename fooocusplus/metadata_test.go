@@ -10,7 +10,7 @@ import (
 )
 
 // Metadata as JSON
-const metaJson = `{
+const metaJSON = `{
   "ADM Guidance": "(1.5, 0.8, 0.3)",
   "Backend Engine": "SDXL-Fooocus",
   "Base Model": "elsewhereXL_v10",
@@ -85,7 +85,7 @@ var meta = &Metadata{
 
 func TestDecodeMetadata(t *testing.T) {
 	var decoded *Metadata
-	err := json.Unmarshal([]byte(metaJson), &decoded)
+	err := json.Unmarshal([]byte(metaJSON), &decoded)
 	require.NoError(t, err)
 	assert.Equal(t, meta, decoded)
 }
@@ -93,5 +93,5 @@ func TestDecodeMetadata(t *testing.T) {
 func TestEncodeMetadata(t *testing.T) {
 	encoded, err := json.Marshal(meta)
 	require.NoError(t, err)
-	assert.JSONEq(t, metaJson, string(encoded))
+	assert.JSONEq(t, metaJSON, string(encoded))
 }

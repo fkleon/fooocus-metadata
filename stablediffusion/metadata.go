@@ -146,8 +146,8 @@ func ParseParameters(in string) (meta Metadata, err error) {
 
 	matches := r.FindAllStringSubmatchIndex(in2, -1)
 
-	var pm_key string
-	var pm_idx int
+	var pmKey string
+	var pmIdx int
 
 	for i, match := range matches {
 		// Match m[1]: the key
@@ -163,8 +163,8 @@ func ParseParameters(in string) (meta Metadata, err error) {
 
 		// If prev was negative prompt, the match was not sufficient,
 		// fix it up
-		if pm_key == "negative_prompt" {
-			nprompt := in2[pm_idx : match[0]-1]
+		if pmKey == "negative_prompt" {
+			nprompt := in2[pmIdx : match[0]-1]
 			kv["negative_prompt"] = strings.TrimSpace(nprompt)
 		}
 
@@ -182,8 +182,8 @@ func ParseParameters(in string) (meta Metadata, err error) {
 		}
 
 		// Remember previous key and m[2] index (value)
-		pm_key = k
-		pm_idx = match[4]
+		pmKey = k
+		pmIdx = match[4]
 	}
 
 	// LoRAs

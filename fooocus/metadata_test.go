@@ -69,7 +69,7 @@ var metaV23 = &MetadataV23{
 	Version:         "Fooocus v2.5.5",
 }
 
-const metaV23AltJson = `{
+const metaV23AltJSON = `{
   "prompt": "A sunflower field",
   "negative_prompt": "",
   "prompt_expansion": "",
@@ -340,7 +340,7 @@ func TestEncodeMetadata_V23(t *testing.T) {
 
 func TestDecodeMetadata_V23_Alt(t *testing.T) {
 	var decoded *MetadataV23
-	err := json.Unmarshal([]byte(metaV23AltJson), &decoded)
+	err := json.Unmarshal([]byte(metaV23AltJSON), &decoded)
 	require.NoError(t, err)
 	assert.Equal(t, metaV23Alt, decoded)
 }
@@ -350,7 +350,7 @@ func TestEncodeMetadata_V23_Alt(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Skip("Only supports v23")
-	assert.JSONEq(t, metaV23AltJson, string(encoded))
+	assert.JSONEq(t, metaV23AltJSON, string(encoded))
 }
 
 func TestConvertMetadata_V21(t *testing.T) {
@@ -390,7 +390,7 @@ func TestDecodeMetadataAny_V23(t *testing.T) {
 
 func TestDecodeMetadataAny_V23_Alt(t *testing.T) {
 	var out *metadataAny
-	err := json.Unmarshal([]byte(metaV23AltJson), &out)
+	err := json.Unmarshal([]byte(metaV23AltJSON), &out)
 	require.NoError(t, err)
 	assert.NotNil(t, out.MetadataV23)
 	assert.Equal(t, metaV23Alt, out.MetadataV23)

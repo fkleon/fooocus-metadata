@@ -16,7 +16,7 @@ func TestExtractMetadataFromPNG(t *testing.T) {
 		Source:    0,
 		Namespace: "PNG/tEXt",
 		Tag:       "Comment",
-		Value:     metaJson,
+		Value:     metaJSON,
 	}
 
 	extractor := NewFooocusPlusMetadataExtractor()
@@ -38,7 +38,7 @@ func TestExtractMetadataFromExif(t *testing.T) {
 	exifData.Add(imagemeta.TagInfo{
 		Source: imagemeta.EXIF,
 		Tag:    "UserComment",
-		Value:  metaJson,
+		Value:  metaJSON,
 	})
 
 	extractor := NewFooocusPlusMetadataExtractor()
