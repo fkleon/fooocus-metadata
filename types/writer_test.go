@@ -40,7 +40,6 @@ func TestEmbedWithSource(t *testing.T) {
 	// Test embedding with a source file
 	// This should write a copy of the source (converted to PNG)
 	// with the metadata embedded
-
 	writer := NewPngMetadataWriter()
 
 	values := make(map[string]interface{})
@@ -49,6 +48,7 @@ func TestEmbedWithSource(t *testing.T) {
 
 	source, err := os.Open("../fooocus/testdata/fooocus-meta.jpeg")
 	require.NoError(t, err)
+
 	defer source.Close()
 
 	var buf bytes.Buffer

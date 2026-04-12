@@ -96,6 +96,7 @@ func ExtractFromReader(reader io.ReadSeeker, opts ...Option) (params types.Struc
 	if err != nil {
 		return
 	}
+
 	imageCtx.Filepath = cfg.Path
 
 	return types.Decode(*imageCtx)

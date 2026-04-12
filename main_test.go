@@ -20,6 +20,7 @@ import (
 // Configure logging during testing
 func TestMain(m *testing.M) {
 	slog.SetLogLoggerLevel(slog.LevelWarn)
+
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }
@@ -250,5 +251,6 @@ func createTemp(t *testing.T, pattern string) *os.File {
 	t.Cleanup(func() {
 		_ = os.Remove(target.Name())
 	})
+
 	return target
 }

@@ -47,6 +47,7 @@ func (file *File) detectMimeType() (err error) {
 	// Sniff content type via http.DetectContentType
 	// Only the first 512 bytes are relevant.
 	buffer := make([]byte, 512)
+
 	_, err = file.Read(buffer)
 	if err != nil && err != io.EOF {
 		return
@@ -84,6 +85,7 @@ func NewFile(fin *os.File) *File {
 		File: fin,
 	}
 	_ = file.detectMimeType()
+
 	return file
 }
 
@@ -92,17 +94,18 @@ func NewContextFromReader(in io.ReadSeeker) (*types.ImageMetadataContext, error)
 	// Sniff content type via http.DetectContentType
 	// Only the first 512 bytes are relevant.
 	buffer := make([]byte, 512)
+
 	_, err := in.Read(buffer)
 	if err != nil && err != io.EOF {
 		return nil, err
 	}
 
 	mime := http.DetectContentType(buffer)
+
 	return newContext(in, mime)
 }
 
 func NewContextFromFile(path string) (*types.ImageMetadataContext, error) {
-
 	slog.Debug("Opening image file..", "filepath", path)
 
 	file, err := OpenFile(path)
@@ -120,7 +123,6 @@ func NewContextFromFile(path string) (*types.ImageMetadataContext, error) {
 }
 
 func newContext(in io.ReadSeeker, mime string) (*types.ImageMetadataContext, error) {
-
 	// Build image metadata and parse additional metadata sources
 	var metadataMap map[string]imagemeta.TagInfo
 	var metadataErr error
@@ -132,12 +134,14 @@ func newContext(in io.ReadSeeker, mime string) (*types.ImageMetadataContext, err
 		fallthrough
 	case "image/tiff":
 		slog.Debug("Metadata source", "mime", mime, "source", "EXIF")
+
 		var exif *imagemeta.Tags
 		if exif, metadataErr = extractExif(in, mime); metadataErr == nil {
 			metadataMap = exif.All()
 		}
 	case "image/png":
 		slog.Debug("Metadata source", "mime", mime, "source", "PNG tEXt")
+
 		var pngText map[string]string
 		if pngText, metadataErr = extractPngText(in); metadataErr == nil {
 			metadataMap = make(map[string]imagemeta.TagInfo, len(pngText))
@@ -167,7 +171,6 @@ func newContext(in io.ReadSeeker, mime string) (*types.ImageMetadataContext, err
 }
 
 func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err error) {
-
 	data = &imagemeta.Tags{}
 
 	// Rewind to the start
@@ -178,6 +181,7 @@ func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err 
 
 	// Extract EXIF data
 	var format imagemeta.ImageFormat
+
 	switch mimeType {
 	default:
 		fallthrough
@@ -201,7 +205,6 @@ func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err 
 			slog.Debug(fmt.Sprintf("EXIF warning: %s", fmt.Sprintf(msg, args)))
 		},
 	})
-
 	if err != nil {
 		slog.Warn("Failed to extract EXIF data",
 			"error", err)
@@ -228,7 +231,6 @@ func extractPngText(fin io.ReadSeeker) (pngText map[string]string, err error) {
 }
 
 func extractPngTextChunks(fin io.ReadSeeker) (map[string]string, error) {
-
 	data, err := io.ReadAll(fin)
 	if err != nil {
 		return nil, err
@@ -250,15 +252,19 @@ func extractPngTextChunks(fin io.ReadSeeker) (map[string]string, error) {
 			slog.Warn("failed to decode key",
 				"key", k,
 				"error", err)
+
 			continue
 		}
+
 		vd, err := decoder.String(string(v))
 		if err != nil {
 			slog.Warn("failed to decode value",
 				"key", k, "value", v,
 				"error", err)
+
 			continue
 		}
+
 		textDataDecoded[kd] = vd
 		textDataDecoded[k] = string(v)
 	}

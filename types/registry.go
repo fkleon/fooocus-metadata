@@ -19,6 +19,7 @@ var (
 
 func RegisterReader(name string, decode func(ImageMetadataContext) (StructuredMetadata, error)) {
 	formatsMu.Lock()
+
 	formats = append(formats, format{name, decode})
 	formatsMu.Unlock()
 }
@@ -28,6 +29,7 @@ func Decode(ctx ImageMetadataContext) (StructuredMetadata, error) {
 
 	for _, format := range formats {
 		slog.Debug("Trying to decode with", "software", format.name)
+
 		if params, err := format.decode(ctx); err == nil {
 			slog.Debug("Found metadata", "software", format.name)
 			return params, nil

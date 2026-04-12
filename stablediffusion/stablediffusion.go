@@ -19,7 +19,6 @@ type StableDiffusionMetadataExtractor struct {
 }
 
 func (e StableDiffusionMetadataExtractor) Decode(file m.ImageMetadataContext) (meta Metadata, err error) {
-
 	var data = file.EmbeddedMetadata
 	var parameters string
 
@@ -38,7 +37,6 @@ func (e StableDiffusionMetadataExtractor) Decode(file m.ImageMetadataContext) (m
 }
 
 func (e StableDiffusionMetadataExtractor) Extract(file m.ImageMetadataContext) (m.StructuredMetadata, error) {
-
 	var meta = m.StructuredMetadata{
 		Source: Software,
 	}
@@ -48,10 +46,12 @@ func (e StableDiffusionMetadataExtractor) Extract(file m.ImageMetadataContext) (
 	meta.Created, _ = e.ParseDateFromFilename(filename)
 
 	slog.Debug("Checking embedded metadata..", "file", filename)
+
 	if params, err := e.Decode(file); err == nil {
 		meta.Params = &Parameters{
 			Metadata: params,
 		}
+
 		return meta, nil
 	}
 

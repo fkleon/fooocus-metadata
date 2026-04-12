@@ -18,11 +18,11 @@ import (
 )
 
 func main() {
-
 	var debug, verbose bool
 
 	flag.BoolVar(&verbose, "verbose", false, "enable verbose logging")
 	flag.BoolVar(&debug, "debug", false, "enable debug logging")
+
 	flag.Usage = func() {
 		fmt.Fprintln(os.Stderr, "usage: [flags] <path>")
 		flag.PrintDefaults()
@@ -43,7 +43,6 @@ func main() {
 }
 
 func extract(path string) {
-
 	if metadata, err := fooocusmeta.ExtractFromFile(path); err != nil {
 		fmt.Printf("Error: %s\n", err)
 		os.Exit(2)

@@ -46,6 +46,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 		stripLeft := "to_clipboard("
 		stripRight := "')"
 		clean := bClick[len(stripLeft)+1 : len(bClick)-len(stripRight)]
+
 		cleanU, err := url.QueryUnescape(clean)
 		if err != nil {
 			return nil, err

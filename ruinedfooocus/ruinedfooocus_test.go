@@ -10,7 +10,6 @@ import (
 )
 
 func TestExtractMetadataFromPNG(t *testing.T) {
-
 	var pngData = make(map[string]imagemeta.TagInfo)
 
 	pngData["parameters"] = imagemeta.TagInfo{

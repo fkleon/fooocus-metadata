@@ -15,7 +15,6 @@ import (
 )
 
 func main() {
-
 	var debug, verbose bool
 	var embedType, embedIn, embedOut string
 
@@ -24,6 +23,7 @@ func main() {
 	flag.StringVar(&embedType, "type", "fooocus", "the type of metadata to embed (fooocus, fooocusplus, ruinedfooocus)")
 	flag.StringVar(&embedIn, "in", "", "the file to read imagedata from (optional)")
 	flag.StringVar(&embedOut, "out", "", "the file to write metadata to (required)")
+
 	flag.Usage = func() {
 		fmt.Fprintln(os.Stderr, "usage: [flags] | echo '<meta>'")
 		flag.PrintDefaults()
@@ -43,11 +43,11 @@ func main() {
 		fmt.Printf("Error: %s\n", err)
 		os.Exit(2)
 	}
+
 	fmt.Printf("Metadata successfully embedded into %s\n", embedOut)
 }
 
 func embed(t string, in string, out string) (err error) {
-
 	var source, target *os.File
 
 	if in != "" {

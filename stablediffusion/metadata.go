@@ -54,10 +54,12 @@ func (l *Loras) UnmarshalJSON(p []byte) (err error) {
 	parts := strings.Split(tmp, ", ")
 	for _, part := range parts {
 		var lora Lora
+
 		partString := fmt.Sprintf(`"%s"`, part)
 		if err := json.Unmarshal([]byte(partString), &lora); err != nil {
 			return err
 		}
+
 		*l = append(*l, lora)
 	}
 
@@ -82,6 +84,7 @@ func (s *Lora) UnmarshalJSON(p []byte) (err error) {
 	tmp = strings.TrimSuffix(tmp, ">")
 
 	parts := strings.SplitN(tmp, ":", 2)
+
 	s.Name = parts[0]
 	if len(parts) > 1 {
 		if weight, err := strconv.ParseFloat(parts[1], 32); err != nil {
@@ -114,6 +117,7 @@ func (s *Size) UnmarshalJSON(p []byte) (err error) {
 	if s.Width, err = strconv.Atoi(size[0]); err != nil {
 		return err
 	}
+
 	if s.Height, err = strconv.Atoi(size[1]); err != nil {
 		return err
 	}
@@ -127,7 +131,6 @@ func (s Size) MarshalJSON() ([]byte, error) {
 }
 
 func ParseParameters(in string) (meta Metadata, err error) {
-
 	if json.Valid([]byte(in)) {
 		return meta, fmt.Errorf("input is JSON, not plaintext")
 	}
@@ -146,7 +149,6 @@ func ParseParameters(in string) (meta Metadata, err error) {
 	var pm_idx int
 
 	for i, match := range matches {
-
 		// Match m[1]: the key
 		m1 := in2[match[2]:match[3]]
 		// Match m[2]: the value
@@ -185,6 +187,7 @@ func ParseParameters(in string) (meta Metadata, err error) {
 
 	// LoRAs
 	lr := regexp.MustCompile("<lora:[^>]+>")
+
 	loraMatches := lr.FindAllString(kv["prompt"], -1)
 	if len(loraMatches) > 0 {
 		kv["loras"] = strings.Join(loraMatches, ", ")
@@ -192,5 +195,6 @@ func ParseParameters(in string) (meta Metadata, err error) {
 
 	kvByte, _ := json.Marshal(kv)
 	err = json.Unmarshal(kvByte, &meta)
+
 	return meta, err
 }

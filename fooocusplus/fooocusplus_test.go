@@ -28,7 +28,6 @@ func TestExtractMetadataFromPNG(t *testing.T) {
 }
 
 func TestExtractMetadataFromExif(t *testing.T) {
-
 	var exifData imagemeta.Tags
 
 	exifData.Add(imagemeta.TagInfo{

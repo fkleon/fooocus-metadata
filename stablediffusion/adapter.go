@@ -23,6 +23,7 @@ func (m Parameters) Model() string {
 	if model == "" {
 		model = m.Metadata.Unet
 	}
+
 	return types.NormaliseModelName(model)
 }
 
@@ -34,6 +35,7 @@ func (m Parameters) LoRAs() []types.Lora {
 			Weight: lora.Weight,
 		}
 	}
+
 	return loras
 }
 

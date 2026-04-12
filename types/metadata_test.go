@@ -8,7 +8,6 @@ import (
 )
 
 func TestNormaliseModelName(t *testing.T) {
-
 	testCases := []struct {
 		input    string
 		expected string

@@ -112,11 +112,11 @@ func (legacy *MetadataPrivateLog) toMetadata() (meta Metadata) {
 		Vae:               legacy.Vae,
 		Version:           legacy.Version,
 	}
+
 	return meta
 }
 
 func parseMetadata(parameters string) (meta Metadata, err error) {
-
 	// Parse metadata
 	err = json.Unmarshal([]byte(parameters), &meta)
 	if err != nil {

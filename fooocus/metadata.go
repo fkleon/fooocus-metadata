@@ -103,6 +103,7 @@ func (m *metadataAny) asMetadataV23() *MetadataV23 {
 		current := ConvertV21ToV23(m.MetadataV21)
 		return &current
 	}
+
 	return nil
 }
 
@@ -240,6 +241,7 @@ func (m *MetadataV23) UnmarshalJSON(data []byte) error {
 
 	m.fillLoras()
 	m.fillSteps()
+
 	return nil
 }
 
@@ -396,6 +398,7 @@ func ConvertV22ToV23(v22 *MetadataV22) (v23 MetadataV23) {
 	if v23.Seed == "" {
 		v23.Seed = strconv.Itoa(v22.Seed)
 	}
+
 	v23.MetadataScheme = Fooocus.String()
 
 	// Populate missing steps and LoRAs
@@ -440,6 +443,7 @@ func (r Tuple[T]) MarshalJSON() ([]byte, error) {
 	}
 
 	val := fmt.Sprintf("(%s)", strings.Join(values, ", "))
+
 	return json.Marshal(val)
 }
 
@@ -489,6 +493,7 @@ func (s *Styles) UnmarshalJSON(p []byte) error {
 	if err := json.Unmarshal([]byte(cleanStyles), &styles); err != nil {
 		return err
 	}
+
 	*s = styles
 
 	return nil
@@ -498,14 +503,17 @@ func (s Styles) MarshalJSON() ([]byte, error) {
 	var sb strings.Builder
 
 	sb.WriteString("[")
+
 	for idx, style := range s {
 		sb.WriteString("'")
 		sb.WriteString(style)
 		sb.WriteString("'")
+
 		if idx < len(s)-1 {
 			sb.WriteString(", ")
 		}
 	}
+
 	sb.WriteString("]")
 
 	return json.Marshal(sb.String())
@@ -524,15 +532,19 @@ func (l *Lora) UnmarshalJSON(p []byte) error {
 	if err := json.Unmarshal(p, &tmp); err != nil {
 		return err
 	}
+
 	if err := json.Unmarshal(tmp[0], &l.Name); err != nil {
 		return err
 	}
+
 	if err := json.Unmarshal(tmp[1], &l.Weight); err != nil {
 		return err
 	}
+
 	if err := json.Unmarshal(tmp[2], &l.Hash); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -557,8 +569,10 @@ func (l *LoraCombined) UnmarshalJSON(p []byte) error {
 		if err != nil {
 			return err
 		}
+
 		l.Weight = float32(weight)
 	}
+
 	return nil
 }
 
@@ -567,7 +581,6 @@ func (l LoraCombined) MarshalJSON() ([]byte, error) {
 }
 
 func parseMetadata(scheme string, parameters string) (meta Metadata, err error) {
-
 	// Scheme is one of 'fooocus' or 'a1111'
 	if scheme != Fooocus.String() {
 		return meta, fmt.Errorf("%s: unsupported metadata scheme: %s", Software, scheme)

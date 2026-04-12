@@ -22,13 +22,13 @@ type FileMetadataExtractor struct {
 }
 
 func (e *FileMetadataExtractor) ParseDateFromFilename(filename string) (time.Time, error) {
-
 	for _, layoutIn := range e.DateLayouts {
 		if len(filename) < len(layoutIn) {
 			continue
 		}
 
 		datepart := filename[:len(layoutIn)]
+
 		t, err := time.Parse(layoutIn, datepart)
 		if err == nil {
 			return t, nil

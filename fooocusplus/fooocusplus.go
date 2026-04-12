@@ -17,7 +17,6 @@ type FooocusPlusMetadataExtractor struct {
 }
 
 func (e FooocusPlusMetadataExtractor) Decode(file m.ImageMetadataContext) (meta Metadata, err error) {
-
 	// TODO: scheme 'simple' if 'Comment' field exists
 	var data = file.EmbeddedMetadata
 	var parameters string
@@ -45,7 +44,6 @@ func (e FooocusPlusMetadataExtractor) Decode(file m.ImageMetadataContext) (meta 
 }
 
 func (e FooocusPlusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.StructuredMetadata, error) {
-
 	var meta = m.StructuredMetadata{
 		Source: Software,
 	}
@@ -55,10 +53,12 @@ func (e FooocusPlusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.St
 	meta.Created, _ = e.ParseDateFromFilename(filename)
 
 	slog.Debug("Checking embedded metadata..", "file", filename)
+
 	if params, err := e.Decode(file); err == nil {
 		meta.Params = &Parameters{
 			Metadata: params,
 		}
+
 		return meta, nil
 	}
 
@@ -68,10 +68,12 @@ func (e FooocusPlusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.St
 
 	if log, err := ParsePrivateLog(logfile); err == nil {
 		slog.Debug("Private log file", "file", logfile, "images", len(log))
+
 		if params, ok := log[filename]; ok {
 			meta.Params = &Parameters{
 				Metadata: params,
 			}
+
 			return meta, nil
 		}
 	}
@@ -102,6 +104,7 @@ func (w FooocusPlusMetadataWriter) CopyWrite(source io.Reader, target io.Writer,
 	values := map[string]interface{}{
 		"Comment": metadata,
 	}
+
 	return w.Embed(source, target, values)
 }
 

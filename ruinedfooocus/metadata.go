@@ -47,6 +47,7 @@ func (l *Lora) UnmarshalJSON(p []byte) error {
 	if err := json.Unmarshal(p, &tmp); err != nil {
 		return err
 	}
+
 	if err := json.Unmarshal(tmp[0], &l.Hash); err != nil {
 		return err
 	}
@@ -63,6 +64,7 @@ func (l *Lora) UnmarshalJSON(p []byte) error {
 	if err != nil {
 		return err
 	}
+
 	l.Weight = float32(weight)
 
 	l.Name = loraCombined[1]
@@ -77,7 +79,6 @@ func (l Lora) MarshalJSON() ([]byte, error) {
 }
 
 func parseMetadata(parameters string) (meta Metadata, err error) {
-
 	// Parse metadata
 	err = json.Unmarshal([]byte(parameters), &meta)
 	if err != nil {

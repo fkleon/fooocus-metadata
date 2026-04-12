@@ -37,7 +37,6 @@ func TestDecodeWithReader(t *testing.T) {
 }
 
 func TestDecodeWithMultipleReaders(t *testing.T) {
-
 	RegisterReader("TestErrorSource", func(ctx ImageMetadataContext) (StructuredMetadata, error) {
 		return StructuredMetadata{}, fmt.Errorf("an error occurred")
 	})

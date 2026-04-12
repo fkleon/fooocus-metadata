@@ -16,7 +16,6 @@ type RuinedFooocusMetadataExtractor struct {
 }
 
 func (e RuinedFooocusMetadataExtractor) Decode(file m.ImageMetadataContext) (meta Metadata, err error) {
-
 	var data = file.EmbeddedMetadata
 	var parameters string
 
@@ -31,7 +30,6 @@ func (e RuinedFooocusMetadataExtractor) Decode(file m.ImageMetadataContext) (met
 }
 
 func (e RuinedFooocusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.StructuredMetadata, error) {
-
 	var meta = m.StructuredMetadata{
 		Source: Software,
 	}
@@ -41,10 +39,12 @@ func (e RuinedFooocusMetadataExtractor) Extract(file m.ImageMetadataContext) (m.
 	meta.Created, _ = e.ParseDateFromFilename(filename)
 
 	slog.Debug("Checking embedded metadata..", "file", filename)
+
 	if params, err := e.Decode(file); err == nil {
 		meta.Params = &Parameters{
 			Metadata: params,
 		}
+
 		return meta, nil
 	}
 
@@ -73,6 +73,7 @@ func (w RuinedFooocusMetadataWriter) CopyWrite(source io.Reader, target io.Write
 	values := map[string]interface{}{
 		"parameters": metadata,
 	}
+
 	return w.Embed(source, target, values)
 }
 

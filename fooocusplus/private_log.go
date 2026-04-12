@@ -47,6 +47,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 		stripLeft := "to_clipboard("
 		stripRight := "')"
 		clean := bClick[len(stripLeft)+1 : len(bClick)-len(stripRight)]
+
 		cleanU, err := url.QueryUnescape(clean)
 		if err != nil {
 			return nil, err
@@ -59,6 +60,7 @@ func ParsePrivateLog(filePath string) (map[string]Metadata, error) {
 			if !strings.HasPrefix(metadata.Version, "FooocusPlus ") {
 				continue
 			}
+
 			slog.Debug("Metadata in private log", "file", imgSrc)
 			images[imgSrc] = metadata.toMetadata()
 		}

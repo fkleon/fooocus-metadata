@@ -45,6 +45,7 @@ func TestExtractImageInfo_JPEG(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/jpeg", image.MIME)
+
 	for _, v := range image.EmbeddedMetadata {
 		assert.Equal(t, imagemeta.EXIF, v.Source)
 		assert.Contains(t, v.Namespace, "IFD0")
@@ -57,6 +58,7 @@ func TestExtractImageInfo_PNG(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/png", image.MIME)
+
 	for _, v := range image.EmbeddedMetadata {
 		assert.Equal(t, imagemeta.Source(0x0), v.Source)
 		assert.Equal(t, "PNG/tEXt", v.Namespace)
@@ -69,6 +71,7 @@ func TestExtractImageInfo_WEBP(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "image/webp", image.MIME)
+
 	for _, v := range image.EmbeddedMetadata {
 		assert.Equal(t, imagemeta.EXIF, v.Source)
 		assert.Contains(t, v.Namespace, "IFD0")
