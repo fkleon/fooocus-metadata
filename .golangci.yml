@@ -1,0 +1,68 @@
+version: "2"
+linters:
+  default: standard
+  exclusions:
+    presets:
+      - common-false-positives
+      - std-error-handling
+  settings:
+    cyclop:
+      max-complexity: 14
+    exhaustive:
+      default-signifies-exhaustive: true
+    ireturn:
+      allow:
+        - anon
+        - error
+        - empty
+        - stdlib
+        - generic
+    wsl_v5:
+      disable:
+        - decl
+    recvcheck:
+      exclusions:
+        - "*.UnmarshalJSON"
+    revive:
+      enable-all-rules: false
+      enable-default-rules: true
+      rules:
+        - name: "exported"
+          disabled: true
+  enable:
+    - canonicalheader
+    - contextcheck
+    - copyloopvar
+    - cyclop
+    - decorder
+    - dogsled
+    - dupl
+    - errname
+    - exhaustive
+    - exptostd
+    - funcorder
+    - gocheckcompilerdirectives
+    - goconst
+    - gocritic
+    - gosec
+    - iface
+    - interfacebloat
+    - intrange
+    - ireturn
+    - modernize
+    - nestif
+    - nilerr
+    - nilnesserr
+    - nilnil
+    - nolintlint
+    - reassign
+    - recvcheck
+    - revive
+    - testifylint
+    - thelper
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - usetesting
+    - whitespace
+    - wsl_v5
