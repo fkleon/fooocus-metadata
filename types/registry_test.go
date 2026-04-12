@@ -23,7 +23,7 @@ func TestDecodeWithReader(t *testing.T) {
 	}
 
 	source := "TestSource"
-	reader := func(ctx ImageMetadataContext) (StructuredMetadata, error) {
+	reader := func(_ ImageMetadataContext) (StructuredMetadata, error) {
 		return StructuredMetadata{
 			Source: source,
 		}, nil
@@ -37,10 +37,10 @@ func TestDecodeWithReader(t *testing.T) {
 }
 
 func TestDecodeWithMultipleReaders(t *testing.T) {
-	RegisterReader("TestErrorSource", func(ctx ImageMetadataContext) (StructuredMetadata, error) {
+	RegisterReader("TestErrorSource", func(_ ImageMetadataContext) (StructuredMetadata, error) {
 		return StructuredMetadata{}, fmt.Errorf("an error occurred")
 	})
-	RegisterReader("TestSource", func(ctx ImageMetadataContext) (StructuredMetadata, error) {
+	RegisterReader("TestSource", func(_ ImageMetadataContext) (StructuredMetadata, error) {
 		return StructuredMetadata{
 			Source: "TestSource",
 		}, nil
