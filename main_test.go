@@ -246,7 +246,8 @@ func TestEmbedMetadata_WithSource(t *testing.T) {
 
 // Create a temp file and register a callback to clean it up after the test run
 func createTemp(t *testing.T, pattern string) *os.File {
-	target, err := os.CreateTemp("", pattern)
+	t.Helper()
+	target, err := os.CreateTemp(t.TempDir(), pattern)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		_ = os.Remove(target.Name())
