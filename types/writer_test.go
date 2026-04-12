@@ -18,7 +18,7 @@ func TestEmbedWithoutSource(t *testing.T) {
 	// with the metadata embedded
 	writer := NewPngMetadataWriter()
 
-	values := make(map[string]interface{})
+	values := make(map[string]any)
 	values["fooocus_scheme"] = "Fooocus"
 	values["parameters"] = nil
 
@@ -42,7 +42,7 @@ func TestEmbedWithSource(t *testing.T) {
 	// with the metadata embedded
 	writer := NewPngMetadataWriter()
 
-	values := make(map[string]interface{})
+	values := make(map[string]any)
 	values["fooocus_scheme"] = "Fooocus"
 	values["parameters"] = nil
 

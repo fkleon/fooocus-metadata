@@ -549,7 +549,7 @@ func (l *Lora) UnmarshalJSON(p []byte) error {
 }
 
 func (l Lora) MarshalJSON() ([]byte, error) {
-	return json.Marshal([]interface{}{l.Name, l.Weight, l.Hash})
+	return json.Marshal([]any{l.Name, l.Weight, l.Hash})
 }
 
 // String of format "<name> : <weight>"

@@ -75,7 +75,7 @@ func (l *Lora) UnmarshalJSON(p []byte) error {
 func (l Lora) MarshalJSON() ([]byte, error) {
 	// Build details string
 	details := fmt.Sprintf("%g - %v", l.Weight, l.Name)
-	return json.Marshal([]interface{}{l.Hash, details})
+	return json.Marshal([]any{l.Hash, details})
 }
 
 func parseMetadata(parameters string) (meta Metadata, err error) {

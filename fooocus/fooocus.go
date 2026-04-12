@@ -111,7 +111,7 @@ func (w FooocusMetadataWriter) Write(target io.Writer, metadata Metadata) error 
 }
 
 func (w FooocusMetadataWriter) CopyWrite(source io.Reader, target io.Writer, metadata Metadata) error {
-	values := map[string]interface{}{
+	values := map[string]any{
 		"fooocus_scheme": Fooocus.String(),
 		"parameters":     metadata,
 	}

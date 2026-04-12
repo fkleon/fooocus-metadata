@@ -70,7 +70,7 @@ func (w RuinedFooocusMetadataWriter) Write(target io.Writer, metadata Metadata) 
 }
 
 func (w RuinedFooocusMetadataWriter) CopyWrite(source io.Reader, target io.Writer, metadata Metadata) error {
-	values := map[string]interface{}{
+	values := map[string]any{
 		"parameters": metadata,
 	}
 

@@ -42,7 +42,7 @@ type GenerationParameters interface {
 
 	// Raw returns the underlying metadata struct (e.g. fooocus.Metadata).
 	// The caller can type-assert it if needed.
-	Raw() interface{}
+	Raw() any
 }
 
 func NormaliseModelName(name string) string {

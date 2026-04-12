@@ -33,7 +33,7 @@ func NewPngMetadataWriter() *PngMetadataWriter {
 	}
 }
 
-func (e *PngMetadataWriter) Embed(source io.Reader, target io.Writer, values map[string]interface{}) (err error) {
+func (e *PngMetadataWriter) Embed(source io.Reader, target io.Writer, values map[string]any) (err error) {
 	slog.Debug("Embedding metadata", "count", len(values), "target", target)
 
 	if source == nil && e.Template == nil {

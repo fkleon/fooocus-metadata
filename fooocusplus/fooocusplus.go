@@ -101,7 +101,7 @@ func (w FooocusPlusMetadataWriter) Write(target io.Writer, metadata Metadata) er
 }
 
 func (w FooocusPlusMetadataWriter) CopyWrite(source io.Reader, target io.Writer, metadata Metadata) error {
-	values := map[string]interface{}{
+	values := map[string]any{
 		"Comment": metadata,
 	}
 

@@ -51,8 +51,8 @@ func (l *Loras) UnmarshalJSON(p []byte) (err error) {
 		return err
 	}
 
-	parts := strings.Split(tmp, ", ")
-	for _, part := range parts {
+	parts := strings.SplitSeq(tmp, ", ")
+	for part := range parts {
 		var lora Lora
 
 		partString := fmt.Sprintf(`"%s"`, part)

@@ -55,6 +55,6 @@ func (m Parameters) CreatedTime() time.Time {
 	return m.Created
 }
 
-func (m Parameters) Raw() interface{} {
+func (m Parameters) Raw() any {
 	return m.Metadata
 }
