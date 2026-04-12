@@ -56,11 +56,12 @@ func extract(path string) {
 }
 
 func setLogLevel(debug bool, verbose bool) {
-	if debug {
+	switch {
+	case debug:
 		slog.SetLogLoggerLevel(slog.LevelDebug)
-	} else if verbose {
+	case verbose:
 		slog.SetLogLoggerLevel(slog.LevelInfo)
-	} else {
+	default:
 		slog.SetLogLoggerLevel(slog.LevelWarn)
 	}
 }

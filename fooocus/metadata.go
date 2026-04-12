@@ -73,17 +73,18 @@ type Version struct {
 }
 
 func (v *Version) MetadataVersion() MetadataVersion {
-	if strings.HasPrefix(v.Version, "v2.1") {
+	switch {
+	case strings.HasPrefix(v.Version, "v2.1"):
 		return v21
-	} else if strings.HasPrefix(v.Version, "Fooocus v2.2") {
+	case strings.HasPrefix(v.Version, "Fooocus v2.2"):
 		return v22
-	} else if strings.HasPrefix(v.Version, "Fooocus v2.3") ||
-		strings.HasPrefix(v.Version, "Fooocus v2.4") ||
-		strings.HasPrefix(v.Version, "Fooocus v2.5") {
+	case strings.HasPrefix(v.Version, "Fooocus v2.3"),
+		strings.HasPrefix(v.Version, "Fooocus v2.4"),
+		strings.HasPrefix(v.Version, "Fooocus v2.5"):
 		return v23
+	default:
+		return unknown
 	}
-
-	return unknown
 }
 
 type metadataAny struct {
@@ -129,17 +130,18 @@ func (m *metadataAny) MarshallJSON() ([]byte, error) {
 }
 
 func (m *metadataAny) asMetadataV23() *MetadataV23 {
-	if m.MetadataV23 != nil {
+	switch {
+	case m.MetadataV23 != nil:
 		return m.MetadataV23
-	} else if m.MetadataV22 != nil {
+	case m.MetadataV22 != nil:
 		current := ConvertV22ToV23(m.MetadataV22)
 		return &current
-	} else if m.MetadataV21 != nil {
+	case m.MetadataV21 != nil:
 		current := ConvertV21ToV23(m.MetadataV21)
 		return &current
+	default:
+		return nil
 	}
-
-	return nil
 }
 
 type Metadata = MetadataV23
