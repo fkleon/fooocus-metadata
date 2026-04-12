@@ -245,9 +245,9 @@ func (m *MetadataV23) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (meta *MetadataV23) fillLoras() {
+func (m *MetadataV23) fillLoras() {
 	// If Loras are already set, do not overwrite them
-	if meta.Loras != nil {
+	if m.Loras != nil {
 		return
 	}
 
@@ -262,20 +262,20 @@ func (meta *MetadataV23) fillLoras() {
 			})
 		}
 	}
-	addLora(meta.LoraCombined1)
-	addLora(meta.LoraCombined2)
-	addLora(meta.LoraCombined3)
-	addLora(meta.LoraCombined4)
-	addLora(meta.LoraCombined5)
+	addLora(m.LoraCombined1)
+	addLora(m.LoraCombined2)
+	addLora(m.LoraCombined3)
+	addLora(m.LoraCombined4)
+	addLora(m.LoraCombined5)
 
-	meta.Loras = loras
+	m.Loras = loras
 }
 
-func (meta *Metadata) fillSteps() {
+func (m *Metadata) fillSteps() {
 	// Set default steps based on performance preset
-	if meta.Steps == 0 {
-		if steps, ok := perf[meta.Performance]; ok {
-			meta.Steps = steps
+	if m.Steps == 0 {
+		if steps, ok := perf[m.Performance]; ok {
+			m.Steps = steps
 		}
 	}
 }
