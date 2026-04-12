@@ -102,11 +102,8 @@ func embed(t string, in string, out string) (err error) {
 
 		return writer.Write(target, metadata)
 	default:
-		fmt.Printf("Unknown type: %s\n", t)
-		os.Exit(1)
+		return fmt.Errorf("unknown type: %s", t)
 	}
-
-	return nil
 }
 
 func readMetadataFromStdin[M fooocus.Metadata | fooocusplus.Metadata | ruinedfooocus.Metadata]() (metadata M, err error) {
