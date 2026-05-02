@@ -52,6 +52,9 @@ func extract(path string) {
 	out, err := json.MarshalIndent(metadata.Params.Raw(), "", "  ")
 	if err == nil {
 		fmt.Print(string(out))
+	} else {
+		fmt.Printf("Error encoding metadata: %s\n", err)
+		os.Exit(2)
 	}
 }
 
