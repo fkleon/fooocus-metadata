@@ -2,6 +2,7 @@ package stablediffusion
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -206,6 +207,43 @@ func TestDecodeMetadata_SD_CPP(t *testing.T) {
 				TextEncoder: "clip_l.safetensors, t5-v1_1-xxl-encoder-Q3_K_S.gguf",
 				Unet:        "PJ0_385_exclusiveTA_00001_BF16_Q4_K_S.gguf",
 				Vae:         "ae.safetensors",
+				Version:     "stable-diffusion.cpp",
+			},
+		},
+		{
+			in: "Person in a pirate costume\nSteps: 30, CFG scale: 1.000000, Guidance: 3.500000, Eta: 0.000000, Seed: 1177101575, Size: 512x512, Model: , RNG: cuda, Sampler: euler discrete, TE: clip_l.safetensors, TE: t5-v1_1-xxl-encoder-Q3_K_S.gguf, Unet: PJ0_385_exclusiveTA_00001_BF16_Q4_K_S.gguf, VAE: ae.safetensors, Version: stable-diffusion.cpp",
+			out: Metadata{
+				CfgScale:    1,
+				Guidance:    3.5,
+				Model:       "",
+				Prompt:      "Person in a pirate costume",
+				Rng:         "cuda",
+				Sampler:     "euler discrete",
+				Seed:        1177101575,
+				Size:        &Size{Width: 512, Height: 512},
+				Steps:       30,
+				TextEncoder: "clip_l.safetensors, t5-v1_1-xxl-encoder-Q3_K_S.gguf",
+				Unet:        "PJ0_385_exclusiveTA_00001_BF16_Q4_K_S.gguf",
+				Vae:         "ae.safetensors",
+				Version:     "stable-diffusion.cpp",
+			},
+		},
+		{
+			in: "Dog with short hair.  Detailed frontal close-up view of the face.\nSteps: 8, CFG scale: 1.000000, Guidance: 3.500000, Eta: inf, Seed: 2056899594, Size: 512x512, Model: , RNG: cuda, Sampler RNG: cuda, Sampler: euler_a smoothstep, TE: Qwen3-4B-Instruct-2507-Q3_K_S.gguf, Unet: z_image_turbo-Q6_K.gguf, VAE: ae-f16.gguf, Version: stable-diffusion.cpp",
+			out: Metadata{
+				CfgScale:    1,
+				Eta:         Float(math.Inf(1)),
+				Guidance:    3.5,
+				Model:       "",
+				Prompt:      "Dog with short hair.  Detailed frontal close-up view of the face.",
+				Rng:         "cuda",
+				Sampler:     "euler_a smoothstep",
+				Seed:        2056899594,
+				Steps:       8,
+				Size:        &Size{Width: 512, Height: 512},
+				TextEncoder: "Qwen3-4B-Instruct-2507-Q3_K_S.gguf",
+				Unet:        "z_image_turbo-Q6_K.gguf",
+				Vae:         "ae-f16.gguf",
 				Version:     "stable-diffusion.cpp",
 			},
 		},

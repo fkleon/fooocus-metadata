@@ -7,6 +7,7 @@ package stablediffusion
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,7 +19,7 @@ type Metadata struct {
 	CfgScale             float32 `json:"cfg_scale,string"`
 	ClipSkip             int     `json:"clip_skip,string,omitempty"`
 	DenoisingStrength    float32 `json:"denoising_strength,string,omitempty"`
-	Eta                  float32 `json:"eta,string,omitempty"`
+	Eta                  Float   `json:"eta,string,omitempty"`
 	HiresSteps           int     `json:"hires_steps,string,omitempty"`
 	HiresUpscale         float32 `json:"hires_upscale,string,omitempty"`
 	HiresUpscaler        string  `json:"hires_upscaler,omitempty"`
@@ -39,6 +40,47 @@ type Metadata struct {
 	Vae                  string  `json:"vae,omitempty"`
 	VaeHash              string  `json:"vae_hash,omitempty"`
 	Version              string  `json:"version,omitempty"`
+}
+
+type Float float64
+
+func (f *Float) UnmarshalJSON(v []byte) (err error) {
+	if s := string(v); s == "inf" || s == "-inf" {
+		// if +/- indiciates infinity
+		if s == "inf" {
+			*f = Float(math.Inf(1))
+			return nil
+		}
+
+		*f = Float(math.Inf(-1))
+
+		return nil
+	}
+	// just a regular float value
+	var fv float64
+	if err := json.Unmarshal(v, &fv); err != nil {
+		return err
+	}
+
+	*f = Float(fv)
+
+	return nil
+}
+
+func (f Float) MarshalJSON() ([]byte, error) {
+	v := float64(f)
+	if math.IsInf(v, 0) {
+		// handle infinity, assign desired value to v
+		// or say +/- indicates infinity
+		s := "inf"
+		if math.IsInf(v, -1) {
+			s = "-inf"
+		}
+
+		return json.Marshal(s)
+	}
+
+	return json.Marshal(v) // marshal result as standard float64
 }
 
 type Loras []Lora
