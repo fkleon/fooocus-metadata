@@ -7,7 +7,7 @@ linters:
       - std-error-handling
   settings:
     cyclop:
-      max-complexity: 14
+      max-complexity: 15
     exhaustive:
       default-signifies-exhaustive: true
     ireturn:

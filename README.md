@@ -1,6 +1,6 @@
 # `fooocus-metadata`
 
-A Go library for reading and writing image generation parameters for images produced by [Fooocus and various forks](#compatibility).
+A Go library for reading and writing image generation parameters for images produced by [Fooocus and other Stable Diffusion implementations](#compatibility).
 
 ## Features
 
@@ -51,6 +51,15 @@ Tested with RuinedFooocus version 2.0.0 and newer.
 | Image Format | Metadata Location | Metadata Scheme | Read | Write |
 |--------------|-------------------|-----------------|------|-------|
 | PNG          | Embedded          | JSON            | ✅   | ✅    |
+
+### [stable-diffusion.cpp]
+
+Tested with stable-diffusion.cpp version f40a707d and newer.
+
+| Image Format | Metadata Location | Metadata Scheme | Read | Write |
+|--------------|-------------------|-----------------|------|-------|
+| PNG          | Embedded          | JSON            | ✅   |  ❌   |
+
 
 ### AUTOMATIC1111-style metadata
 

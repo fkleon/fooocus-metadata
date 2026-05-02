@@ -12,6 +12,8 @@ import (
 	_ "github.com/fkleon/fooocus-metadata/fooocus"
 	_ "github.com/fkleon/fooocus-metadata/fooocusplus"
 	_ "github.com/fkleon/fooocus-metadata/ruinedfooocus"
+	_ "github.com/fkleon/fooocus-metadata/stablediffusion"
+	_ "github.com/fkleon/fooocus-metadata/stablediffusioncpp"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -157,6 +159,31 @@ func TestExtractMetadata_RuinedFooocus(t *testing.T) {
 			assert.Equal(t, tc.source, meta.Source)
 			assert.Equal(t, tc.software, meta.Params.Version())
 			assert.Zero(t, meta.Created)
+		})
+	}
+}
+
+func TestExtractMetadata_StableDiffusionCPP(t *testing.T) {
+	const testpath = "./stablediffusioncpp/testdata/"
+	testCases := []struct {
+		file     string
+		source   string
+		software string
+	}{
+		{"sd.cpp-txt-meta.png", "StableDiffusion", "stable-diffusion.cpp"},
+		{"sd.cpp-json-meta.png", "stable-diffusion.cpp", "stable-diffusion.cpp (f40a707)"},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.file, func(t *testing.T) {
+			path := filepath.Join(testpath, tc.file)
+			meta, err := ExtractFromFile(path)
+
+			require.NoError(t, err)
+			require.NotNil(t, meta)
+
+			assert.Equal(t, tc.source, meta.Source)
+			assert.Equal(t, tc.software, meta.Params.Version())
 		})
 	}
 }

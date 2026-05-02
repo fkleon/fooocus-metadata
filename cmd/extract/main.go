@@ -13,6 +13,7 @@ import (
 	_ "github.com/fkleon/fooocus-metadata/fooocusplus"
 	_ "github.com/fkleon/fooocus-metadata/ruinedfooocus"
 	_ "github.com/fkleon/fooocus-metadata/stablediffusion"
+	_ "github.com/fkleon/fooocus-metadata/stablediffusioncpp"
 
 	fooocusmeta "github.com/fkleon/fooocus-metadata"
 )

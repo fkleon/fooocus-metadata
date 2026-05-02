@@ -14,48 +14,57 @@ import (
 )
 
 type Metadata struct {
-	BatchSize            int     `json:"batch_size,string,omitempty"`
-	BatchPos             int     `json:"batch_pos,string,omitempty"`
-	CfgScale             float32 `json:"cfg_scale,string"`
-	ClipSkip             int     `json:"clip_skip,string,omitempty"`
-	DenoisingStrength    float32 `json:"denoising_strength,string,omitempty"`
-	Eta                  Float   `json:"eta,string,omitempty"`
-	HiresSteps           int     `json:"hires_steps,string,omitempty"`
-	HiresUpscale         float32 `json:"hires_upscale,string,omitempty"`
-	HiresUpscaler        string  `json:"hires_upscaler,omitempty"`
-	Guidance             float32 `json:"guidance,string,omitempty"`
-	ImageNoiseMultiplier float32 `json:"image_noise_multiplier,string,omitempty"`
-	Loras                Loras   `json:"loras,omitempty"`
-	Model                string  `json:"model,omitempty"`
-	ModelHash            string  `json:"model_hash,omitempty"`
-	NegativePrompt       string  `json:"negative_prompt,omitempty"`
-	Prompt               string  `json:"prompt"`
-	Rng                  string  `json:"rng,omitempty"`
-	Sampler              string  `json:"sampler"` // The Sampler field contains both the sampler and scheduler names
-	Seed                 int     `json:"seed,string"`
-	Size                 *Size   `json:"size,omitempty"`
-	Steps                int     `json:"steps,string"`
-	TextEncoder          string  `json:"TE,omitempty"`
-	Unet                 string  `json:"unet,omitempty"`
-	Vae                  string  `json:"vae,omitempty"`
-	VaeHash              string  `json:"vae_hash,omitempty"`
-	Version              string  `json:"version,omitempty"`
+	BatchSize            int        `json:"batch_size,string,omitempty"`
+	BatchPos             int        `json:"batch_pos,string,omitempty"`
+	CfgScale             float32    `json:"cfg_scale,string"`
+	ClipSkip             int        `json:"clip_skip,string,omitempty"`
+	CustomSigmas         FloatSlice `json:"custom_sigmas,omitempty"`
+	DenoisingStrength    float32    `json:"denoising_strength,string,omitempty"`
+	Eta                  Float      `json:"eta,string,omitempty"`
+	HiresSteps           int        `json:"hires_steps,string,omitempty"`
+	HiresUpscale         float32    `json:"hires_upscale,string,omitempty"`
+	HiresUpscaler        string     `json:"hires_upscaler,omitempty"`
+	Guidance             float32    `json:"guidance,string,omitempty"`
+	ImageNoiseMultiplier float32    `json:"image_noise_multiplier,string,omitempty"`
+	Loras                Loras      `json:"loras,omitempty"`
+	Model                string     `json:"model,omitempty"`
+	ModelHash            string     `json:"model_hash,omitempty"`
+	NegativePrompt       string     `json:"negative_prompt,omitempty"`
+	Prompt               string     `json:"prompt"`
+	Rng                  string     `json:"rng,omitempty"`
+	SamplerRng           string     `json:"sampler_rng,omitempty"`
+	Sampler              string     `json:"sampler"` // The Sampler field contains both the sampler and scheduler names
+	Seed                 int        `json:"seed,string"`
+	SkipLayers           IntSlice   `json:"skip_layers,omitempty"`
+	SkipLayerEnd         float32    `json:"skip_layer_end,string,omitempty"`
+	SkipLayerStart       float32    `json:"skip_layer_start,string,omitempty"`
+	SLGScale             float32    `json:"slg_scale,string,omitempty"`
+	Size                 *Size      `json:"size,omitempty"`
+	Steps                int        `json:"steps,string"`
+	TextEncoder          string     `json:"TE,omitempty"`
+	Unet                 string     `json:"unet,omitempty"`
+	Vae                  string     `json:"vae,omitempty"`
+	VaeHash              string     `json:"vae_hash,omitempty"`
+	Version              string     `json:"version,omitempty"`
+	HiresResize          *Size      `json:"hires_resize,omitempty"`
 }
 
+// Float is a wrapper around float64 that supports unmarshaling from
+// both numeric and string JSON values, including support for "inf" and "-inf".
 type Float float64
 
 func (f *Float) UnmarshalJSON(v []byte) (err error) {
 	if s := string(v); s == "inf" || s == "-inf" {
-		// if +/- indiciates infinity
-		if s == "inf" {
-			*f = Float(math.Inf(1))
+		if strings.HasPrefix(s, "-") {
+			*f = Float(math.Inf(-1))
 			return nil
 		}
 
-		*f = Float(math.Inf(-1))
+		*f = Float(math.Inf(1))
 
 		return nil
 	}
+
 	// just a regular float value
 	var fv float64
 	if err := json.Unmarshal(v, &fv); err != nil {
@@ -81,6 +90,86 @@ func (f Float) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(v) // marshal result as standard float64
+}
+
+type FloatSlice []float32
+
+func (s *FloatSlice) UnmarshalJSON(p []byte) error {
+	if len(p) == 0 {
+		return nil
+	}
+
+	if p[0] == '"' {
+		var raw string
+		if err := json.Unmarshal(p, &raw); err != nil {
+			return err
+		}
+
+		parts := splitBracketList(raw)
+
+		values := make(FloatSlice, 0, len(parts))
+		for _, part := range parts {
+			value, err := strconv.ParseFloat(part, 32)
+			if err != nil {
+				return err
+			}
+
+			values = append(values, float32(value))
+		}
+
+		*s = values
+
+		return nil
+	}
+
+	var values []float32
+	if err := json.Unmarshal(p, &values); err != nil {
+		return err
+	}
+
+	*s = values
+
+	return nil
+}
+
+type IntSlice []int
+
+func (s *IntSlice) UnmarshalJSON(p []byte) error {
+	if len(p) == 0 {
+		return nil
+	}
+
+	if p[0] == '"' {
+		var raw string
+		if err := json.Unmarshal(p, &raw); err != nil {
+			return err
+		}
+
+		parts := splitBracketList(raw)
+
+		values := make(IntSlice, 0, len(parts))
+		for _, part := range parts {
+			value, err := strconv.Atoi(part)
+			if err != nil {
+				return err
+			}
+
+			values = append(values, value)
+		}
+
+		*s = values
+
+		return nil
+	}
+
+	var values []int
+	if err := json.Unmarshal(p, &values); err != nil {
+		return err
+	}
+
+	*s = values
+
+	return nil
 }
 
 type Loras []Lora
@@ -173,6 +262,28 @@ func (s Size) MarshalJSON() ([]byte, error) {
 	return json.Marshal(val)
 }
 
+func splitBracketList(raw string) []string {
+	trimmed := strings.TrimSpace(raw)
+	trimmed = strings.TrimPrefix(trimmed, "[")
+
+	trimmed = strings.TrimSuffix(trimmed, "]")
+	if trimmed == "" {
+		return nil
+	}
+
+	parts := strings.Split(trimmed, ",")
+
+	compact := make([]string, 0, len(parts))
+	for _, part := range parts {
+		part = strings.TrimSpace(part)
+		if part != "" {
+			compact = append(compact, part)
+		}
+	}
+
+	return compact
+}
+
 func ParseParameters(in string) (meta Metadata, err error) {
 	if json.Valid([]byte(in)) {
 		return meta, fmt.Errorf("input is JSON, not plaintext")
@@ -205,9 +316,8 @@ func ParseParameters(in string) (meta Metadata, err error) {
 
 		// If prev was negative prompt, the match was not sufficient,
 		// fix it up
-		if pmKey == "negative_prompt" {
-			nprompt := in2[pmIdx : match[0]-1]
-			kv["negative_prompt"] = strings.TrimSpace(nprompt)
+		if needsExtendedValue(pmKey) {
+			kv[pmKey] = strings.TrimSpace(in2[pmIdx : match[0]-1])
 		}
 
 		// Normalize key: Lowercase, trim spaces, replace spaces with underscores
@@ -228,6 +338,12 @@ func ParseParameters(in string) (meta Metadata, err error) {
 		pmIdx = match[4]
 	}
 
+	if needsExtendedValue(pmKey) {
+		kv[pmKey] = strings.TrimSpace(in2[pmIdx:])
+	}
+
+	normalizeStableDiffusionCPPFields(kv)
+
 	// LoRAs
 	lr := regexp.MustCompile("<lora:[^>]+>")
 
@@ -240,4 +356,31 @@ func ParseParameters(in string) (meta Metadata, err error) {
 	err = json.Unmarshal(kvByte, &meta)
 
 	return meta, err
+}
+
+func needsExtendedValue(key string) bool {
+	switch key {
+	case "negative_prompt", "custom_sigmas", "skip_layers":
+		return true
+	default:
+		return false
+	}
+}
+
+func normalizeStableDiffusionCPPFields(kv map[string]string) {
+	value, ok := kv["hires_upscale"]
+	if !ok {
+		return
+	}
+
+	if _, err := strconv.ParseFloat(value, 32); err == nil {
+		return
+	}
+
+	kv["hires_upscaler"] = value
+	delete(kv, "hires_upscale")
+
+	if scale, ok := kv["hires_scale"]; ok {
+		kv["hires_upscale"] = scale
+	}
 }

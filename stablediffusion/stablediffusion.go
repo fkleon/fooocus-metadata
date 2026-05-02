@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"path/filepath"
+	"strings"
 
 	m "github.com/fkleon/fooocus-metadata/types"
 )
@@ -31,6 +32,11 @@ func (e StableDiffusionMetadataExtractor) Decode(file m.ImageMetadataContext) (m
 		} else {
 			return meta, fmt.Errorf("%s: Parameters not found", Software)
 		}
+	}
+
+	// SDCPP-specific JSON metadata handling lives in the stablediffusioncpp package.
+	if strings.Contains(parameters, "SDCPP:") {
+		return meta, fmt.Errorf("%s: SDCPP metadata is not handled by this reader", Software)
 	}
 
 	return ParseParameters(parameters)
