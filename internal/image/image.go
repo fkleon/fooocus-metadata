@@ -195,7 +195,7 @@ func extractExif(fin io.ReadSeeker, mimeType string) (data *imagemeta.Tags, err 
 		format = imagemeta.TIFF
 	}
 
-	err = imagemeta.Decode(imagemeta.Options{
+	_, err = imagemeta.Decode(imagemeta.Options{
 		R:           fin,
 		ImageFormat: format,
 		Sources:     imagemeta.EXIF,
