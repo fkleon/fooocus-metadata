@@ -10,6 +10,8 @@ linters:
       max-complexity: 15
     exhaustive:
       default-signifies-exhaustive: true
+    goconst:
+      ignore-tests: true
     ireturn:
       allow:
         - anon
@@ -58,6 +60,7 @@ linters:
     - reassign
     - recvcheck
     - revive
+    - sloglint
     - testifylint
     - thelper
     - unconvert
