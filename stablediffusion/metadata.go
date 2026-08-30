@@ -20,7 +20,7 @@ type Metadata struct {
 	ClipSkip             int        `json:"clip_skip,string,omitempty"`
 	CustomSigmas         FloatSlice `json:"custom_sigmas,omitempty"`
 	DenoisingStrength    float32    `json:"denoising_strength,string,omitempty"`
-	Eta                  Float      `json:"eta,string,omitempty"`
+	Eta                  Float      `json:"eta,omitempty"`
 	HiresSteps           int        `json:"hires_steps,string,omitempty"`
 	HiresUpscale         float32    `json:"hires_upscale,string,omitempty"`
 	HiresUpscaler        string     `json:"hires_upscaler,omitempty"`
@@ -50,19 +50,34 @@ type Metadata struct {
 }
 
 // Float is a wrapper around float64 that supports unmarshaling from
-// both numeric and string JSON values, including support for "inf" and "-inf".
+// both numeric and string JSON values, including support for
+// "inf", "Infinity", "-inf", "-Infinity" and "NaN" string values.
 type Float float64
 
 func (f *Float) UnmarshalJSON(v []byte) (err error) {
-	if s := string(v); s == "inf" || s == "-inf" {
-		if strings.HasPrefix(s, "-") {
+	var s string
+	if err := json.Unmarshal(v, &s); err == nil {
+		switch s {
+		case "inf", "Infinity":
+			*f = Float(math.Inf(1))
+			return nil
+		case "-inf", "-Infinity":
 			*f = Float(math.Inf(-1))
 			return nil
+		case "NaN":
+			*f = Float(math.NaN())
+			return nil
+		default:
+			// float value as string
+			var fv float64
+			if fv, err = strconv.ParseFloat(s, 64); err != nil {
+				return err
+			}
+
+			*f = Float(fv)
+
+			return nil
 		}
-
-		*f = Float(math.Inf(1))
-
-		return nil
 	}
 
 	// just a regular float value
@@ -78,15 +93,13 @@ func (f *Float) UnmarshalJSON(v []byte) (err error) {
 
 func (f Float) MarshalJSON() ([]byte, error) {
 	v := float64(f)
-	if math.IsInf(v, 0) {
-		// handle infinity, assign desired value to v
-		// or say +/- indicates infinity
-		s := "inf"
-		if math.IsInf(v, -1) {
-			s = "-inf"
-		}
-
-		return json.Marshal(s)
+	switch {
+	case math.IsNaN(v):
+		return json.Marshal("NaN")
+	case math.IsInf(v, 1):
+		return json.Marshal("inf")
+	case math.IsInf(v, -1):
+		return json.Marshal("-inf")
 	}
 
 	return json.Marshal(v) // marshal result as standard float64
