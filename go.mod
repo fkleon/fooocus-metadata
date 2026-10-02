@@ -1,6 +1,6 @@
 module github.com/fkleon/fooocus-metadata
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/antchfx/htmlquery v1.3.6
@@ -16,10 +16,10 @@ require (
 
 require (
 	github.com/antchfx/xpath v1.3.8 // indirect
-	github.com/bep/imagemeta v1.0.0
+	github.com/bep/imagemeta v1.0.1
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/sabhiram/png-embed v0.0.0-20180421025336-149afe9a3ccb
-	golang.org/x/image v0.45.0
-	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/text v0.41.0
+	golang.org/x/image v0.46.0
+	golang.org/x/net v0.59.0 // indirect
+	golang.org/x/text v0.42.0
 )
